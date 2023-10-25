@@ -1,3 +1,18 @@
-body {
-    background-color: azure;
+:root {
+    --bg-color-top: #102060;
+    --bg-color-bottom: #7040c0;
+    --img-logo-navbar-size: 32px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: serif;
+}
+
+.bg-main-dark {
+    background-image: linear-gradient(to bottom right, var(--bg-color-top), var(--bg-color-bottom));
+}
+
+.img-logo-navbar {
+    width: var(--img-logo-navbar-size);
+    height: var(--img-logo-navbar-size);
 }
