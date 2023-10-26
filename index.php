@@ -16,15 +16,16 @@
 <body class="bg-main-dark text-white">
 
     <div class="min-vh-100" style="display: flex; flex-flow: column nowrap;">
-        <header class="container" style="flex: 0 0 auto">
+        <header class="container sticky-top">
             <div class="text-end p-2" role="support">
-                <a class="link-light text-decoration-none p-2" href="http://"><i class="fi fi-rr-headset align-middle"></i> Soporte</a>
-                <a class="link-light text-decoration-none p-2" href="http://"><i class="fi fi-rr-interrogation align-middle"></i> Ayuda</a>
-                <a class="link-light text-decoration-none p-2" href="http://"><i class="fi fi-rr-globe align-middle"></i> Idioma</a>
+                <?php $a_link_support = "link-light link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover p-2"; ?>
+                <a class="<?php echo $a_link_support; ?>" href="#"><i class="fi fi-rr-headset align-middle"></i> Soporte</a>
+                <a class="<?php echo $a_link_support; ?>" href="#"><i class="fi fi-rr-interrogation align-middle"></i> Ayuda</a>
+                <a class="<?php echo $a_link_support; ?>" href="#"><i class="fi fi-rr-globe align-middle"></i> Idioma</a>
             </div>
-            <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+            <nav class="navbar navbar-expand-lg bg-dark border-bottom" data-bs-theme="dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="index.php">
                         <img class="img-logo-navbar" src="img/logo-navbar.png" alt="logo-navbar">
                         E-DUCA
                     </a>
@@ -67,7 +68,7 @@
                 </div>
             </nav>
         </header>
-        <main class="container" style="flex: 1 0 300px">
+        <main class="container" style="flex: 1 0 400px">
             <div class="row h-100 justify-content-center align-items-center">
                 <div class="col-8 col-lg-5 text-center text-lg-start">
                     <h1 class="display-1 fw-bolder">E-DUCA</h1>
@@ -88,7 +89,40 @@
         </main>
         <footer class="bg-dark" style="flex: 0 0 auto">
             <div class="container text-center">
-                <h2>Footer</h2>
+                <div class="row justify-content-center py-3">
+                    <div class="col-lg-7">
+                        <div id="carouselExample" class="carousel slide">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <h2>Obtenga 10% de descuento hoy</h2>
+                                    <p><em>Aproveche la oferta de vacaciones.</em></p>
+                                </div>
+                                <div class="carousel-item">
+                                    <h2>Pregunte por el plan grupal</h2>
+                                    <p><em>Obtenga mayores beneficios de esta manera.</em></p>
+                                </div>
+                                <div class="carousel-item">
+                                    <h2>Encuentre lo que desea aprender</h2>
+                                    <p><em>Contamos con una gran variedad en nuestra oferta educativa.</em></p>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-10 col-lg-5 d-flex align-items-center">
+                        <form class="d-flex" role="search" style="flex: 1 1 0;">
+                            <input class="form-control me-2" type="search" placeholder="¿Qué deseas aprender?">
+                            <button class="btn btn-warning px-5 px-lg-3 px-xl-4 px-xxl-5" type="submit">Buscar</button>
+                        </form>
+                    </div>
+                </div>
                 <p>E-DUCA &trade;</p>
             </div>
         </footer>

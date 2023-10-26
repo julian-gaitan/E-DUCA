@@ -1,15 +1,11 @@
 :root {
     --bg-color-top: #102060;
     --bg-color-bottom: #7040c0;
-    --img-logo-navbar-size: 32px;
+    --img-logo-navbar-size: 36px;
 }
 
 h1, h2, h3, h4, h5, h6 {
     /* font-family: serif; */
-}
-
-.main {
-    min-height: 300px;
 }
 
 .bg-main-dark {
