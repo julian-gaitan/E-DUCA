@@ -4,9 +4,9 @@
     --img-logo-navbar-size: 36px;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    /* font-family: serif; */
-}
+/* h1, h2, h3, h4, h5, h6 {
+    font-family: serif;
+} */
 
 .bg-main-dark {
     background-image: linear-gradient(to bottom right, var(--bg-color-top), var(--bg-color-bottom));
