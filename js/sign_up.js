@@ -1,4 +1,4 @@
-// /// <reference path="jquery-3.7.1.min.js"/>
+/// <reference path="jquery-3.7.1.min.js"/>
 
 // $('button.carousel-control-prev').on('click', function (evt) {
 //     const elements = $('#carouselSign .carousel-item');
@@ -16,23 +16,44 @@
 //     console.log(elements.length);
 // });
 
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    (() => {
-        'use strict'
+(() => {
+    const inputs = $('#formSignUp input');
+    const form = $('#formSignUp');
+    const formButton = $('#formSignUp button[type="submit"]');
+    formButton.on('click', validatedForm);
 
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        const forms = document.querySelectorAll('.needs-validation')
-
-        // Loop over them and prevent submission
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                alert("form.checkValidity():"+form.checkValidity());
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
+    function validatedForm(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        let post_request = "";
+        Array.from(inputs).forEach(input => {
+            post_request += post_request.length > 0 ? "&" : "";
+            post_request += input.attributes["name"].value + "=" + (input.attributes["type"].value == "checkbox" ? input.checked : input.value);
+        });
+        const httpReq = new XMLHttpRequest();
+        httpReq.onreadystatechange = function(evt) {
+            if (this.readyState === 4 && this.status === 200) {
+                const json_response = JSON.parse(this.responseText);
+                let formIsValid = true;
+                Array.from(inputs).forEach(input => {
+                    let feedback;
+                    if (feedback = json_response[input.attributes["name"].value]) {
+                        $('#feedback-'+input.attributes["name"].value).text(feedback);
+                        input.classList.remove('is-valid');
+                        input.classList.add('is-invalid');
+                        formIsValid = false;
+                    } else {
+                        input.classList.add('is-valid');
+                        input.classList.remove('is-invalid');
+                    }
+                });
+                if (formIsValid) {
+                    form.trigger('submit');
                 }
-
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })();
+            }
+        }
+        httpReq.open('post', 'service/add_user.php', true);
+        httpReq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        httpReq.send(post_request);
+    }
+})();

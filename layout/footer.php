@@ -1,6 +1,6 @@
 
 </main>
-        <footer class="bg-dark" style="flex: 0 0 auto">
+        <footer class="bg-dark flex-grow-0 flex-shrink-0">
             <div class="container text-center">
                 <div class="row justify-content-center py-3">
                     <div class="col-lg-7">
@@ -30,9 +30,9 @@
                         </div>
                     </div>
                     <div class="col-10 col-lg-5 d-flex align-items-center">
-                        <form class="d-flex" role="search" style="flex: 1 1 0;">
+                        <form class="d-flex flex-grow-1" role="search">
                             <input class="form-control me-2" type="search" placeholder="¿Qué deseas aprender?">
-                            <button class="btn btn-warning px-5 px-lg-3 px-xl-4 px-xxl-5" type="submit">Buscar</button>
+                            <button class="btn btn-warning px-md-3 px-xl-4 px-xxl-5" type="submit">Buscar</button>
                         </form>
                     </div>
                 </div>
@@ -48,7 +48,8 @@
     <?php
         $script_name = $_SERVER['SCRIPT_NAME'];
         $script_name = substr($script_name, 0, strrpos($script_name, "/") + 1) . "js" . str_replace(".php", ".js", strrchr($script_name, "/"));
-        echo (file_exists($_SERVER['DOCUMENT_ROOT'] . $script_name) ? "<script src=\"$script_name\"></script>" : "");
+        echo (file_exists($_SERVER['DOCUMENT_ROOT'] . $script_name) ? "<script src=\"$script_name?".time()."\"></script>" : ""); // ?time() to avoid JS cached problems
+          
     ?>
     <script>
         // $("h1:first-child").text("Hola");

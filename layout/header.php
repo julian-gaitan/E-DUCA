@@ -8,15 +8,14 @@
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css?<?= time(); // Avoids CSS cached problems
-                                                ?>">
+    <link rel="stylesheet" href="css/styles.css?<?php echo time(); // To avoid CSS cached problems ?>">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <!-- <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'> -->
 </head>
 
 <body class="bg-main-dark text-white">
 
-    <div class="min-vh-100" style="display: flex; flex-flow: column nowrap;">
+    <div class="min-vh-100 d-flex flex-column">
         <header class="container sticky-top">
             <!-- <div class="bg-main-dark text-end p-2" role="support"> -->
             <div class="text-end p-2" role="support">
@@ -71,4 +70,4 @@
                 </div>
             </nav>
         </header>
-        <main class="container" style="flex: 1 0 400px">
+        <main class="container flex-grow-1 flex-shrink-0">
