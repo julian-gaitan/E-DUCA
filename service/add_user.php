@@ -1,54 +1,53 @@
 <?php
 
-$json_response = [];
-$user_data = [];
-$invalid_chars = "<>,\"`@\/\\\\|{}\[\]()*$%#?=:;";
-foreach ($_POST as $key => $value) {
-    switch ($key) {
-        case 'first-name':
-        case 'last-name':
-            $value = trim($value);
-            $pattern = sprintf("/^[^%s]{3,30}$/", $invalid_chars);
-            if (!preg_match($pattern, $value)) {
-                $json_response[$key] = "Debe ser entre 3 y 30 caracteres válidos.";
+include 'connection.php';
+
+const TABLE_NAME = 'tbl_usuario';
+const FORMINPUT_TODB_MAP = [
+    'first-name' => 'first_name', 
+    'last-name' => 'last_name', 
+    'user' => 'user', 
+    'email' => 'email', 
+    'password' => 'password', 
+    'birthdate' => 'birthdate',];
+
+$check_conn = connectToDB();
+if ($check_conn === true) {
+    $json_response = [];
+    $url = $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
+    $url = 'http://' . substr($url, 0, strrpos($url, '/') + 1) . 'validate_user.php';
+    $options = [
+        'http' => [
+            'header' => 'Content-type: application/x-www-form-urlencoded',
+            'method' => 'POST',
+            'content' => http_build_query($_POST),
+        ],
+    ];
+    $context = stream_context_create($options);
+    $result = json_decode(file_get_contents($url, false, $context), true);
+    if (isset($result['isValid']) && $result['isValid']) {
+        try {
+            $columns = [];
+            $columns_ref = [];
+            $values = [];
+            foreach (FORMINPUT_TODB_MAP as $key => $value) {
+                $columns[] = $value;
+                $columns_ref[] = ':' . $value;
+                $values[':' . $value] = isset($_POST[$key]) ? $_POST[$key] : null;
             }
-            break;
-        case 'user':
-            $value = trim($value);
-            $pattern = sprintf("/^[^%s]{6,30}$/", $invalid_chars);
-            if (!preg_match($pattern, $value)) {
-                $json_response[$key] = "Debe ser entre 6 y 30 caracteres válidos.";
-            }
-            break;
-        case 'email':
-            $value = trim($value);
-            if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                $json_response[$key] = "El email es inválido.";
-            }
-            break;
-        case 'password':
-            $pattern = sprintf("/^[^%s\s]{8,30}$/", $invalid_chars);
-            if (!preg_match($pattern, $value) ||
-                !preg_match("/[\d]{2,}/", $value) ||
-                !preg_match("/[a-z]+/", $value) ||
-                !preg_match("/[A-Z]+/", $value)) {
-                $json_response[$key] = "Debe ser entre 8 y 30 caracteres válidos, al menos 2 números, 1 minúscula y 1 mayúscula.";
-            }
-            break;
-        case 'birthdate':
-            if (!((bool) strtotime($value))) {
-                $json_response[$key] = "La fecha es inválida.";
-            }
-            break;
-        case 'terms-conditions':
-            if (strcasecmp("true", $value) !== 0) {
-                $json_response[$key] = "Debe aceptar los términos y condiciones.";
-            }
-            break;
-        default:
-            break;
+            $sql = "INSERT INTO " . TABLE_NAME . " (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $columns_ref) . ");";
+            $stmt = $conn->prepare($sql);
+            $resutl = $stmt->execute($values);
+            $json_response = ['result' =>  $resutl];
+        } catch (PDOException $e) {
+            $json_response = ['error' =>  $e->getMessage()];
+        }
+    } else {
+        $json_response = ['error' =>  'Invalid user'];
     }
-    $user_data[$key] = htmlspecialchars($value);
+} else {
+    $json_response = ['error' =>  $check_conn];
 }
 
+header('Content-Type: application/json');
 echo json_encode($json_response);

@@ -5,8 +5,8 @@
         <h1 class="text-center ">Registro</h1>
     </div>
     <div class="row justify-content-center align-items-center flex-grow-1 flex-shrink-0">
-        <div class="<?php echo ($_SERVER["REQUEST_METHOD"] === "GET" ? "" : "d-none"); ?> col-sm-10 col-md-8 col-lg-6 col-xl-5">
-            <div id="carouselSign" class="carousel slide" data-bs-touch="false" data-bs-wrap="false">
+        <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
+            <div id="carouselSignUp" class="carousel slide" data-bs-touch="false" data-bs-wrap="false">
                 <!-- <div class="carousel-indicators">
                     <button type="button" data-bs-target="#" data-bs-slide-to="0" class="pe-none active" disabled></button>
                     <button type="button" data-bs-target="#" data-bs-slide-to="1" class="pe-none" disabled></button>
@@ -103,9 +103,12 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-        </div>
-        <div class="<?php echo ($_SERVER["REQUEST_METHOD"] === "POST" ? "" : "d-none"); ?> col-sm-10 col-md-8 col-lg-6 col-xl-5 text-center">
-            <h2>Registro exitóso</h2>
+            <div id="resultSignUp" class="d-none text-center">
+                <div class="spinner-border">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h2></h2>
+            </div>
         </div>
     </div>
 </div>
