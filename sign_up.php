@@ -1,7 +1,7 @@
 <?php include "layout/header.php"; ?>
 
 <div class="h-100 d-flex flex-column">
-    <div class="p-2 flex-grow-0 flex-shrink-0">
+    <div class="pt-3 flex-grow-0 flex-shrink-0">
         <h1 class="text-center ">Registro</h1>
     </div>
     <div class="row justify-content-center align-items-center flex-grow-1 flex-shrink-0">
@@ -24,7 +24,7 @@
                             </div>
                             <div class="m-3">
                                 <label class="form-label" for="password">Contraseña</label>
-                                <div class="input-group has-validation ">
+                                <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-lock"></i></span>
                                     <input class="form-control" type="password" id="password" name="password" required>
                                     <div id="feedback-password" class="invalid-feedback"></div>
@@ -35,7 +35,7 @@
                             </div>
                             <div class="m-3">
                                 <label class="form-label" for="first-name">Nombre(s)</label>
-                                <div class="input-group has-validation ">
+                                <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
                                     <input class="form-control" type="text" id="first-name" name="first-name">
                                     <div id="feedback-first-name" class="invalid-feedback"></div>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="m-3">
                                 <label class="form-label" for="last-name">Apellido(s)</label>
-                                <div class="input-group has-validation ">
+                                <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
                                     <input class="form-control" type="text" id="last-name" name="last-name">
                                     <div id="feedback-last-name" class="invalid-feedback"></div>
@@ -51,7 +51,7 @@
                             </div>
                             <div class="m-3">
                                 <label class="form-label" for="user">Usuario</label>
-                                <div class="input-group has-validation ">
+                                <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-user"></i></span>
                                     <input class="form-control" type="text" id="user" name="user">
                                     <div id="feedback-user" class="invalid-feedback"></div>
@@ -59,7 +59,7 @@
                             </div>
                             <div class="m-3">
                                 <label class="form-label" for="birthdate">Fecha de Nacimiento</label>
-                                <div class="input-group has-validation ">
+                                <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-calendar"></i></span>
                                     <input class="form-control" type="date" id="birthdate" name="birthdate">
                                     <div id="feedback-birthdate" class="invalid-feedback"></div>
@@ -67,28 +67,27 @@
                             </div>
                             <!-- <div class="m-3">
                                 <label class="form-label" for="country">País</label>
-                                <div class="input-group has-validation ">
+                                <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-flag"></i></span>
                                     <input class="form-control" type="text" id="country" name="country">
                                 </div>
                             </div>
                             <div class="m-3">
                                 <label class="form-label" for="city">Ciudad</label>
-                                <div class="input-group has-validation ">
+                                <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-city"></i></span>
                                     <input class="form-control" type="text" id="city" name="city">
                                 </div>
                             </div> -->
-                            <div class="m-3 form-check w-auto">
+                            <div class="m-3 form-check">
                                 <label class="form-check-label" for="terms-conditions">Acepto términos y condiciones</label>
                                 <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms-conditions">
                                 <div id="feedback-terms-conditions" class="invalid-feedback"></div>
                             </div>
-                            <div class="m-3 text-center">
-                                <button type="submit" class="btn btn-lg btn-warning">Registrase</button>
+                            <div class="m-4 text-center">
+                                <button type="submit" class="btn btn-lg btn-warning w-75">Registrase</button>
                             </div>
                         </form>
-
                     </div>
                     <div class="carousel-item">
                         <h1 class="display-1">temp</h1>

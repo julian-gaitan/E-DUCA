@@ -1,25 +1,18 @@
 /// <reference path="jquery-3.7.1.min.js"/>
 
-(() => {
+import { createPostBodyFromInputs } from './lib.js';
+
+$(() => {
     const form = $('#formSignUp');
     const inputs = $('#formSignUp input');
     const formSubmit = $('#formSignUp button[type="submit"]');
     formSubmit.on('click', validatedForm);
     form.on('submit', submitForm);
 
-    function createPostBody() {
-        let body = "";
-        Array.from(inputs).forEach(input => {
-            body += body.length > 0 ? "&" : "";
-            body += input.attributes["name"].value + "=" + (input.attributes["type"].value == "checkbox" ? input.checked : input.value);
-        });
-        return body;
-    }
-
     function validatedForm(evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        let postBody = createPostBody();
+        let postBody = createPostBodyFromInputs(inputs);
         const httpReq = new XMLHttpRequest();
         httpReq.onreadystatechange = function(e) {
             if (this.readyState === 4 && this.status === 200) {
@@ -53,7 +46,7 @@
         $('#carouselSignUp').addClass('d-none');
         $('#resultSignUp').removeClass('d-none');
         $('#resultSignUp').addClass('d-block');
-        let postBody = createPostBody();
+        let postBody = createPostBodyFromInputs(inputs);
         const httpReq = new XMLHttpRequest();
         httpReq.onreadystatechange = function(e) {
             if (this.readyState === 4 && this.status === 200) {
@@ -73,4 +66,5 @@
         httpReq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         httpReq.send(postBody);
     }
-})();
+    
+});

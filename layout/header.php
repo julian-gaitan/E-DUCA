@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,6 +13,16 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <!-- <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'> -->
 </head>
+
+<?php include_once "lib/util.php"; ?>
+<?php include_once "service/connection.php"; ?>
+<?php 
+    $check_conn = connectToDB();
+    if ($check_conn !== true) {
+        console_log($check_conn);
+        exit('Hay un problema con nuestra base de datos, intente utilizar la plataforma en otra ocación');
+    }
+?>
 
 <body class="bg-main-dark text-white">
 

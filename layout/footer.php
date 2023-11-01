@@ -48,7 +48,7 @@
     <?php
         $script_name = $_SERVER['SCRIPT_NAME'];
         $script_name = substr($script_name, 0, strrpos($script_name, "/") + 1) . "js" . str_replace(".php", ".js", strrchr($script_name, "/"));
-        echo (file_exists($_SERVER['DOCUMENT_ROOT'] . $script_name) ? "<script src=\"$script_name?".time()."\"></script>" : ""); // ?time() to avoid JS cached problems
+        echo (file_exists($_SERVER['DOCUMENT_ROOT'] . $script_name) ? "<script src=\"$script_name?".time()."\" type=\"module\"></script>" : ""); // ?time() to avoid JS cached problems
           
     ?>
     <script>

@@ -12,8 +12,8 @@ const FORMINPUT_TODB_MAP = [
     'birthdate' => 'birthdate',];
 
 $check_conn = connectToDB();
+$json_response = [];
 if ($check_conn === true) {
-    $json_response = [];
     $url = $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
     $url = 'http://' . substr($url, 0, strrpos($url, '/') + 1) . 'validate_user.php';
     $options = [
@@ -33,7 +33,7 @@ if ($check_conn === true) {
             foreach (FORMINPUT_TODB_MAP as $key => $value) {
                 $columns[] = $value;
                 $columns_ref[] = ':' . $value;
-                $values[':' . $value] = isset($_POST[$key]) ? $_POST[$key] : null;
+                $values[':' . $value] = isset($_POST[$key]) ? htmlspecialchars($_POST[$key]) : null;
             }
             $sql = "INSERT INTO " . TABLE_NAME . " (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $columns_ref) . ");";
             $stmt = $conn->prepare($sql);
