@@ -11,7 +11,7 @@ if ($check_conn === true) {
     $password = array_key_exists('password', $_POST) ? $_POST['password'] : null;
     if (isset($email) && isset($password)) {
         try {
-            $sql = "SELECT id FROM " . TABLE_NAME . " WHERE email=:email AND password=:password;";
+            $sql = "SELECT id FROM ".TABLE_NAME." WHERE email=:email AND password=:password;";
             $stmt = $conn->prepare($sql);
             $values = [":email" => htmlspecialchars($email), ":password" => htmlspecialchars($password)];
             $stmt->execute($values);

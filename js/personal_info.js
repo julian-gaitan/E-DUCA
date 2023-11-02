@@ -3,16 +3,23 @@
 import { createPostBodyFromInputs } from './lib.js';
 
 $(function() {
-    const form = $('#formSignUp');
-    const inputs = $('#formSignUp input');
-    const formSubmit = $('#formSignUp button[type="submit"]');
+    $('#formPersonalInfo input').one('change', function(event) {
+        $('#formPersonalInfo button').prop('disabled', false);
+    });
+
+    const form = $('#formPersonalInfo');
+    const inputs = $('#formPersonalInfo input:enabled');
+    const formSubmit = $('#formPersonalInfo button[type="submit"]');
     formSubmit.on('click', validatedForm);
     form.on('submit', submitForm);
 
     function validatedForm(evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        let postBody = createPostBodyFromInputs(inputs);
+        const filterInputs = inputs.filter(function (i, ele) {
+            return $(ele).attr('alt') != $(ele).val();
+        });
+        let postBody = createPostBodyFromInputs(filterInputs);
         const httpReq = new XMLHttpRequest();
         httpReq.onreadystatechange = function(e) {
             if (this.readyState === 4 && this.status === 200) {
@@ -21,7 +28,7 @@ $(function() {
                     form.trigger('submit');
                 } else {
                     let response_fields = json_response['fields'];
-                    Array.from(inputs).forEach(input => {
+                    Array.from(filterInputs).forEach(input => {
                         let feedback;
                         if (feedback = response_fields[input.attributes["name"].value]['reason']) {
                             $('#feedback-'+input.attributes["name"].value).text(feedback);
@@ -43,15 +50,14 @@ $(function() {
     function submitForm(evt) {
         evt.preventDefault();
         evt.stopPropagation();
-        $('#carouselSignUp').addClass('d-none');
-        $('#resultSignUp').removeClass('d-none');
-        $('#resultSignUp').addClass('d-block');
-        let postBody = createPostBodyFromInputs(inputs);
+        const filterInputs = inputs.filter(function (i, ele) {
+            return $(ele).attr('alt') != $(ele).val();
+        });
+        let postBody = createPostBodyFromInputs(filterInputs);
         const httpReq = new XMLHttpRequest();
         httpReq.onreadystatechange = function(e) {
             if (this.readyState === 4 && this.status === 200) {
                 const json_response = JSON.parse(this.responseText);
-                $('#resultSignUp .spinner-border').addClass('d-none');
                 let result;
                 if (json_response['result']) {
                     result = 'Registro exitoso';
@@ -59,12 +65,12 @@ $(function() {
                     result = "Hubo un problema, por favor intente más tarde";
                     console.log(json_response);
                 }
-                $('#resultSignUp h2').text(result);
+                $('h1').text(result);
             }
         }
-        httpReq.open('post', 'service/add_user.php', true);
+        httpReq.open('post', 'service/modify_user.php', true);
         httpReq.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         httpReq.send(postBody);
     }
-    
+
 });

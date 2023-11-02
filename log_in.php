@@ -1,3 +1,39 @@
+<?php
+    session_start();
+    if (array_key_exists('user', $_SESSION) && !is_null($_SESSION['user'])) {
+        header('Location: index.php');
+        exit();
+    }
+?>
+<?php
+    include_once 'lib/include_many.php';
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $url = $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
+        $url = 'http://' . substr($url, 0, strrpos($url, '/') + 1) . 'service/find_user.php';
+        $options = [
+            'http' => [
+                'header' => 'Content-type: application/x-www-form-urlencoded',
+                'method' => 'POST',
+                'content' => http_build_query($_POST),
+            ],
+        ];
+        $context = stream_context_create($options);
+        $file_content = file_get_contents($url, false, $context);
+        $result = is_string($file_content) ? json_decode($file_content, true) : [];
+        if (isset($result['error'])) {
+            $header_text = 'Hubo un problema, por favor intente más tarde';
+            console_log($result['error']);
+        } else {
+            if (isset($result['id']) && $result['id'] > 0) {
+                $user = User::findbyId($conn, new User(), $result['id']);
+                $header_text = 'Bienvenido @'.$user->get_user();
+                $_SESSION["user"] = serialize($user);
+            } else {
+                $header_text = 'La contraseña y/o correo electrónico no coinciden';
+            }
+        }
+    }
+?>
 <?php include "layout/header.php"; ?>
 
 <div class="h-100 d-flex flex-column">
@@ -39,36 +75,6 @@
                 </form>
             </div>
             <div class="<?php echo ($_SERVER["REQUEST_METHOD"] === "POST" ? "" : "d-none"); ?>">
-                <?php
-                if ($_SERVER["REQUEST_METHOD"] === "POST") {
-                    include 'lib/user.php';
-
-                    $url = $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
-                    $url = 'http://' . substr($url, 0, strrpos($url, '/') + 1) . 'service/find_user.php';
-                    $options = [
-                        'http' => [
-                            'header' => 'Content-type: application/x-www-form-urlencoded',
-                            'method' => 'POST',
-                            'content' => http_build_query($_POST),
-                        ],
-                    ];
-                    $context = stream_context_create($options);
-                    $file_content = file_get_contents($url, false, $context);
-                    $result = is_string($file_content) ? json_decode($file_content, true) : [];
-                    if (isset($result['error'])) {
-                        $header_text = 'Hubo un problema, por favor intente más tarde';
-                        console_log($result['error']);
-                    } else {
-                        if (isset($result['id']) && $result['id'] > 0) {
-                            $user = User::findbyId($conn, new User(), $result['id']);
-                            $header_text = 'Bienvenido @'.$user->get_user();
-                            $_SESSION["user"] = $user;
-                        } else {
-                            $header_text = 'La contraseña y/o correo electrónico no coinciden';
-                        }
-                    }
-                }
-                ?>
                 <h2 class="text-center"><?php echo $header_text; ?></h2>
             </div>
         </div>

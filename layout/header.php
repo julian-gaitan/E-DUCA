@@ -1,4 +1,14 @@
-<?php session_start(); ?>
+<?php include_once 'lib/include_many.php'; ?>
+<?php if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); } ?>
+<?php 
+    $user_present = array_key_exists('user', $_SESSION) && !is_null($_SESSION['user']);
+    if ($user_present) {
+        $user = unserialize($_SESSION['user']);
+    } else {
+        $user = new User();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -14,17 +24,22 @@
     <!-- <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'> -->
 </head>
 
-<?php include_once "lib/util.php"; ?>
-<?php include_once "service/connection.php"; ?>
-<?php 
-    $check_conn = connectToDB();
-    if ($check_conn !== true) {
-        console_log($check_conn);
-        exit('Hay un problema con nuestra base de datos, intente utilizar la plataforma en otra ocación');
-    }
-?>
-
 <body class="bg-main-dark text-white">
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="accountOffcanvas" data-bs-theme="dark">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasLabel">Hola @<?php echo $user->get_user(); ?></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="dropdown-menu d-block position-relative">
+                <li><a class="dropdown-item" href="personal_info.php"><i class="fi fi-rr-user-pen"></i> Datos Personales</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fi fi-rr-e-learning"></i> Cursos</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="log_out.php"><i class="fi fi-rr-exit"></i> Salir</a></li>
+            </ul>
+        </div>
+    </div>
 
     <div class="min-vh-100 d-flex flex-column">
         <header class="container sticky-top">
@@ -56,7 +71,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Testimonios</a>
                             </li>
-
                             <!-- <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Dropdown
@@ -69,12 +83,21 @@
                                 </ul>
                             </li> -->
                         </ul>
-                        <div class="row col-4 ms-lg-auto" role="log in/sing up">
-                            <div class="col-lg-6 mb-3 mb-lg-0">
+                        <div id="logIn-signUp" class="row col-10 col-sm-8 col-md-6 col-lg-4 ms-lg-auto <?php echo $user_present ? "d-none" : ""; ?>" 
+                             role="log in/sign up">
+                            <div class="col-8 col-lg-6 mb-3 mb-lg-0">
                                 <a href="log_in.php" class="btn btn-primary w-100">Ingreso</a>
                             </div>
-                            <div class="col-lg-6 mb-2 mb-lg-0">
+                            <div class="col-8 col-lg-6 mb-2 mb-lg-0">
                                 <a href="sign_up.php" class="btn btn-info w-100">Registro</a>
+                            </div>
+                        </div>
+                        <div id="account" class="row col-10 col-sm-8 col-md-6 col-lg-4 ms-lg-auto <?php echo $user_present ? "" : "d-none"; ?>" 
+                             role="account">
+                            <div class="col-8 col-lg-8 offset-lg-2 mb-2 mb-lg-0">
+                                <button type="button" class="btn btn-warning w-100 fs-5 fw-bold py-1" data-bs-toggle="offcanvas" data-bs-target="#accountOffcanvas">
+                                    @<?php echo $user->get_user(); ?>
+                                </button>
                             </div>
                         </div>
                     </div>

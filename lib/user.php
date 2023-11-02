@@ -11,8 +11,8 @@ class User extends ORM {
     protected string $email;
     protected string $password;
     protected string $birthdate;
-    protected const TABLE_NAME = 'tbl_usuario';
-    protected const FIELDS_MAP = [
+    public const TABLE_NAME = 'tbl_usuario';
+    public const FIELDS_MAP = [
         'id' => 'id',
         'first_name' => 'first_name',
         'last_name' => 'last_name',
@@ -21,10 +21,18 @@ class User extends ORM {
         'password' => 'password',
         'birthdate' => 'birthdate',
     ];
+    public const INPUTS_MAP = [
+        'first-name' => 'first_name',
+        'last-name' => 'last_name',
+        'user' => 'user',
+        'email' => 'email',
+        'password' => 'password',
+        'birthdate' => 'birthdate',
+    ];
 
     function __construct() {
-        $this->fields_map = self::FIELDS_MAP;
         $this->table_name = self::TABLE_NAME;
+        $this->fields_map = self::FIELDS_MAP;
         $this->id = 0;
         $this->first_name = "";
         $this->last_name = "";

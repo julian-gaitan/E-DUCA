@@ -1,3 +1,10 @@
+<?php
+    session_start();
+    if (array_key_exists('user', $_SESSION) && !is_null($_SESSION['user'])) {
+        header('Location: index.php');
+        exit();
+    }
+?>
 <?php include "layout/header.php"; ?>
 
 <div class="h-100 d-flex flex-column">
@@ -52,7 +59,7 @@
                             <div class="m-3">
                                 <label class="form-label" for="user">Usuario</label>
                                 <div class="input-group has-validation">
-                                    <span class="input-group-text"><i class="fi fi-rr-user"></i></span>
+                                    <span class="input-group-text"><i class="fi fi-rr-at"></i></span>
                                     <input class="form-control" type="text" id="user" name="user">
                                     <div id="feedback-user" class="invalid-feedback"></div>
                                 </div>
