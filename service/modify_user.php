@@ -19,19 +19,24 @@ if ($check_conn === true) {
     $result = json_decode(file_get_contents($url, false, $context), true);
     if (isset($result['isValid']) && $result['isValid']) {
         try {
-            $columns = [];
-            $columns_ref = [];
+            $columns_values = [];
             $values = [];
-            foreach (User::INPUTS_MAP as $key => $value) {
-                $columns[] = $value;
-                $columns_ref[] = ':' . $value;
-                $values[':' . $value] = isset($_POST[$key]) ? htmlspecialchars($_POST[$key]) : null;
+            foreach ($_POST as $key => $value) {
+                if (array_key_exists($key, User::INPUTS_MAP)) {
+                    $column = User::INPUTS_MAP[$key];
+                } else {
+                    continue;
+                }
+                if (strcmp($key, 'id') !== 0) {
+                    $columns_values[] = $column . "=:" . $column;
+                }
+                $values[':' . $column] = htmlspecialchars($value);
             }
-            $sql = "INSERT INTO " . User::TABLE_NAME . " (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $columns_ref) . ");";
+            $sql = "UPDATE " . User::TABLE_NAME . " SET " . implode(", ", $columns_values) . " WHERE id=:id;";
             $stmt = $conn->prepare($sql);
             $resutl = $stmt->execute($values);
             $json_response = ['result' =>  $resutl];
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             $json_response = ['error' => $e->getMessage()];
         }
     } else {

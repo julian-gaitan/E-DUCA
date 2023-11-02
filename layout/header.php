@@ -4,6 +4,7 @@
     $user_present = array_key_exists('user', $_SESSION) && !is_null($_SESSION['user']);
     if ($user_present) {
         $user = unserialize($_SESSION['user']);
+        $user = User::findbyId($conn, new User(), $user->get_id());
     } else {
         $user = new User();
     }

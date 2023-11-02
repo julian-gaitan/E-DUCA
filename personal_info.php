@@ -9,7 +9,7 @@ if (!array_key_exists('user', $_SESSION) || is_null($_SESSION['user'])) {
 
 <div class="h-100 d-flex flex-column">
     <div class="pt-3 flex-grow-0 flex-shrink-0">
-        <h1 class="text-center ">Datos Personales</h1>
+        <h1 class="text-center">Datos Personales</h1>
     </div>
     <div class="row justify-content-center align-items-center flex-grow-1 flex-shrink-0">
         <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
@@ -39,6 +39,14 @@ if (!array_key_exists('user', $_SESSION) || is_null($_SESSION['user'])) {
                 </div>
                 <div>
                     <hr>
+                </div>
+                <div class="m-3 d-none">
+                    <label class="form-label" for="id">ID</label>
+                    <div class="input-group">
+                        <span class="input-group-text"></span>
+                        <input class="form-control" type="number" id="id" name="id" readonly 
+                        value="<?php echo $user->get_id(); ?>" alt="">
+                    </div>
                 </div>
                 <div class="m-3">
                     <label class="form-label" for="first-name">Nombre(s)</label>
@@ -78,6 +86,7 @@ if (!array_key_exists('user', $_SESSION) || is_null($_SESSION['user'])) {
                 </div>
                 <div class="m-4 text-center">
                     <button type="submit" class="btn btn-lg btn-warning w-75" disabled>Guardar Cambios</button>
+                    <div id="feedback-submit" class="mt-2 fw-bold"></div>
                 </div>
             </form>
         </div>

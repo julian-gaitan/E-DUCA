@@ -22,6 +22,7 @@ class User extends ORM {
         'birthdate' => 'birthdate',
     ];
     public const INPUTS_MAP = [
+        'id' => 'id',
         'first-name' => 'first_name',
         'last-name' => 'last_name',
         'user' => 'user',

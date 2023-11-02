@@ -31,7 +31,7 @@ if ($check_conn === true) {
             $stmt = $conn->prepare($sql);
             $resutl = $stmt->execute($values);
             $json_response = ['result' =>  $resutl];
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             $json_response = ['error' => $e->getMessage()];
         }
     } else {

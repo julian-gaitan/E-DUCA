@@ -3,9 +3,15 @@
 import { createPostBodyFromInputs } from './lib.js';
 
 $(function() {
-    $('#formPersonalInfo input').one('change', function(event) {
-        $('#formPersonalInfo button').prop('disabled', false);
-    });
+
+    function resetSubmitEvents() {
+        $('#formPersonalInfo button').prop('disabled', true);
+        $('#formPersonalInfo input').one('change', function(event) {
+            $('#formPersonalInfo button').prop('disabled', false);
+            $('#feedback-submit').text('');
+        });
+    }
+    resetSubmitEvents();
 
     const form = $('#formPersonalInfo');
     const inputs = $('#formPersonalInfo input:enabled');
@@ -17,13 +23,21 @@ $(function() {
         evt.preventDefault();
         evt.stopPropagation();
         const filterInputs = inputs.filter(function (i, ele) {
-            return $(ele).attr('alt') != $(ele).val();
+            return !$(ele).prop('readonly') && $(ele).attr('alt') != $(ele).val();
         });
+        if (0 == filterInputs.length) {
+            resetSubmitEvents();
+            return;
+        }
         let postBody = createPostBodyFromInputs(filterInputs);
         const httpReq = new XMLHttpRequest();
         httpReq.onreadystatechange = function(e) {
             if (this.readyState === 4 && this.status === 200) {
                 const json_response = JSON.parse(this.responseText);
+                $(inputs).each(function (i, ele) {
+                    ele.classList.remove('is-valid');
+                    ele.classList.remove('is-invalid');
+                });
                 if (json_response['isValid']) {
                     form.trigger('submit');
                 } else {
@@ -32,11 +46,9 @@ $(function() {
                         let feedback;
                         if (feedback = response_fields[input.attributes["name"].value]['reason']) {
                             $('#feedback-'+input.attributes["name"].value).text(feedback);
-                            input.classList.remove('is-valid');
                             input.classList.add('is-invalid');
                         } else {
                             input.classList.add('is-valid');
-                            input.classList.remove('is-invalid');
                         }
                     });
                 }
@@ -58,14 +70,23 @@ $(function() {
         httpReq.onreadystatechange = function(e) {
             if (this.readyState === 4 && this.status === 200) {
                 const json_response = JSON.parse(this.responseText);
-                let result;
+                let feedbackSubmit = $('#feedback-submit');
+                feedbackSubmit.removeClass('text-success');
+                feedbackSubmit.removeClass('text-danger');
                 if (json_response['result']) {
-                    result = 'Registro exitoso';
+                    feedbackSubmit.addClass('text-success');
+                    feedbackSubmit.html('<i class="fi fi-rr-checkbox"></i> Modificación exitosa');
+                    filterInputs.each(function (i, ele) {
+                        if (!$(ele).prop('readonly')) {
+                            $(ele).attr('alt', $(ele).val());
+                        }
+                    });
                 } else {
-                    result = "Hubo un problema, por favor intente más tarde";
+                    feedbackSubmit.addClass('text-danger');
+                    feedbackSubmit.html('<i class="fi fi-rr-square-x"></i> Hubo un problema, por favor intente más tarde');
                     console.log(json_response);
                 }
-                $('h1').text(result);
+                resetSubmitEvents();
             }
         }
         httpReq.open('post', 'service/modify_user.php', true);
