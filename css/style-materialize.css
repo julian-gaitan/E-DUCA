@@ -1,0 +1,51 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+.page-container {
+  position: relative;
+  min-height: 98vh;
+}
+
+.page-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.section {
+  padding-bottom: 175px;
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
+.fondo {
+  background-color: #121e52;
+}
+.fondo-menu {
+  background-color: #272d3e;
+}
+.fondo-boton {
+  background-color: #cf088c;
+}
+.fondo-pie {
+  background-color: #28304d;
+}
+.small-font {
+  font-size: 10px;
+}
+.div-portada {
+  min-height: 100px;
+  overflow: hidden;
+}
+.tabs {
+  background-color: #272d3e;
+}

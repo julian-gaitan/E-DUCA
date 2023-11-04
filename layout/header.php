@@ -44,27 +44,34 @@
     </div>
 
     <div class="min-vh-100 d-flex flex-column">
+        <!-- Tag Header para indicar cual parte de la página corresponde al encabezado -->
         <header class="container sticky-top">
-            <!-- <div class="bg-main-dark text-end p-2" role="support"> -->
+            Contenedor que agrupa y alinea los botones de soporte
             <div class="text-end p-2" role="support">
                 <?php $a_link_support = "link-light link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover p-2"; ?>
+                <!-- Hipervínculo de Soporte al usuario -->
                 <a class="<?php echo $a_link_support; ?>" href="#"><i class="fi fi-rr-headset align-middle"></i> Soporte</a>
+                <!-- Hipervínculo de Ayuda para problemas comunes -->
                 <a class="<?php echo $a_link_support; ?>" href="#"><i class="fi fi-rr-interrogation align-middle"></i> Ayuda</a>
+                <!-- Hipervínculo de selección de Idioma -->
                 <a class="<?php echo $a_link_support; ?>" href="#"><i class="fi fi-rr-globe align-middle"></i> Idioma</a>
             </div>
+            <!-- Componente "NAV" que contiene todos los menús de la página -->
             <nav class="navbar navbar-expand-lg bg-dark border-bottom border-top" data-bs-theme="dark">
                 <div class="container-fluid">
+                    <!-- Logo de navegación de la página -->
                     <a class="navbar-brand" href="index.php">
                         <img class="img-logo-navbar" src="img/logo-navbar.png" alt="logo-navbar">
                         E-DUCA
                     </a>
+                    <!-- Botón funcional para dar acceso al menú en dispositivos móviles (hamburger button) -->
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarMain">
+                        Menú en donde aparecen los principales vínculos para la página
                         <ul class="navbar-nav nav-underline">
                             <li class="nav-item">
-                                <!-- <a class="nav-link active" href="#">Cursos</a> -->
                                 <a class="nav-link" href="#">Cursos</a>
                             </li>
                             <li class="nav-item">
@@ -73,30 +80,24 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Testimonios</a>
                             </li>
-                            <!-- <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Dropdown
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </li> -->
                         </ul>
+                        <!-- Sección para los botones de Ingreso y Registro de Usuarios -->
                         <div id="logIn-signUp" class="row col-10 col-sm-8 col-md-6 col-lg-4 ms-lg-auto <?php echo $user_present ? "d-none" : ""; ?>" 
                              role="log in/sign up">
                             <div class="col-8 col-lg-6 mb-3 mb-lg-0">
+                                <!-- Hipervínculo para la página "log_in.php" (Ingreso a la plataforma) -->
                                 <a href="log_in.php" class="btn btn-primary w-100">Ingreso</a>
                             </div>
                             <div class="col-8 col-lg-6 mb-2 mb-lg-0">
+                                <!-- Hipervínculo para la página "sign_up.php" (Registro en la plataforma) -->
                                 <a href="sign_up.php" class="btn btn-info w-100">Registro</a>
                             </div>
                         </div>
+                        <!-- Sección para el botón de cuenta personal del usuario -->
                         <div id="account" class="row col-10 col-sm-8 col-md-6 col-lg-4 ms-lg-auto <?php echo $user_present ? "" : "d-none"; ?>" 
                              role="account">
                             <div class="col-8 col-lg-8 offset-lg-2 mb-2 mb-lg-0">
+                                <!-- Botón para acceder a las opciones de usuario una vez esta haya ingresado -->
                                 <button type="button" class="btn btn-warning w-100 fs-5 fw-bold py-1" data-bs-toggle="offcanvas" data-bs-target="#accountOffcanvas">
                                     @<?php echo $user->get_user(); ?>
                                 </button>
