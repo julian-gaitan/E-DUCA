@@ -25,9 +25,11 @@ if (!array_key_exists('user', $_SESSION) || is_null($_SESSION['user'])) {
                 </li>
             </ul>
             <div class="tab-content flex-grow-1 flex-shrink-0 d-flex justify-content-center align-items-center">
-                <div class="tab-pane fade active show" id="email-tab-pane" tabindex="0">correo</div>
-                <div class="tab-pane fade" id="password-tab-pane" tabindex="0">contraseña</div>
-                <div class="tab-pane fade" id="options-tab-pane" tabindex="0">opciones</div>
+                <div class="tab-pane fade active show" id="email-tab-pane" tabindex="0"></div>
+                <div class="tab-pane fade" id="password-tab-pane" tabindex="0"></div>
+                <div class="tab-pane fade" id="options-tab-pane" tabindex="0">
+                    <button class="btn btn-danger" id="<?php echo $user->get_id(); ?>">Eliminar Cuenta</button>
+                </div>
             </div>
         </div>
     </div>
