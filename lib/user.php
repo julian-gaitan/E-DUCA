@@ -1,6 +1,6 @@
 <?php
 
-include 'orm.php';
+include_once 'orm.php';
 
 class User extends ORM {
 
@@ -11,6 +11,7 @@ class User extends ORM {
     protected string $email;
     protected string $password;
     protected string $birthdate;
+    protected string $role;
     public const TABLE_NAME = 'tbl_usuarios';
     public const FIELDS_MAP = [
         'id' => 'id',
@@ -20,6 +21,7 @@ class User extends ORM {
         'email' => 'correo',
         'password' => 'contrasena',
         'birthdate' => 'cumpleanos',
+        'role' => 'rol',
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
@@ -41,6 +43,7 @@ class User extends ORM {
         $this->email = "";
         $this->password = "";
         $this->birthdate = "";
+        $this->role = 1;
     }
 
     protected function newObj() {
@@ -108,5 +111,14 @@ class User extends ORM {
     public function set_birthdate(string|null $birthdate): void {
         if (is_null($birthdate)) return;
         $this->birthdate = $birthdate;
+    }
+
+    public function get_role(): int {
+        return $this->role;
+    }
+
+    public function set_role(int|null $role): void {
+        if (is_null($role)) return;
+        $this->role = $role;
     }
 }

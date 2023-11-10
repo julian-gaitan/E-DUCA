@@ -1,6 +1,6 @@
+<?php include 'layout/php_setup.php'; ?>
 <?php
-    session_start();
-    if (array_key_exists('user', $_SESSION) && !is_null($_SESSION['user'])) {
+    if (!empty($_SESSION['user'])) {
         header('Location: index.php');
         exit();
     }

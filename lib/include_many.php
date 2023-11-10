@@ -1,6 +1,7 @@
 <?php 
     include_once "lib/util.php";
     include_once 'lib/user.php';
+    include_once 'lib/role.php';
     include_once "service/connection.php";
     $check_conn = connectToDB();
     if ($check_conn !== true) {

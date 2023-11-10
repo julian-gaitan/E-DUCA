@@ -1,3 +1,4 @@
+<?php include 'layout/php_setup.php'; ?>
 <?php include "layout/header.php"; ?>
 
 <div class="row h-100 justify-content-center align-items-center">

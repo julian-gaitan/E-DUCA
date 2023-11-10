@@ -1,12 +1,11 @@
+<?php include 'layout/php_setup.php'; ?>
 <?php
-    session_start();
-    if (array_key_exists('user', $_SESSION) && !is_null($_SESSION['user'])) {
+    if (!empty($_SESSION['user'])) {
         header('Location: index.php');
         exit();
     }
 ?>
 <?php
-    include_once 'lib/include_many.php';
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $url = $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
         $url = 'http://' . substr($url, 0, strrpos($url, '/') + 1) . 'service/find_user.php';
@@ -26,8 +25,9 @@
         } else {
             if (isset($result['id']) && $result['id'] > 0) {
                 $user = User::findbyId($conn, new User(), $result['id']);
-                $header_text = 'Bienvenido @' . $user->get_user();
+                $user_present = true;
                 $_SESSION["user"] = serialize($user);
+                $header_text = 'Bienvenido @' . $user->get_user();
             } else {
                 $header_text = 'La contraseña y/o correo electrónico no coinciden';
             }
