@@ -11,24 +11,24 @@ class User extends ORM {
     protected string $email;
     protected string $password;
     protected string $birthdate;
-    public const TABLE_NAME = 'tbl_usuario';
+    public const TABLE_NAME = 'tbl_usuarios';
     public const FIELDS_MAP = [
         'id' => 'id',
-        'first_name' => 'first_name',
-        'last_name' => 'last_name',
-        'user' => 'user',
-        'email' => 'email',
-        'password' => 'password',
-        'birthdate' => 'birthdate',
+        'first_name' => 'nombres',
+        'last_name' => 'apellidos',
+        'user' => 'usuario',
+        'email' => 'correo',
+        'password' => 'contrasena',
+        'birthdate' => 'cumpleanos',
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
-        'first-name' => 'first_name',
-        'last-name' => 'last_name',
-        'user' => 'user',
-        'email' => 'email',
-        'password' => 'password',
-        'birthdate' => 'birthdate',
+        'first-name' => 'nombres',
+        'last-name' => 'apellidos',
+        'user' => 'usuario',
+        'email' => 'correo',
+        'password' => 'contrasena',
+        'birthdate' => 'cumpleanos',
     ];
 
     function __construct() {

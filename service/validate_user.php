@@ -1,17 +1,19 @@
 <?php
 
-include 'connection.php';
+include_once 'connection.php';
+include_once '../lib/user.php';
 
-const  INVALID_CHARS = "<>,\"`@\/\\\\|{}\[\]()*$%#?=:;";
-const FIELDS = ['first-name', 'last-name', 'user', 'email', 'password', 'birthdate', 'terms-conditions'];
-const TABLE_NAME = 'tbl_usuario';
+const INVALID_CHARS = "<>,\"`@\/\\\\|{}\[\]()*$%#?=:;";
+$FIELDS = array_keys(User::INPUTS_MAP);
+unset($FIELDS[array_search('id', $FIELDS)]);
+$FIELDS[] = 'terms-conditions';
 
 $is_valid;
 $validation = [];
 $json_response = [];
 $check_conn = connectToDB();
 if ($check_conn === true) {
-    foreach (FIELDS as $field) {
+    foreach ($FIELDS as $field) {
         if (isset($_POST[$field])) {
             $is_valid ??= true;
             $value = $_POST[$field];
@@ -33,7 +35,7 @@ if ($check_conn === true) {
                     $check = preg_match($pattern, $value) === 1;
                     if ($check) {
                         try {
-                            $sql = "SELECT * FROM ".TABLE_NAME." WHERE user=:user;";
+                            $sql = "SELECT * FROM " . User::TABLE_NAME . " WHERE " . User::INPUTS_MAP['user'] . "=:user;";
                             $stmt = $conn->prepare($sql);
                             $values = [":user" => htmlspecialchars($value)];
                             $stmt->execute($values);
@@ -58,7 +60,7 @@ if ($check_conn === true) {
                     $check = is_string(filter_var($value, FILTER_VALIDATE_EMAIL));
                     if ($check) {
                         try {
-                            $sql = "SELECT * FROM ".TABLE_NAME." WHERE email=:email;";
+                            $sql = "SELECT * FROM " . User::TABLE_NAME . " WHERE " . User::INPUTS_MAP['email'] . "=:email;";
                             $stmt = $conn->prepare($sql);
                             $values = [":email" => htmlspecialchars($value)];
                             $stmt->execute($values);

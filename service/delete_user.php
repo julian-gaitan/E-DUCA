@@ -9,8 +9,8 @@ if ($check_conn === true) {
     $id = array_key_exists('id', $_POST) ? $_POST['id'] : null;
     if (isset($id)) {
         try {
-            $values[':' . User::FIELDS_MAP['id']] = htmlspecialchars($id);
-            $sql = "DELETE FROM " . User::TABLE_NAME . " WHERE " . User::FIELDS_MAP['id'] . "=:" . User::FIELDS_MAP['id'] . ";";
+            $values = [':id' => htmlspecialchars($id)];
+            $sql = "DELETE FROM " . User::TABLE_NAME . " WHERE " . User::FIELDS_MAP['id'] . "=:id;";
             $stmt = $conn->prepare($sql);
             $resutl = $stmt->execute($values);
             $json_response = ['result' =>  $resutl];

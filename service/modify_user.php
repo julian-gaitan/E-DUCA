@@ -32,7 +32,7 @@ if ($check_conn === true) {
                 }
                 $values[':' . $column] = htmlspecialchars($value);
             }
-            $sql = "UPDATE " . User::TABLE_NAME . " SET " . implode(", ", $columns_values) . " WHERE id=:id;";
+            $sql = "UPDATE " . User::TABLE_NAME . " SET " . implode(", ", $columns_values) . " WHERE " . User::FIELDS_MAP['id'] . "=:" . User::FIELDS_MAP['id'] . ";";
             $stmt = $conn->prepare($sql);
             $resutl = $stmt->execute($values);
             $json_response = ['result' =>  $resutl];

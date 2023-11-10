@@ -1,8 +1,7 @@
 <?php
 
-include 'connection.php';
-
-const TABLE_NAME = 'tbl_usuario';
+include_once 'connection.php';
+include_once '../lib/user.php';
 
 $check_conn = connectToDB();
 $json_response = [];
@@ -11,7 +10,8 @@ if ($check_conn === true) {
     $password = array_key_exists('password', $_POST) ? $_POST['password'] : null;
     if (isset($email) && isset($password)) {
         try {
-            $sql = "SELECT id FROM ".TABLE_NAME." WHERE email=:email AND password=:password;";
+            $sql = "SELECT " . User::FIELDS_MAP['id'] . " FROM " . User::TABLE_NAME . " WHERE " 
+                    . User::FIELDS_MAP['email'] . "=:email AND ". User::FIELDS_MAP['password'] . "=:password;";
             $stmt = $conn->prepare($sql);
             $values = [":email" => htmlspecialchars($email), ":password" => htmlspecialchars($password)];
             $stmt->execute($values);
