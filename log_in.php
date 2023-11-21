@@ -25,8 +25,8 @@
         } else {
             if (isset($result['id']) && $result['id'] > 0) {
                 $user = User::findbyId($conn, new User(), $result['id']);
-                $user_present = true;
                 $_SESSION["user"] = serialize($user);
+                include 'layout/php_setup.php';
                 $header_text = 'Bienvenido @' . $user->get_user();
             } else {
                 $header_text = 'La contraseña y/o correo electrónico no coinciden';

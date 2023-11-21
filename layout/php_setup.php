@@ -10,4 +10,7 @@
     }
     $role = Role::findbyId($conn, new Role(), $user->get_role());
     $pages_auth = explode(",", $role->get_pages());
+    $file_name = $_SERVER['SCRIPT_NAME'];
+    $file_name = substr(strrchr($file_name, "/"), 1);
+    $file_name = strchr($file_name, ".", true);
 ?>

@@ -25,6 +25,10 @@
                 <li><a class="dropdown-item" href="personal_info.php"><i class="fi fi-rr-user-pen align-middle"></i> Datos Personales</a></li>
                 <li><a class="dropdown-item" href="account.php"><i class="fi fi-rr-settings align-middle"></i> Cuenta</a></li>
                 <li><a class="dropdown-item" href="#"><i class="fi fi-rr-e-learning align-middle"></i> Cursos</a></li>
+                <li class="<?php echo !in_array("manage_courses", $pages_auth) ? "d-none" : "" ?>"><hr class="dropdown-divider"></li>
+                <li class="<?php echo !in_array("manage_courses", $pages_auth) ? "d-none" : "" ?>">
+                    <a class="dropdown-item" href="manage_courses.php"><i class="fi fi-rr-edit align-middle"></i> Gestion de Cursos</a>
+                </li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="log_out.php"><i class="fi fi-rr-exit align-middle"></i> Salir</a></li>
             </ul>

@@ -26,4 +26,24 @@ class ORM {
         }
         return $new_obj;
     }
+
+    public static function findAll(PDO $conn, object $ref_obj): array {
+        $new_array = [];
+        try {
+            $sql = 'SELECT ' . $ref_obj->valuesMap() . ' FROM ' . $ref_obj->table_name;
+            $stmt = $conn->query($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            for ($i = 0; $i < count($result); $i++) {
+                $new_obj = call_user_func([$ref_obj, "newObj"]);
+                foreach ($ref_obj->fields_map as $key => $value) {
+                    call_user_func([$new_obj, "set_" . $key], $result[$i][$value]);
+                }
+                $new_array[] = $new_obj;
+            }
+        } catch (Exception) {
+            $new_array = [];
+        }
+        return $new_array;
+    }
 }

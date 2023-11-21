@@ -11,7 +11,7 @@ class User extends ORM {
     protected string $email;
     protected string $password;
     protected string $birthdate;
-    protected string $role;
+    protected int $role;
     public const TABLE_NAME = 'tbl_usuarios';
     public const FIELDS_MAP = [
         'id' => 'id',
