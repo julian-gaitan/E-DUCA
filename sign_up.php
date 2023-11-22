@@ -9,7 +9,7 @@
 
 <div class="h-100 d-flex flex-column">
     <div class="pt-3 flex-grow-0 flex-shrink-0">
-        <h1 class="text-center ">Registro</h1>
+        <h1 class="text-center">Registro</h1>
     </div>
     <div class="row justify-content-center align-items-center flex-grow-1 flex-shrink-0">
         <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">

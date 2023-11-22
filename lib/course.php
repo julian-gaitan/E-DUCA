@@ -13,6 +13,11 @@ class Course extends ORM {
         'name' => 'nombre',
         'description' => 'descripcion',
     ];
+    public const INPUTS_MAP = [
+        'id' => 'id',
+        'name' => 'nombre',
+        'description' => 'descripcion',
+    ];
 
     function __construct() {
         $this->table_name = self::TABLE_NAME;

@@ -17,39 +17,76 @@
 
 <?php include "layout/header.php"; ?>
 
+<?php if (empty($_GET)) { ?>
 <div class="h-100 d-flex flex-column">
-    <div class="pt-3 flex-grow-0 flex-shrink-0">
-        <h1 class="text-center ">Cursos</h1>
+    <div class="py-3 flex-grow-0 flex-shrink-0">
+        <h1 class="text-center">Lista de Cursos</h1>
     </div>
     <div class="row justify-content-center align-items-center flex-grow-1 flex-shrink-0">
         <div class="col-md-12 col-lg-10 col-xl-8">
-            <table class="table">
-                <thead>
+            <table class="table table-primary table-striped table-bordered table-hover">
+                <thead class="table-light text-center">
                     <tr>
                         <th>#</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
-                        <th>Modificar</th>
-                        <th>Eliminar</th>
+                        <th colspan="2">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="align-middle">
                     <?php
                     for ($i=0; $i < count($content); $i++) {
                         $course = $content[$i];
                         echo "<tr>";
-                        echo "<td>" . $course->get_id() . "</td>";
+                        echo "<td>" . ($i + 1) . "</td>";
                         echo "<td>" . $course->get_name() . "</td>";
                         echo "<td>" . $course->get_description() . "</td>";
                         echo '<td><a href="?modify=' . $course->get_id() . '" class="btn btn-warning">Modificar</a></td>';
                         echo '<td><a href="?delete=' . $course->get_id() . '" class="btn btn-danger">Eliminar</a></td>';
-                        echo "<tr>";
+                        echo "</tr>";
                     }
                     ?>
                 </tbody>
             </table>
         </div>
     </div>
+    <div class="pt-3 pb-5 flex-grow-0 flex-shrink-0 text-center">
+        <a href="?create" class="btn btn-info btn-lg fw-bold">Nuevo</a>
+    </div>
 </div>
+<?php } ?>
+
+<?php if (isset($_GET['create'])) { ?>
+<div class="h-100 d-flex flex-column">
+    <div class="py-3 flex-grow-0 flex-shrink-0">
+        <h1 class="text-center">Crear Curso</h1>
+    </div>
+    <div class="row justify-content-center align-items-center flex-grow-1 flex-shrink-0">
+        <div class="col-md-12 col-lg-10 col-xl-8">
+            <form action="" method="post" id="formCreateCourse" novalidate>
+                <div class="m-3">
+                    <label class="form-label" for="name">Nombre</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
+                        <input class="form-control" type="text" id="name" name="name" required>
+                        <div id="feedback-name" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="m-3">
+                    <label class="form-label" for="description">Descripción</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text"><i class="fi fi-rr-indent"></i></span>
+                        <textarea class="form-control" id="description" name="description" required></textarea>
+                        <div id="feedback-description" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="m-4 text-center">
+                    <button type="submit" class="btn btn-warning btn-lg fw-bold">Crear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php } ?>
 
 <?php include "layout/footer.php"; ?>
