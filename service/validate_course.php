@@ -29,10 +29,40 @@ if ($check_conn === true) {
                     break;
                 case 'description':
                     $value = trim($value);
-                    $pattern = "/^.{5,500}$/";
+                    $pattern = "/^.{5,500}$/s";
                     $check = preg_match($pattern, $value) === 1;
                     if (!$check) {
                         $validation[$field]["reason"] = "Debe ser entre 5 y 500 caracteres.";
+                        $is_valid = false;
+                    }
+                    $validation[$field]["valid"] = $check;
+                    break;
+                case 'content-list':
+                    $value = trim($value);
+                    $pattern = "/^.{5,500}$/s";
+                    $check = preg_match($pattern, $value) === 1;
+                    if (!$check) {
+                        $validation[$field]["reason"] = "Debe ser entre 5 y 500 caracteres.";
+                        $is_valid = false;
+                    }
+                    $validation[$field]["valid"] = $check;
+                    break;
+                case 'category':
+                    $value = trim($value);
+                    $pattern = "/^.{3,100}$/s";
+                    $check = preg_match($pattern, $value) === 1;
+                    if (!$check) {
+                        $validation[$field]["reason"] = "Debe ser entre 3 y 100 caracteres.";
+                        $is_valid = false;
+                    }
+                    $validation[$field]["valid"] = $check;
+                    break;
+                case 'tags':
+                    $value = trim($value);
+                    $pattern = "/^.{3,100}$/s";
+                    $check = preg_match($pattern, $value) === 1;
+                    if (!$check) {
+                        $validation[$field]["reason"] = "Debe ser entre 3 y 100 caracteres.";
                         $is_valid = false;
                     }
                     $validation[$field]["valid"] = $check;
