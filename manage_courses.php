@@ -117,4 +117,80 @@ $content = Course::findAll($conn, new Course());
 </div>
 <?php } ?>
 
+<?php if (isset($_GET['modify'])) { ?>
+<?php $course = Course::findbyId($conn, new Course(), $_GET['modify']); ?>
+<div class="h-100 d-flex flex-column">
+    <div class="py-3 flex-grow-0 flex-shrink-0">
+        <h1 class="text-center">Modificar Curso</h1>
+    </div>
+    <div class="row justify-content-center align-items-center flex-grow-1 flex-shrink-0">
+        <form action="" method="post" id="formModifyCourse" novalidate>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="m-3 d-none">
+                        <label class="form-label" for="id">ID</label>
+                        <div class="input-group">
+                            <span class="input-group-text"></span>
+                            <input class="form-control" type="number" id="id" name="id" readonly 
+                            value="<?php echo $course->get_id(); ?>" alt="">
+                        </div>
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label" for="name">Nombre</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
+                            <input class="form-control" type="text" id="name" name="name" required 
+                            value="<?php echo $course->get_name(); ?>" alt="<?php echo $course->get_name(); ?>">
+                            <div id="feedback-name" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label" for="description">Descripción</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-text"></i></span>
+                            <textarea class="form-control" id="description" name="description" required 
+                            alt="<?php echo $course->get_description(); ?>"><?php echo $course->get_description(); ?></textarea>
+                            <div id="feedback-description" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label" for="content-list">Lista de Contenido</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-list"></i></span>
+                            <textarea class="form-control" id="content-list" name="content-list" rows="5" required 
+                            alt="<?php echo $course->get_content_list(); ?>"><?php echo $course->get_content_list(); ?></textarea>
+                            <div id="feedback-content-list" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="m-3">
+                        <label class="form-label" for="category">Categoría</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-bars-sort"></i></span>
+                            <textarea class="form-control" id="category" name="category" required 
+                            alt="<?php echo $course->get_category(); ?>"><?php echo $course->get_category(); ?></textarea>
+                            <div id="feedback-category" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label" for="tags">Tags</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-tags"></i></span>
+                            <textarea class="form-control" id="tags" name="tags" required 
+                            alt="<?php echo $course->get_tags(); ?>"><?php echo $course->get_tags(); ?></textarea>
+                            <div id="feedback-tags" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="m-4 text-center">
+                <button type="submit" class="btn btn-warning btn-lg fw-bold">Guardar Cambios</button>
+                <div id="feedback-submit" class="mt-2 fw-bold"></div>
+            </div>
+        </form>
+    </div>
+</div>
+<?php } ?>
+
 <?php include "layout/footer.php"; ?>

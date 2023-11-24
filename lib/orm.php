@@ -9,6 +9,7 @@ class ORM {
     }
 
     public static function findbyId(PDO $conn, object $ref_obj, int $id): object {
+        $new_obj = call_user_func([$ref_obj, "newObj"]);
         try {
             $sql = 'SELECT ' . $ref_obj->valuesMap() . ' FROM ' . $ref_obj->table_name . ' WHERE ' . $ref_obj->fields_map['id'] . '=' . $id;
             $stmt = $conn->query($sql);
