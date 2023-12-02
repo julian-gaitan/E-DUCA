@@ -34,6 +34,9 @@ class Course extends ORM {
         $this->id = 0;
         $this->name = "";
         $this->description = "";
+        $this->content_list = "";
+        $this->category = "";
+        $this->tags = "";
     }
 
     protected function newObj() {

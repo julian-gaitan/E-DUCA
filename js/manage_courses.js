@@ -151,4 +151,28 @@ $(function () {
         }
     }
 
+    {
+        const form = $('#formDeleteCourse');
+
+        form.on('submit', submitForm);
+        
+        function submitForm(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            let id = $('#formDeleteCourse #id').val();
+            console.log(id);
+            $.post('service/delete_course.php', {
+                "id": id
+            })
+                .done(function (json) {
+                    alert("Curso eliminado de forma exitosa!");
+                    window.location.replace("manage_courses.php");
+                })
+                .fail(function (param) {
+                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
+                    console.log(param);
+                });
+        }
+    }
+
 });
