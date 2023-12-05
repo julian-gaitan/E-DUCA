@@ -1,13 +1,13 @@
 <?php
 
 include_once 'connection.php';
-include_once '../lib/course.php';
+include_once '../lib/schedule.php';
 
 $json_response = [];
 $check_conn = connectToDB();
 if ($check_conn === true) {
     $url = $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
-    $url = 'http://' . substr($url, 0, strrpos($url, '/') + 1) . 'validate_course.php';
+    $url = 'http://' . substr($url, 0, strrpos($url, '/') + 1) . 'validate_schedule.php';
     $options = [
         'http' => [
             'header' => 'Content-type: application/x-www-form-urlencoded',
@@ -22,12 +22,12 @@ if ($check_conn === true) {
             $columns = [];
             $columns_ref = [];
             $values = [];
-            foreach (Course::INPUTS_MAP as $key => $value) {
+            foreach (Schedule::INPUTS_MAP as $key => $value) {
                 $columns[] = $value;
                 $columns_ref[] = ':' . $value;
                 $values[':' . $value] = isset($_POST[$key]) ? htmlspecialchars($_POST[$key]) : null;
             }
-            $sql = "INSERT INTO " . Course::TABLE_NAME . " (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $columns_ref) . ");";
+            $sql = "INSERT INTO " . Schedule::TABLE_NAME . " (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $columns_ref) . ");";
             $stmt = $conn->prepare($sql);
             $result = $stmt->execute($values);
             $json_response = ['result' =>  $result];
@@ -35,7 +35,7 @@ if ($check_conn === true) {
             $json_response = ['error' => $e->getMessage()];
         }
     } else {
-        $json_response = ['error' =>  'Invalid course'];
+        $json_response = ['error' =>  'Invalid schedule'];
     }
 } else {
     $json_response = ['error' =>  $check_conn];

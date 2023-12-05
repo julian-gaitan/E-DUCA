@@ -29,8 +29,8 @@ if ($check_conn === true) {
             }
             $sql = "INSERT INTO " . User::TABLE_NAME . " (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $columns_ref) . ");";
             $stmt = $conn->prepare($sql);
-            $resutl = $stmt->execute($values);
-            $json_response = ['result' =>  $resutl];
+            $result = $stmt->execute($values);
+            $json_response = ['result' =>  $result];
         } catch (Exception $e) {
             $json_response = ['error' => $e->getMessage()];
         }

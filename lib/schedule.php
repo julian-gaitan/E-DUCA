@@ -17,6 +17,13 @@ class Schedule extends ORM {
         'end_date' => 'fecha_fin',
         'duration' => 'duracion',
     ];
+    public const INPUTS_MAP = [
+        'id' => 'id',
+        'course' => 'fk_curso',
+        'start-date' => 'fecha_inicio',
+        'end-date' => 'fecha_fin',
+        'duration' => 'duracion',
+    ];
 
     function __construct() {
         $this->table_name = self::TABLE_NAME;

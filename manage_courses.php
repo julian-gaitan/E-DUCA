@@ -12,7 +12,7 @@ if (!in_array($file_name, $pages_auth)) {
 }
 ?>
 <?php
-$content = Course::findAll($conn, new Course());
+$courses = Course::findAll($conn, new Course());
 ?>
 
 <?php include "layout/header.php"; ?>
@@ -34,18 +34,16 @@ $content = Course::findAll($conn, new Course());
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                        <?php
-                        for ($i = 0; $i < count($content); $i++) {
-                            $course = $content[$i];
-                            echo "<tr>";
-                            echo "<td>" . ($i + 1) . "</td>";
-                            echo "<td>" . $course->get_name() . "</td>";
-                            echo "<td>" . $course->get_description() . "</td>";
-                            echo '<td><a href="?modify=' . $course->get_id() . '" class="btn btn-warning">Modificar</a></td>';
-                            echo '<td><a href="?delete=' . $course->get_id() . '" class="btn btn-danger">Eliminar</a></td>';
-                            echo "</tr>";
-                        }
-                        ?>
+                        <?php for ($i = 0; $i < count($courses); $i++) { ?>
+                            <?php $course = $courses[$i]; ?>
+                            <tr>
+                                <td><?php echo ($i + 1); ?> </td>
+                                <td><?php echo $course->get_name(); ?></td>
+                                <td><?php echo $course->get_description(); ?></td>
+                                <td><a href="?modify=<?php echo$course->get_id(); ?>" class="btn btn-warning">Modificar</a></td>
+                                <td><a href="?delete=<?php echo$course->get_id(); ?>" class="btn btn-danger">Eliminar</a></td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
