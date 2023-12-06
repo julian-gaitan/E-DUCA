@@ -84,7 +84,7 @@ $(function () {
             const filterInputs = inputs.filter(function (i, ele) {
                 return !$(ele).prop('readonly') && $(ele).attr('alt') != $(ele).val();
             });
-            if (0 == filterInputs.length) {
+            if (filterInputs.length == 0) {
                 resetSubmitEvents();
                 return;
             }
@@ -160,13 +160,18 @@ $(function () {
             event.preventDefault();
             event.stopPropagation();
             let id = $('#formDeleteCourse #id').val();
-            console.log(id);
             $.post('service/delete_course.php', {
                 "id": id
             })
                 .done(function (json) {
-                    alert("Curso eliminado de forma exitosa!");
-                    window.location.replace("manage_courses.php");
+                    if (json['result']) {
+                        alert("Curso eliminado de forma exitosa!");
+                        window.location.replace("manage_courses.php");
+                    } else {
+                        alert("NO se pudo eliminar el Curso!");
+                        window.location.replace("manage_courses.php");
+                        console.log(json);
+                    }
                 })
                 .fail(function (param) {
                     alert(`Hubo un error en la aplicación: ${param.statusText}`);
