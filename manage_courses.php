@@ -40,8 +40,8 @@ $courses = Course::findAll($conn, new Course());
                                 <td><?php echo ($i + 1); ?> </td>
                                 <td><?php echo $course->get_name(); ?></td>
                                 <td><?php echo $course->get_description(); ?></td>
-                                <td><a href="?modify=<?php echo$course->get_id(); ?>" class="btn btn-warning">Modificar</a></td>
-                                <td><a href="?delete=<?php echo$course->get_id(); ?>" class="btn btn-danger">Eliminar</a></td>
+                                <td><a href="?modify=<?php echo $course->get_id(); ?>" class="btn btn-warning">Modificar</a></td>
+                                <td><a href="?delete=<?php echo $course->get_id(); ?>" class="btn btn-danger">Eliminar</a></td>
                             </tr>
                         <?php } ?>
                     </tbody>

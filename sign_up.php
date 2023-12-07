@@ -88,7 +88,7 @@
                             </div> -->
                             <div class="m-3 form-check">
                                 <label class="form-check-label" for="terms-conditions">Acepto términos y condiciones</label>
-                                <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms-conditions">
+                                <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms-conditions" value="true">
                                 <div id="feedback-terms-conditions" class="invalid-feedback"></div>
                             </div>
                             <div class="m-4 text-center">

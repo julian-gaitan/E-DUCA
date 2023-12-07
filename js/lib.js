@@ -5,7 +5,7 @@ export function createPostBodyFromInputs(inputs) {
     Array.from(inputs).forEach(input => {
         input = $(input);
         body += body.length > 0 ? "&" : "";
-        body += input.attr('name') + "=" + (input.attr('type') == "checkbox" ? input.prop('checked') : input.val());
+        body += input.attr('name') + "=" + input.val();
     });
     return body;
 }

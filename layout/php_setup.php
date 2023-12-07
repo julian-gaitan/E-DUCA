@@ -8,8 +8,17 @@
     } else {
         $user = new User();
     }
-    $role = Role::findbyId($conn, new Role(), $user->get_role());
-    $pages_auth = explode(",", $role->get_pages());
+    $roles = Role::findAll($conn, new Role());
+    $pages = "";
+    foreach ($roles as $role) {
+        if (($user->get_role() & $role->get_value()) > 0) {
+            if (strlen($pages) > 0) {
+                $pages = $pages . ",";
+            }
+            $pages = $pages . $role->get_pages();
+        }
+    }
+    $pages_auth = explode(",", $pages);
     $file_name = $_SERVER['SCRIPT_NAME'];
     $file_name = substr(strrchr($file_name, "/"), 1);
     $file_name = strchr($file_name, ".", true);

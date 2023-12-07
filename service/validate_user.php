@@ -101,6 +101,14 @@ if ($check_conn === true) {
                         $is_valid = false;
                     }
                     break;
+                case 'role':
+                    $check = ((int) $value) > 0;
+                    if (!$check) {
+                        $validation[$field]["reason"] = "Debe ser un número positivo.";
+                        $is_valid = false;
+                    }
+                    $validation[$field]["valid"] = $check;
+                    break;
                 case 'terms-conditions':
                     $check = strcasecmp("true", $value) === 0;
                     if (!$check) {
