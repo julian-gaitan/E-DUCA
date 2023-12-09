@@ -67,7 +67,7 @@
                         <ul class="navbar-nav nav-underline">
                             <li class="nav-item">
                                 <!-- <a class="nav-link active" href="#">Cursos</a> -->
-                                <a class="nav-link" href="#">Cursos</a>
+                                <a class="nav-link" href="courses.php">Cursos</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Precios</a>
