@@ -1,5 +1,7 @@
 <?php
 
+include_once "util.php";
+
 class ORM {
     protected string $table_name;
     protected array $fields_map;
@@ -22,8 +24,9 @@ class ORM {
                     call_user_func([$new_obj, "set_" . $key], $result[$value]);
                 }
             }
-        } catch (Exception) {
+        } catch (Exception $ex) {
             $new_obj = call_user_func([$ref_obj, "newObj"]);
+            console_log($ex->getMessage());
         }
         return $new_obj;
     }
@@ -42,8 +45,9 @@ class ORM {
                 }
                 $new_array[] = $new_obj;
             }
-        } catch (Exception) {
+        } catch (Exception $ex) {
             $new_array = [];
+            console_log($ex->getMessage());
         }
         return $new_array;
     }

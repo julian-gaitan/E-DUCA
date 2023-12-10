@@ -90,11 +90,11 @@ $courses = Course::findAll($conn, new Course());
                 </div>
                 <div class="col-xl-4">
                     <div class="m-3">
-                        <label class="form-label" for="category">Categoría</label>
+                        <label class="form-label" for="category-list">Lista de Categorías</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-bars-sort"></i></span>
-                            <textarea class="form-control" id="category" name="category" required></textarea>
-                            <div id="feedback-category" class="invalid-feedback"></div>
+                            <textarea class="form-control" id="category-list" name="category-list" required></textarea>
+                            <div id="feedback-category-list" class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="m-3">
@@ -163,12 +163,12 @@ $courses = Course::findAll($conn, new Course());
                 </div>
                 <div class="col-xl-4">
                     <div class="m-3">
-                        <label class="form-label" for="category">Categoría</label>
+                        <label class="form-label" for="category-list">Lista de Categorías</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-bars-sort"></i></span>
-                            <textarea class="form-control" id="category" name="category" required 
-                            alt="<?php echo $course->get_category(); ?>"><?php echo $course->get_category(); ?></textarea>
-                            <div id="feedback-category" class="invalid-feedback"></div>
+                            <textarea class="form-control" id="category-list" name="category-list" required 
+                            alt="<?php echo $course->get_category_list(); ?>"><?php echo $course->get_category_list(); ?></textarea>
+                            <div id="feedback-category-list" class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="m-3">
@@ -239,12 +239,12 @@ $courses = Course::findAll($conn, new Course());
                 </div>
                 <div class="col-xl-4">
                     <div class="m-3">
-                        <label class="form-label" for="category">Categoría</label>
+                        <label class="form-label" for="category-list">Lista de Categorías</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-bars-sort"></i></span>
-                            <textarea class="form-control" id="category" name="category" required readonly 
-                            alt="<?php echo $course->get_category(); ?>"><?php echo $course->get_category(); ?></textarea>
-                            <div id="feedback-category" class="invalid-feedback"></div>
+                            <textarea class="form-control" id="category-list" name="category-list" required readonly 
+                            alt="<?php echo $course->get_category_list(); ?>"><?php echo $course->get_category_list(); ?></textarea>
+                            <div id="feedback-category-list" class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="m-3">

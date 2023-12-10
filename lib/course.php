@@ -8,7 +8,7 @@ class Course extends ORM {
     protected string $name;
     protected string $description;
     protected string $content_list;
-    protected string $category;
+    protected string $category_list;
     protected string $tags;
     public const TABLE_NAME = 'tbl_cursos';
     public const FIELDS_MAP = [
@@ -16,7 +16,7 @@ class Course extends ORM {
         'name' => 'nombre',
         'description' => 'descripcion',
         'content_list' => 'lista_contenido',
-        'category' => 'categoria',
+        'category_list' => 'lista_categoria',
         'tags' => 'tags',
     ];
     public const INPUTS_MAP = [
@@ -24,7 +24,7 @@ class Course extends ORM {
         'name' => 'nombre',
         'description' => 'descripcion',
         'content-list' => 'lista_contenido',
-        'category' => 'categoria',
+        'category-list' => 'lista_categoria',
         'tags' => 'tags',
     ];
 
@@ -35,7 +35,7 @@ class Course extends ORM {
         $this->name = "";
         $this->description = "";
         $this->content_list = "";
-        $this->category = "";
+        $this->category_list = "";
         $this->tags = "";
     }
 
@@ -79,13 +79,13 @@ class Course extends ORM {
         $this->content_list = $content_list;
     }
 
-    public function get_category(): string {
-        return $this->category;
+    public function get_category_list(): string {
+        return $this->category_list;
     }
 
-    public function set_category(string $category): void {
+    public function set_category_list(string $category): void {
         if (is_null($category)) return;
-        $this->category = $category;
+        $this->category_list = $category;
     }
 
     public function get_tags(): string {
