@@ -15,7 +15,7 @@ $schedules = Schedule::findAll($conn, new Schedule());
             <?php $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course()); ?>
             <div class="col-xl-3 col-md-4 col-sm-6 gy-3">
                 <div class="card">
-                    <img src="content/html-css-js.JPG" class="card-img-top" alt="...">
+                    <img src="content/<?php echo $course->get_folder(); ?>/image" alt="image-preview" class="card-img-top">
                     <div class="card-body text-center">
                         <h6 class="card-title fw-bold"><?php echo $course->get_name(); ?></h6>
                         <div class="card-text">
@@ -57,11 +57,11 @@ $schedules = Schedule::findAll($conn, new Schedule());
             </ol>
         </nav>
         <div class="row mx-0 my-3">
-            <div class="col-8 border">
+            <div class="col-lg-8 border">
                 <h1 class="text-info my-3"><?php echo $course->get_name(); ?></h1>
                 <p><?php echo $course->get_description(); ?></p>
                 <div class="row my-3">
-                    <div class="col-12 col-sm-6">
+                    <div class="col-md-6">
                         <table class="w-100">
                             <tbody>
                                 <tr>
@@ -79,27 +79,29 @@ $schedules = Schedule::findAll($conn, new Schedule());
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-12 col-sm-6">
+                    <div class="col-md-6">
                         <table class="w-100">
                             <tbody>
                                 <tr>
-                                    <!--td class="text-start px-3">Profesor</td>
-                                    <td class="text-start"></td-->
+                                    <td class="text-start px-3">Duración</td>
+                                    <td class="text-end px-3"><?php echo $schedule->get_duration(); ?> días</td>
                                 </tr>
                                 <tr>
+                                    <!--td class="text-start px-3">Profesor</td>
+                                    <td class="text-start"></td-->
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="col-4 border">
-                
+            <div class="col-lg-4 border">
+                <img src="content/<?php echo $course->get_folder(); ?>/image" alt="image-front" class="img-fluid">
             </div>
         </div>
         <div class="row mx-0 my-3">
-            <div class="col-8 bg-light text-dark">
-                <h2>Contenido a Estudiar</h2>
+            <div class="col-lg-8 bg-light text-dark">
+                <h2 class="my-3">Contenido a Estudiar</h2>
                 <hr>
                 <?php $content_list = preg_split("/\r\n|\n|\r/", $course->get_content_list()); ?>
                 <?php $mid_limit = ceil(count($content_list) / 2); ?>
@@ -107,20 +109,20 @@ $schedules = Schedule::findAll($conn, new Schedule());
                     <?php $contentL = ($i) < count($content_list) ? $content_list[$i] : null; ?>
                     <?php $contentR = ($i + $mid_limit) < count($content_list) ? $content_list[$i + $mid_limit] : null; ?>
                     <div class="row">
-                        <div class="col-12 col-sm-6">
+                        <div class="col-md-6">
                             <ul>
-                                <?php echo (isset($contentL) ? "<li>{$contentL}</li>" : ""); ?>
+                                <?php echo (!is_null($contentL) ? "<li>{$contentL}</li>" : ""); ?>
                             </ul>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-md-6">
                             <ul>
-                                <?php echo (isset($contentR) ? "<li>{$contentR}</li>" : ""); ?>
+                                <?php echo (!is_null($contentR) ? "<li>{$contentR}</li>" : ""); ?>
                             </ul>
                         </div>
                     </div>
                 <?php } ?>
             </div>
-            <div class="col-4 bg-light text-dark">
+            <div class="col-lg-4 bg-light text-dark">
                 
             </div>
         </div>

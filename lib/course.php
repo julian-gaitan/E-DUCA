@@ -10,6 +10,7 @@ class Course extends ORM {
     protected string $content_list;
     protected string $category_list;
     protected string $tags;
+    protected string $folder;
     public const TABLE_NAME = 'tbl_cursos';
     public const FIELDS_MAP = [
         'id' => 'id',
@@ -18,6 +19,7 @@ class Course extends ORM {
         'content_list' => 'lista_contenido',
         'category_list' => 'lista_categoria',
         'tags' => 'tags',
+        'folder' => 'carpeta',
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
@@ -26,6 +28,7 @@ class Course extends ORM {
         'content-list' => 'lista_contenido',
         'category-list' => 'lista_categoria',
         'tags' => 'tags',
+        'folder' => 'carpeta',
     ];
 
     function __construct() {
@@ -37,6 +40,7 @@ class Course extends ORM {
         $this->content_list = "";
         $this->category_list = "";
         $this->tags = "";
+        $this->folder = "";
     }
 
     protected function newObj() {
@@ -95,6 +99,15 @@ class Course extends ORM {
     public function set_tags(string $tags): void {
         if (is_null($tags)) return;
         $this->tags = $tags;
+    }
+
+    public function get_folder(): string {
+        return $this->folder;
+    }
+
+    public function set_folder(string $folder): void {
+        if (is_null($folder)) return;
+        $this->folder = $folder;
     }
 
 }

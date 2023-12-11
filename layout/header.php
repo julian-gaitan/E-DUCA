@@ -24,7 +24,7 @@
             <ul class="dropdown-menu d-block position-relative">
                 <li><a class="dropdown-item" href="personal_info.php"><i class="fi fi-rr-user-pen align-middle"></i> Datos Personales</a></li>
                 <li><a class="dropdown-item" href="account.php"><i class="fi fi-rr-settings align-middle"></i> Cuenta</a></li>
-                <li><a class="dropdown-item" href="#"><i class="fi fi-rr-e-learning align-middle"></i> Cursos</a></li>
+                <li><a class="dropdown-item" href="courses.php"><i class="fi fi-rr-e-learning align-middle"></i> Cursos</a></li>
                 <?php $divider_visible = 
                       in_array("manage_courses", $pages_auth) || 
                       in_array("manage_schedules", $pages_auth) || 
@@ -99,7 +99,7 @@
                         <div id="account" class="row col-10 col-sm-8 col-md-6 col-lg-4 ms-lg-auto <?php echo $user_present ? "" : "d-none"; ?>" 
                              role="account">
                             <div class="col-8 col-lg-8 offset-lg-2 mb-2 mb-lg-0">
-                                <button type="button" class="btn btn-warning w-100 fs-5 fw-bold py-1" data-bs-toggle="offcanvas" data-bs-target="#accountOffcanvas">
+                                <button type="button" class="btn btn-warning w-100 fs-5 py-1" data-bs-toggle="offcanvas" data-bs-target="#accountOffcanvas">
                                     @<?php echo $user->get_user(); ?>
                                 </button>
                             </div>

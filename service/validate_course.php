@@ -3,7 +3,7 @@
 include_once 'connection.php';
 include_once '../lib/course.php';
 
-//const INVALID_CHARS = "<>,\"`@\/\\\\|{}\[\]()*$%#?=:;";
+const INVALID_CHARS = "<>,\"`@\/\\\\|{}\[\]()*$%#?=:;";
 $FIELDS = array_keys(Course::INPUTS_MAP);
 unset($FIELDS[array_search('id', $FIELDS)]);
 
@@ -47,7 +47,7 @@ if ($check_conn === true) {
                     }
                     $validation[$field]["valid"] = $check;
                     break;
-                case 'category':
+                case 'category-list':
                     $value = trim($value);
                     $pattern = "/^.{3,100}$/s";
                     $check = preg_match($pattern, $value) === 1;
@@ -60,6 +60,16 @@ if ($check_conn === true) {
                 case 'tags':
                     $value = trim($value);
                     $pattern = "/^.{3,100}$/s";
+                    $check = preg_match($pattern, $value) === 1;
+                    if (!$check) {
+                        $validation[$field]["reason"] = "Debe ser entre 3 y 100 caracteres.";
+                        $is_valid = false;
+                    }
+                    $validation[$field]["valid"] = $check;
+                    break;
+                case 'folder':
+                    $value = trim($value);
+                    $pattern = sprintf("/^[^%s]{3,30}$/", INVALID_CHARS);
                     $check = preg_match($pattern, $value) === 1;
                     if (!$check) {
                         $validation[$field]["reason"] = "Debe ser entre 3 y 100 caracteres.";

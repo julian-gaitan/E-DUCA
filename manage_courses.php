@@ -105,6 +105,21 @@ $courses = Course::findAll($conn, new Course());
                             <div id="feedback-tags" class="invalid-feedback"></div>
                         </div>
                     </div>
+                    <div class="m-3">
+                        <label class="form-label" for="image">Imagen</label>
+                        <div class="input-group has-validation">
+                            <input class="form-control" type="file" id="image" name="image" accept="image/png, image/jpeg" required>
+                            <div id="feedback-image" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="m-3 d-none">
+                        <label class="form-label" for="folder"></label>
+                        <div class="input-group has-validation">
+                            <input class="form-control" type="hidden" id="folder" name="folder" 
+                            value="<?php echo time() . "-" . rand(100, 999); ?>">
+                            <div id="feedback-folder" class="invalid-feedback"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="m-4 text-center">

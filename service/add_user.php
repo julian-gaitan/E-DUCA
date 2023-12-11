@@ -23,6 +23,7 @@ if ($check_conn === true) {
             $columns_ref = [];
             $values = [];
             foreach (User::INPUTS_MAP as $key => $value) {
+                if ($key === "role") { continue; }
                 $columns[] = $value;
                 $columns_ref[] = ':' . $value;
                 $values[':' . $value] = isset($_POST[$key]) ? htmlspecialchars($_POST[$key]) : null;

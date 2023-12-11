@@ -5,7 +5,7 @@ import { createPostBodyFromInputs } from './lib.js';
 $(function () {
     {
         const form = $('#formCreateCourse');
-        const inputs = $('#formCreateCourse input,textarea');
+        const inputs = $('#formCreateCourse input,textarea').filter(function () { return $(this).attr('id') != 'image'; });
         const formSubmit = $('#formCreateCourse button[type="submit"]');
         formSubmit.on('click', validatedForm);
         form.on('submit', submitForm);
@@ -33,13 +33,14 @@ $(function () {
                         });
                     }
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
                 });
         }
 
         function submitForm(event) {
+            console.log($(this).attr('id'));
             event.preventDefault();
             event.stopPropagation();
             $.post('service/add_course.php', form.serialize())
@@ -52,9 +53,9 @@ $(function () {
                         console.log(json_response);
                     }
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
                 });
         }
     }
@@ -110,9 +111,9 @@ $(function () {
                         });
                     }
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
                 });
         }
         
@@ -144,9 +145,9 @@ $(function () {
                     }
                     resetSubmitEvents();
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
                 });
         }
     }
@@ -173,9 +174,54 @@ $(function () {
                         console.log(json);
                     }
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
+                });
+        }
+    }
+
+    {
+        const inputImage = $('input#image');
+        const inputFolder = $('input#folder');
+        inputImage.on('change', function (event) {
+            const formImage = $('<form></form>', {
+                id: "formUploadImage"
+            });
+            formImage.append(inputImage.clone());
+            formImage.on('submit', submitForm);
+            formImage.trigger('submit');
+        });
+
+        function submitForm(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            let formData = new FormData(this);
+            formData.append(inputFolder.attr('id'), inputFolder.val());
+            $.ajax({
+                    url : "service/upload_image.php",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false
+            })
+                .done(function (json_response) {
+                    if (json_response['isValid']) {
+                        inputImage.addClass('is-valid');
+                        inputImage.removeClass('is-invalid');
+                    } else {
+                        let feedback = json_response['reason'];
+                        console.log(feedback);
+                        $('#feedback-' + inputImage.attr('name')).text(feedback);
+                        inputImage.removeClass('is-valid');
+                        inputImage.addClass('is-invalid');
+                    }
+                })
+                .fail(function (response) {
+                    if (200 != response.status) {
+                        alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    }
+                    console.log(response.responseText);
                 });
         }
     }
