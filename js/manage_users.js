@@ -41,7 +41,6 @@ $(function () {
             }
             
             let postBody = createPostBodyFromInputs(filterInputs);
-            console.log(postBody);
             $.post('service/validate_user.php', postBody)
                 .done(function (json_response) {
                     inputs.removeClass('is-valid');
@@ -62,13 +61,16 @@ $(function () {
                         });
                     }
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
                 });
         }
         
         function submitForm(event) {
+            const inputID = $('#formModifyRoles input#id');
+            const inputRole = $('#formModifyRoles input#role');
+
             event.preventDefault();
             event.stopPropagation();
             const filterInputs = inputs.filter(function (i, ele) {
@@ -78,6 +80,51 @@ $(function () {
             let postBody = createPostBodyFromInputs(filterInputs);
             $.post('service/modify_user.php', postBody)
                 .done(function (json_response) {
+                    let postBodyID = createPostBodyFromInputs(inputID);
+                    let service, selector;
+
+                    selector = '#formModifyRoles #role-ESTUDIANTE';
+                    if ((Number(inputRole.attr('alt')) ^ Number(inputRole.val())) & Number($(selector).val())) {
+                        if ($(selector).prop('checked')) {
+                            service = 'service/add_student.php';
+                        } else {
+                            service = 'service/delete_student.php';
+                        }
+                        $.post(service, postBodyID)
+                            .done(function (json_res) {
+                                if (json_res['result']) {
+                                    
+                                } else {
+                                    alert(`Hubo un error en la aplicación: ${json_res.error}`);
+                                    console.log(json_res);
+                                }
+                            })
+                            .fail(function (response) {
+                                alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                                console.log(response);
+                            });
+                    }
+                    selector = '#formModifyRoles #role-PROFESOR';
+                    if ((Number(inputRole.attr('alt')) ^ Number(inputRole.val())) & Number($(selector).val())) {
+                        if ($(selector).prop('checked')) {
+                            service = 'service/add_teacher.php';
+                        } else {
+                            service = 'service/delete_teacher.php';
+                        }
+                        $.post(service, postBodyID)
+                            .done(function (json_res) {
+                                if (json_res['result']) {
+                                } else {
+                                    alert(`Hubo un error en la aplicación: ${json_res.error}`);
+                                    console.log(json_res);
+                                }
+                            })
+                            .fail(function (response) {
+                                alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                                console.log(response);
+                            });
+                    }
+
                     let feedbackSubmit = $('#feedback-submit');
                     feedbackSubmit.removeClass('text-success');
                     feedbackSubmit.removeClass('text-danger');
@@ -96,9 +143,9 @@ $(function () {
                     }
                     resetSubmitEvents();
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
                 });
         }
     }

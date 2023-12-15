@@ -47,6 +47,7 @@ $schedules = Schedule::findAll($conn, new Schedule());
 <?php if (isset($_GET['details'])) { ?>
 <?php $schedule = Schedule::findbyId($conn, new Schedule(), (int) $_GET['details']); ?>
 <?php $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course()); ?>
+<?php $user = User::findbyId($conn, new User(), $schedule->get_fk_teacher()); ?>
     <div class="row bg-dark m-5 p-3 <?php echo $schedule->get_id() == 0 ? "d-none" : ""; ?>" data-bs-theme="dark">
         <nav class="bg-primary-subtle">
             <ol class="breadcrumb my-2">
@@ -84,11 +85,11 @@ $schedules = Schedule::findAll($conn, new Schedule());
                             <tbody>
                                 <tr>
                                     <td class="text-start px-3">Duración</td>
-                                    <td class="text-end px-3"><?php echo $schedule->get_duration(); ?> días</td>
+                                    <td class="text-end px-3"><?php echo $schedule->get_duration(); ?> horas</td>
                                 </tr>
                                 <tr>
-                                    <!--td class="text-start px-3">Profesor</td>
-                                    <td class="text-start"></td-->
+                                    <td class="text-start px-3">Profesor</td>
+                                    <td class="text-end px-3"><?php echo $user->get_full_name(); ?></td>
                                 </tr>
                             </tbody>
                         </table>

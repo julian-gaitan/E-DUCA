@@ -78,6 +78,10 @@ class User extends ORM {
         $this->last_name = $last_name;
     }
 
+    public function get_full_name(): string {
+        return $this->get_first_name() . " " . $this->get_last_name();
+    }
+
     public function get_user(): string {
         return $this->user;
     }

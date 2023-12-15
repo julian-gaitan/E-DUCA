@@ -14,6 +14,7 @@ if (!in_array($file_name, $pages_auth)) {
 <?php
 $schedules = Schedule::findAll($conn, new Schedule());
 $courses = Course::findAll($conn, new Course());
+$teachers = Teacher::findAll($conn, new Teacher());
 ?>
 
 <?php include "layout/header.php"; ?>
@@ -97,12 +98,27 @@ $courses = Course::findAll($conn, new Course());
                             <div id="feedback-end-date" class="invalid-feedback"></div>
                         </div>
                     </div>
-                    <div class="col-12 g-3">
-                        <label class="form-label" for="duration">Duración</label>
+                    <div class="col-sm-6 g-3">
+                        <label class="form-label" for="duration">Duración (horas)</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-calendar-clock"></i></span>
                             <input class="form-control" type="number" id="duration" name="duration">
                             <div id="feedback-duration" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 g-3">
+                        <label class="form-label" for="teacher">Profesor</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-chalkboard-user"></i></span>
+                            <select class="form-select" id="teacher" name="teacher" required>
+                                <option selected>Seleccione...</option>
+                                <?php for ($i = 0; $i < count($teachers); $i++) { ?>
+                                    <?php $teacher = $teachers[$i]; ?>
+                                    <?php $user = User::findbyId($conn, new User(), $teacher->get_id()); ?>
+                                    <option value="<?php echo $user->get_id(); ?>"><?php echo $user->get_full_name(); ?></option>
+                                <?php } ?>
+                            </select>
+                            <div id="feedback-teacher" class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="g-4 text-center">
@@ -167,13 +183,30 @@ $courses = Course::findAll($conn, new Course());
                             <div id="feedback-end-date" class="invalid-feedback"></div>
                         </div>
                     </div>
-                    <div class="col-12 g-3">
-                        <label class="form-label" for="duration">Duración</label>
+                    <div class="col-sm-6 g-3">
+                        <label class="form-label" for="duration">Duración (horas)</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-calendar-clock"></i></span>
                             <input class="form-control" type="number" id="duration" name="duration" required 
                             value="<?php echo $schedule->get_duration(); ?>" alt="<?php echo $schedule->get_duration(); ?>">
                             <div id="feedback-duration" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 g-3">
+                        <label class="form-label" for="teacher">Profesor</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-chalkboard-user"></i></span>
+                            <select class="form-select" id="teacher" name="teacher" alt="<?php echo $schedule->get_fk_teacher(); ?>" required>
+                                <option>Seleccione...</option>
+                                <?php for ($i = 0; $i < count($teachers); $i++) { ?>
+                                    <?php $teacher = $teachers[$i]; ?>
+                                    <?php $user = User::findbyId($conn, new User(), $teacher->get_id()); ?>
+                                    <option value="<?php echo $user->get_id(); ?>" <?php echo $schedule->get_fk_teacher() == $user->get_id() ? "selected" : ""; ?>>
+                                        <?php echo $user->get_full_name(); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <div id="feedback-teacher" class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="g-4 text-center">
@@ -239,13 +272,30 @@ $courses = Course::findAll($conn, new Course());
                             <div id="feedback-end-date" class="invalid-feedback"></div>
                         </div>
                     </div>
-                    <div class="col-12 g-3">
-                        <label class="form-label" for="duration">Duración</label>
+                    <div class="col-sm-6 g-3">
+                        <label class="form-label" for="duration">Duración (horas)</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-calendar-clock"></i></span>
                             <input class="form-control" type="number" id="duration" name="duration" required readonly 
                             value="<?php echo $schedule->get_duration(); ?>" alt="<?php echo $schedule->get_duration(); ?>">
                             <div id="feedback-duration" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 g-3">
+                        <label class="form-label" for="teacher">Profesor</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-chalkboard-user"></i></span>
+                            <select class="form-select" id="teacher" name="teacher" alt="<?php echo $schedule->get_fk_teacher(); ?>" required readonly>
+                                <option disabled>Seleccione...</option>
+                                <?php for ($i = 0; $i < count($teachers); $i++) { ?>
+                                    <?php $teacher = $teachers[$i]; ?>
+                                    <?php $user = User::findbyId($conn, new User(), $teacher->get_id()); ?>
+                                    <option value="<?php echo $user->get_id(); ?>" <?php echo $schedule->get_fk_teacher() == $user->get_id() ? "selected" : "disabled"; ?>>
+                                        <?php echo $user->get_full_name(); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <div id="feedback-teacher" class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="g-4 text-center">
