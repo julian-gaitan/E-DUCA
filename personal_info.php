@@ -1,9 +1,9 @@
 <?php include 'layout/php_setup.php'; ?>
 <?php
-    if (empty($_SESSION['user'])) {
-        header('Location: index.php');
-        exit();
-    }
+if (empty($_SESSION['user'])) {
+    header('Location: index.php');
+    exit();
+}
 ?>
 <?php include "layout/header.php"; ?>
 

@@ -24,7 +24,16 @@
             <ul class="dropdown-menu d-block position-relative">
                 <li><a class="dropdown-item" href="personal_info.php"><i class="fi fi-rr-user-pen align-middle"></i> Datos Personales</a></li>
                 <li><a class="dropdown-item" href="account.php"><i class="fi fi-rr-settings align-middle"></i> Cuenta</a></li>
-                <li><a class="dropdown-item" href="courses.php"><i class="fi fi-rr-e-learning align-middle"></i> Cursos</a></li>
+                <?php $divider_visible = 
+                      in_array("my_courses", $pages_auth) || 
+                      in_array("my_payments", $pages_auth) ?>
+                <li class="<?php echo !$divider_visible ? "d-none" : "" ?>"><hr class="dropdown-divider"></li>
+                <li class="<?php echo !in_array("my_courses", $pages_auth) ? "d-none" : "" ?>">
+                    <a class="dropdown-item" href="my_courses.php"><i class="fi fi-rr-e-learning align-middle"></i> Mis Cursos</a>
+                </li>
+                <li class="<?php echo !in_array("my_payments", $pages_auth) ? "d-none" : "" ?>">
+                    <a class="dropdown-item" href="my_payments.php"><i class="fi fi-rr-credit-card align-middle"></i> Mis Pagos</a>
+                </li>
                 <?php $divider_visible = 
                       in_array("manage_courses", $pages_auth) || 
                       in_array("manage_schedules", $pages_auth) || 

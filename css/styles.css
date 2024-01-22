@@ -21,7 +21,7 @@ main {
     height: var(--img-logo-navbar-size);
 }
 
-#accountTab.nav.nav-tabs {
+ul.nav.nav-tabs {
     --bs-nav-link-color: var(--bs-gray-400);
     --bs-nav-link-hover-color: var(--bs-gray-100);
 }
