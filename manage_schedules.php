@@ -69,7 +69,7 @@ $teachers = Teacher::findAll($conn, new Teacher());
             <div class="row justify-content-center">
                 <div class="row col-md-12 col-lg-10 col-xl-8">
                     <div class="col-12 g-3">
-                        <label class="form-label" for="name">Curso</label>
+                        <label class="form-label" for="course">Curso</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-e-learning"></i></span>
                             <select class="form-select" id="course" name="course" required>
@@ -150,7 +150,7 @@ $teachers = Teacher::findAll($conn, new Teacher());
                         </div>
                     </div>
                     <div class="col-12 g-3">
-                        <label class="form-label" for="name">Curso</label>
+                        <label class="form-label" for="course">Curso</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-e-learning"></i></span>
                             <select class="form-select" id="course" name="course" alt="<?php echo $schedule->get_fk_course(); ?>" required>
@@ -239,7 +239,7 @@ $teachers = Teacher::findAll($conn, new Teacher());
                         </div>
                     </div>
                     <div class="col-12 g-3">
-                        <label class="form-label" for="name">Curso</label>
+                        <label class="form-label" for="course">Curso</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-e-learning"></i></span>
                             <select class="form-select" id="course" name="course" alt="<?php echo $schedule->get_fk_course(); ?>" required readonly>
