@@ -21,6 +21,11 @@ class PaymentCard extends ORM {
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
+        'number' => 'numero',
+        'name' => 'nombre',
+        'expiration-date' => 'fecha_vencimiento',
+        'cvv' => 'cvv',
+        'student' => 'fk_estudiante',
     ];
 
     function __construct() {

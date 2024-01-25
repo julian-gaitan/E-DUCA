@@ -72,6 +72,14 @@ $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student",
                         <div class="justify-content-center align-items-center flex-grow-1 flex-shrink-0">
                             <form action="" method="post" id="formCreatePayment" >
                                 <div class="row">
+                                    <div class="col-12 d-none">
+                                        <label class="form-label" for="student">Estudiante</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"></span>
+                                            <input class="form-control" type="number" id="student" name="student" readonly novalidate 
+                                            value="<?php echo $student->get_id(); ?>">
+                                        </div>
+                                    </div>
                                     <div class="col-sm-6">
                                         <div class="m-2">
                                             <label class="form-label" for="number">Número</label>
@@ -87,18 +95,18 @@ $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student",
                                             <label class="form-label" for="name">Nombre</label>
                                             <div class="input-group has-validation">
                                                 <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
-                                                <input class="form-control" type="text" id="name" name="name" required>
+                                                <input class="form-control" type="text" id="name" name="name" minlength="3" maxlength="50" required>
                                                 <div id="feedback-name" class="invalid-feedback"></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="m-2">
-                                            <label class="form-label" for="CVV">CVV/CVC</label>
+                                            <label class="form-label" for="cvv">CVV/CVC</label>
                                             <div class="input-group has-validation">
                                                 <span class="input-group-text"><i class="fi fi-rr-square-1"></i></span>
-                                                <input class="form-control" type="number" id="CVV" name="CVV" min="100" max="999" required>
-                                                <div id="feedback-CVV" class="invalid-feedback"></div>
+                                                <input class="form-control" type="number" id="cvv" name="cvv" min="100" max="999" required>
+                                                <div id="feedback-cvv" class="invalid-feedback"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -133,9 +141,227 @@ $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student",
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-12 d-none">
+                                        <label class="form-label" for="expiration-date">Fecha de Vencimiento</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"></span>
+                                            <input class="form-control" type="date" id="expiration-date" name="expiration-date" novalidate>
+                                        </div>
+                                    </div>
                                     <div class="col-12">
                                         <div class="m-3 text-center">
                                             <button type="submit" class="btn btn-warning btn-lg fw-bold">Crear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    <?php if (isset($_GET['modify'])) { ?>
+                    <?php $payment = PaymentCard::findbyId($conn, new PaymentCard(), (int) $_GET['modify']);  ?>
+                    <div class="h-100 d-flex flex-column">
+                        <div class="justify-content-center align-items-center flex-grow-1 flex-shrink-0">
+                            <form action="" method="post" id="formModifyPayment" class="<?php echo $payment->get_id() == 0 ? "d-none" : ""; ?>">
+                                <div class="row">
+                                    <div class="col-12 d-none">
+                                        <label class="form-label" for="id">ID</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"></span>
+                                            <input class="form-control" type="number" id="id" name="id" readonly 
+                                            value="<?php echo $payment->get_id(); ?>" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="m-2">
+                                            <label class="form-label" for="number">Número</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text"><i class="fi fi-rr-square-1"></i></span>
+                                                <input class="form-control" type="number" id="number" name="number" min="1000000000000000" max="9999999999999999" 
+                                                value="<?php echo $payment->get_number(); ?>" alt="<?php echo $payment->get_number(); ?>" required>
+                                                <div id="feedback-number" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="m-2">
+                                            <label class="form-label" for="name">Nombre</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
+                                                <input class="form-control" type="text" id="name" name="name" minlength="3" maxlength="50" 
+                                                value="<?php echo $payment->get_name(); ?>" alt="<?php echo $payment->get_name(); ?>" required>
+                                                <div id="feedback-name" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="m-2">
+                                            <label class="form-label" for="cvv">CVV/CVC</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text"><i class="fi fi-rr-square-1"></i></span>
+                                                <input class="form-control" type="number" id="cvv" name="cvv" min="100" max="999" 
+                                                value="<?php echo $payment->get_cvv(); ?>" alt="<?php echo $payment->get_cvv(); ?>" required>
+                                                <div id="feedback-cvv" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 d-flex align-items-center">
+                                        <h4>Vence:</h4>
+                                    </div>
+                                    <?php $exp_date = strtotime($payment->get_expiration_date()); ?>
+                                    <?php $exp_month = date("m", $exp_date); ?>
+                                    <?php $exp_year = date("Y", $exp_date); ?>
+                                    <div class="col-sm-3">
+                                        <div class="m-0">
+                                            <label class="form-label" for="expiration-month">Mes</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text"><i class="fi fi-rr-calendar"></i></span>
+                                                <select class="form-select" id="expiration-month" name="expiration-month" required>
+                                                    <?php for ($i = 1; $i <= 12; $i++) { ?>
+                                                        <option value="<?php echo $i; ?>" 
+                                                        <?php echo $exp_month == $i ? "selected" : ""; ?>>
+                                                            <?php echo $i; ?>
+                                                        </option>
+                                                    <?php } ?>
+                                                </select>
+                                                <div id="feedback-expiration-month" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="m-0">
+                                            <label class="form-label" for="expiration-year">Año</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text"><i class="fi fi-rr-calendar"></i></span>
+                                                <select class="form-select" id="expiration-year" name="expiration-year" required>
+                                                    <?php for ($i = 0; $i <= 20; $i++) { ?>
+                                                        <option value="<?php echo $i + date('Y'); ?>" 
+                                                        <?php echo $exp_year == ($i + date('Y')) ? "selected" : ""; ?>>
+                                                            <?php echo $i + date('Y'); ?>
+                                                        </option>
+                                                    <?php } ?>
+                                                </select>
+                                                <div id="feedback-expiration-year" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-none">
+                                        <label class="form-label" for="expiration-date">Fecha de Vencimiento</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"></span>
+                                            <input class="form-control" type="date" id="expiration-date" name="expiration-date" 
+                                            value="<?php echo $payment->get_expiration_date(); ?>" alt="<?php echo $payment->get_expiration_date(); ?>" novalidate>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="m-3 text-center">
+                                            <button type="submit" class="btn btn-warning btn-lg fw-bold">Guardar Cambios</button>
+                                            <div id="feedback-submit" class="mt-2 fw-bold"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <?php } ?>
+                    <?php if (isset($_GET['delete'])) { ?>
+                    <?php $payment = PaymentCard::findbyId($conn, new PaymentCard(), (int) $_GET['delete']);  ?>
+                    <div class="h-100 d-flex flex-column">
+                        <div class="justify-content-center align-items-center flex-grow-1 flex-shrink-0">
+                            <form action="" method="post" id="formDeletePayment" class="<?php echo $payment->get_id() == 0 ? "d-none" : ""; ?>">
+                                <div class="row">
+                                    <div class="col-12 d-none">
+                                        <label class="form-label" for="id">ID</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"></span>
+                                            <input class="form-control" type="number" id="id" name="id" readonly 
+                                            value="<?php echo $payment->get_id(); ?>" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="m-2">
+                                            <label class="form-label" for="number">Número</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text"><i class="fi fi-rr-square-1"></i></span>
+                                                <input class="form-control" type="number" id="number" name="number" min="1000000000000000" max="9999999999999999" 
+                                                value="<?php echo $payment->get_number(); ?>" alt="<?php echo $payment->get_number(); ?>" required readonly>
+                                                <div id="feedback-number" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="m-2">
+                                            <label class="form-label" for="name">Nombre</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
+                                                <input class="form-control" type="text" id="name" name="name" minlength="3" maxlength="50" 
+                                                value="<?php echo $payment->get_name(); ?>" alt="<?php echo $payment->get_name(); ?>" required readonly>
+                                                <div id="feedback-name" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="m-2">
+                                            <label class="form-label" for="cvv">CVV/CVC</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text"><i class="fi fi-rr-square-1"></i></span>
+                                                <input class="form-control" type="number" id="cvv" name="cvv" min="100" max="999" 
+                                                value="<?php echo $payment->get_cvv(); ?>" alt="<?php echo $payment->get_cvv(); ?>" required readonly>
+                                                <div id="feedback-cvv" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 d-flex align-items-center">
+                                        <h4>Vence:</h4>
+                                    </div>
+                                    <?php $exp_date = strtotime($payment->get_expiration_date()); ?>
+                                    <?php $exp_month = date("m", $exp_date); ?>
+                                    <?php $exp_year = date("Y", $exp_date); ?>
+                                    <div class="col-sm-3">
+                                        <div class="m-0">
+                                            <label class="form-label" for="expiration-month">Mes</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text"><i class="fi fi-rr-calendar"></i></span>
+                                                <select class="form-select" id="expiration-month" name="expiration-month" required readonly>
+                                                    <?php for ($i = 1; $i <= 12; $i++) { ?>
+                                                        <option value="<?php echo $i; ?>" 
+                                                        <?php echo $exp_month == $i ? "selected" : "disabled"; ?>>
+                                                            <?php echo $i; ?>
+                                                        </option>
+                                                    <?php } ?>
+                                                </select>
+                                                <div id="feedback-expiration-month" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="m-0">
+                                            <label class="form-label" for="expiration-year">Año</label>
+                                            <div class="input-group has-validation">
+                                                <span class="input-group-text"><i class="fi fi-rr-calendar"></i></span>
+                                                <select class="form-select" id="expiration-year" name="expiration-year" required readonly>
+                                                    <?php for ($i = 0; $i <= 20; $i++) { ?>
+                                                        <option value="<?php echo $i + date('Y'); ?>" 
+                                                        <?php echo $exp_year == ($i + date('Y')) ? "selected" : "disabled"; ?>>
+                                                            <?php echo $i + date('Y'); ?>
+                                                        </option>
+                                                    <?php } ?>
+                                                </select>
+                                                <div id="feedback-expiration-year" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 d-none">
+                                        <label class="form-label" for="expiration-date">Fecha de Vencimiento</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"></span>
+                                            <input class="form-control" type="date" id="expiration-date" name="expiration-date" 
+                                            value="<?php echo $payment->get_expiration_date(); ?>" alt="<?php echo $payment->get_expiration_date(); ?>" novalidate readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="m-3 text-center">
+                                            <button type="submit" class="btn btn-danger btn-lg fw-bold">Confirmar Eliminación</button>
                                         </div>
                                     </div>
                                 </div>
