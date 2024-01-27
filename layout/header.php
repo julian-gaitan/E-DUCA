@@ -79,7 +79,7 @@
                                 <a class="nav-link" href="courses.php">Cursos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Precios</a>
+                                <a class="nav-link" href="prices.php">Precios</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Testimonios</a>
