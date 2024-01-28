@@ -7,6 +7,7 @@
     include_once 'lib/student.php';
     include_once 'lib/teacher.php';
     include_once 'lib/payment_card.php';
+    include_once 'lib/subscription.php';
     include_once "service/connection.php";
     $check_conn = connectToDB();
     if ($check_conn !== true) {
