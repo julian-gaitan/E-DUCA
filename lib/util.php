@@ -1,7 +1,15 @@
 <?php
 
+function to_script(string $script) {
+    echo '<script>' . $script . '</script>';
+}
+
 function console_log(string $log) {
-    echo '<script>console.log("' . $log . '")</script>';
+    to_script('console.log("' . $log . '")');
+}
+
+function redirect(string $page) {
+    to_script('window.location.replace("' . $page . '")');
 }
 
 function PHP_PostRequest(string $script_name ) : array {

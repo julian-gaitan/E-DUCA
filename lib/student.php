@@ -5,21 +5,22 @@ include_once 'orm.php';
 class Student extends ORM {
 
     protected int $id;
-    protected string $affiliation;
+    protected int $subscription;
     public const TABLE_NAME = 'tbl_estudiantes';
     public const FIELDS_MAP = [
         'id' => 'id',
-        'affiliation' => 'afiliacion',
+        'subscription' => 'suscripcion',
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
+        'subscription' => 'suscripcion',
     ];
 
     function __construct() {
         $this->table_name = self::TABLE_NAME;
         $this->fields_map = self::FIELDS_MAP;
         $this->id = 0;
-        $this->affiliation = "";
+        $this->subscription = 0;
     }
 
     protected function newObj() {
@@ -35,12 +36,12 @@ class Student extends ORM {
         $this->id = $id;
     }
 
-    public function get_affiliation(): string {
-        return $this->affiliation;
+    public function get_subscription(): int {
+        return $this->subscription;
     }
 
-    public function set_affiliation(string $affiliation): void {
-        if (is_null($affiliation)) return;
-        $this->affiliation = $affiliation;
+    public function set_subscription(int|null $subscription): void {
+        if (is_null($subscription)) return;
+        $this->subscription = $subscription;
     }
 }

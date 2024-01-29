@@ -118,3 +118,9 @@
             </nav>
         </header>
         <main class="container flex-grow-1 flex-shrink-0">
+        <?php $message_to_show = array_key_exists('message', $_SESSION) && strlen($_SESSION['message']) > 0; ?>
+        <div class="alert alert-info alert-dismissible m-3 <?php echo !$message_to_show ? 'd-none' : '' ?>" role="alert">
+            <div><?php echo $message_to_show ? $_SESSION['message'] : ''; ?></div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <?php $_SESSION['message'] = ''; ?>
+        </div>
