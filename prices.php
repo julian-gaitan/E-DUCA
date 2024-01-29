@@ -11,7 +11,9 @@ $subscriptions = Subscription::findAll($conn, new Subscription());
     </div>
     <div class="row py-3 justify-content-center align-items-center flex-grow-1 flex-shrink-0">
         <?php if (empty($_GET)) { ?>
+            <?php $student = Student::findbyId($conn, new Student(), $user->get_id()); ?>
             <?php foreach ($subscriptions as $subscription) { ?>
+            <?php if ($subscription->get_id() == 0) { continue; } ?>
             <div class="col-md-5 col-lg-3 py-3">
                 <div class="card text-center">
                     <h3 class="card-header text-bg-primary"><?php echo $subscription->get_name(); ?></h3>
@@ -22,7 +24,11 @@ $subscriptions = Subscription::findAll($conn, new Subscription());
                         <br><?php echo $subscription->get_certificate(); ?></p>
                         <hr>
                         <h4><?php echo number_format($subscription->get_price()); ?> COL$/Mes</h4>
-                        <a href="?subscribe=<?php echo $subscription->get_id(); ?>" class="btn btn-primary btn-lg">Suscribirse</a>
+                        <?php if ($subscription->get_id() != $student->get_subscription()) { ?>
+                            <a href="?subscribe=<?php echo $subscription->get_id(); ?>" class="btn btn-primary btn-lg">Suscribirse</a>
+                        <?php } else { ?>
+                            <button href="#" class="btn btn-success btn-lg" disabled>Suscrito</button>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -36,11 +42,13 @@ $subscriptions = Subscription::findAll($conn, new Subscription());
                     if ($user->get_id() == 0) {
                         $_SESSION['message'] = 'Querido Usuario, para continuar con el proceso debe iniciar sesión.';
                         redirect('log_in.php');
+                        exit();
                     }
                     $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student", $user->get_id());
                     if (count($payments) == 0) {
                         $_SESSION['message'] = 'Querido Usuario, para continuar debe contar con al menos un método de pago.';
                         redirect('my_payments.php');
+                        exit();
                     }
                     $_POST['id'] = $user->get_id();
                     $_POST['subscription'] = $subscription->get_id();
@@ -61,8 +69,8 @@ $subscriptions = Subscription::findAll($conn, new Subscription());
                         $message = 'Hubo un error en la Suscripción, por favor inténtelo más tarde.';
                         console_log($result);
                     }
-                    ?>
-                    <h4><?php echo $message; ?></h4>
+                ?>
+                <h4><?php echo $message; ?></h4>
             <?php } ?>
         </div>
         <?php } ?>

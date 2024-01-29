@@ -29,6 +29,9 @@ $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student",
                     <button class="nav-link active" id="methods-tab" data-bs-toggle="tab" data-bs-target="#methods-tab-pane">Métodos de Pago</button>
                 </li>
                 <li class="nav-item">
+                    <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#subscription-tab-pane">Suscripción</button>
+                </li>
+                <li class="nav-item">
                     <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions-tab-pane">Transacciones</button>
                 </li>
             </ul>
@@ -368,6 +371,26 @@ $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student",
                             </form>
                         </div>
                     </div>
+                    <?php } ?>
+                </div>
+                <div class="tab-pane fade p-5" id="subscription-tab-pane" tabindex="0">
+                    <?php if ($student->get_subscription() == 0) { ?>
+                        <h3>NO está suscrito a algún plan</h3>
+                    <?php } else { ?>
+                        <?php $subscription = Subscription::findbyId($conn, new Subscription, $student->get_subscription()); ?>
+                        <div class="card text-center">
+                            <h3 class="card-header text-bg-primary"><?php echo $subscription->get_name(); ?></h3>
+                            <div class="card-body">
+                                <p class="text-start">Usuarios: <span class="float-end"><?php echo $subscription->get_users(); ?></span>
+                                <br>Cursos: <span class="float-end"><?php echo $subscription->get_courses(); ?></span></p>
+                                <p class="card-text"><?php echo $subscription->get_attention(); ?>
+                                <br><?php echo $subscription->get_certificate(); ?></p>
+                                <hr>
+                                <h4><?php echo number_format($subscription->get_price()); ?> COL$/Mes</h4>
+                                <button href="#" class="btn btn-success btn-lg" disabled>Suscrito</button>
+                            </div>
+                        </div>
+                        <button class="btn btn-danger btn-lg mt-3" id="<?php echo $student->get_id(); ?>">Cancelar Suscripción</button>
                     <?php } ?>
                 </div>
                 <div class="tab-pane fade" id="transactions-tab-pane" tabindex="0">

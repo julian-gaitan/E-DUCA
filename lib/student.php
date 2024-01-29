@@ -40,7 +40,7 @@ class Student extends ORM {
         return $this->subscription;
     }
 
-    public function set_subscription(int|null $subscription): void {
+    public function set_subscription(int $subscription): void {
         if (is_null($subscription)) return;
         $this->subscription = $subscription;
     }

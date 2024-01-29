@@ -123,4 +123,29 @@ $(function () {
                 });
         }
     }
+
+    {
+        let button = $('#subscription-tab-pane .btn-danger');
+        button.on('click', deleteUser);
+
+        function deleteUser() {
+            if (confirm('¿Está seguro que desea cancelar su suscripción?')) {
+                let id = button.attr('id');
+                $.post('service/modify_student.php', {
+                    'id': id,
+                    'subscription': 0
+                })
+                    .done(function (json) {
+                        alert("Suscripción cancelada de forma exitosa!");
+                        window.location.replace("my_payments.php");
+                    })
+                    .fail(function (xhr, status, errorThrown) {
+                        alert("Error al cancelar la Suscripción!");
+                        console.log("Error: " + errorThrown);
+                        console.log("Status: " + status);
+                        console.dir(xhr);
+                    });
+            }
+        }
+    }
 });
