@@ -36,7 +36,7 @@
                         </form>
                     </div>
                 </div>
-                <p>E-DUCA &trade;</p>
+                <p>E-DUCA &trade; <?php echo date('Y'); ?></p>
             </div>
         </footer>
     </div>

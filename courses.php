@@ -47,7 +47,7 @@ $schedules = Schedule::findAll($conn, new Schedule());
 <?php if (isset($_GET['details'])) { ?>
 <?php $schedule = Schedule::findbyId($conn, new Schedule(), (int) $_GET['details']); ?>
 <?php $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course()); ?>
-<?php $user = User::findbyId($conn, new User(), $schedule->get_fk_teacher()); ?>
+<?php $teacher = User::findbyId($conn, new User(), $schedule->get_fk_teacher()); ?>
     <div class="row bg-dark m-5 p-3 <?php echo $schedule->get_id() == 0 ? "d-none" : ""; ?>" data-bs-theme="dark">
         <nav class="bg-primary-subtle">
             <ol class="breadcrumb my-2">
@@ -89,14 +89,14 @@ $schedules = Schedule::findAll($conn, new Schedule());
                                 </tr>
                                 <tr>
                                     <td class="text-start px-3">Profesor</td>
-                                    <td class="text-end px-3"><?php echo $user->get_full_name(); ?></td>
+                                    <td class="text-end px-3"><?php echo $teacher->get_full_name(); ?></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 border">
+            <div class="col-lg-4 border d-flex">
                 <img src="content/<?php echo $course->get_folder(); ?>/image" alt="image-front" class="img-fluid">
             </div>
         </div>
@@ -123,8 +123,12 @@ $schedules = Schedule::findAll($conn, new Schedule());
                     </div>
                 <?php } ?>
             </div>
-            <div class="col-lg-4 bg-light text-dark">
-                
+            <div class="col-lg-4 bg-light text-dark text-center">
+                <h2 class="my-3"><?php echo number_format($schedule->get_price()); ?> COL$</h2>
+                <hr>
+                <a href="?buy=true&value=<?php echo $schedule->get_id(); ?>" class="btn btn-primary w-75 mb-3">Adquirir Curso</a>
+                <br>
+                <a href="?subscribe=true&value=<?php echo $schedule->get_id(); ?>" class="btn btn-info w-75 mb-3">Utilizar Suscripción</a>
             </div>
         </div>
         <nav class="bg-primary-subtle">
@@ -136,6 +140,38 @@ $schedules = Schedule::findAll($conn, new Schedule());
             </div>
         </nav>
     </div>
+<?php } ?>
+<?php if (isset($_GET['buy']) && isset($_GET['value'])) { ?>
+    <?php $schedule = Schedule::findbyId($conn, new Schedule(), (int) $_GET['value']); ?>
+    <?php if ($schedule->get_id() != 0) { ?>
+        <?php
+            if ($user->get_id() == 0) {
+                $_SESSION['message'] = 'Querido Usuario, para continuar con el proceso debe iniciar sesión.';
+                redirect('log_in.php');
+                exit();
+            }
+            $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student", $user->get_id());
+            if (count($payments) == 0) {
+                $_SESSION['message'] = 'Querido Usuario, para continuar debe contar con al menos un método de pago.';
+                redirect('my_payments.php');
+                exit();
+            }
+            $student = Student::findbyId($conn, new Student(), $user->get_id());
+            $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course());
+            $_POST['fk_idStudent'] = $student->get_id();
+            $_POST['fk_idSchedule'] = $_GET['value'];
+            $result = PHP_PostRequest($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'], 'service/add_inscriptionPay.php', $_POST);
+            if (array_key_exists('result', $result)) {
+                $_SESSION['message'] = 'Se a agregado "' .  $course->get_name() . '" a tus Cursos adquiridos.';
+                redirect('my_courses.php');
+                exit();
+            } else {
+                $message = 'Hubo un error en la Adquisición, por favor inténtelo más tarde.';
+                console_log($result['error']);
+            }
+        ?>
+        <h4><?php echo $message; ?></h4>
+    <?php } ?>
 <?php } ?>
 
 <?php include "layout/footer.php"; ?>

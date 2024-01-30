@@ -107,6 +107,14 @@ $teachers = Teacher::findAll($conn, new Teacher());
                         </div>
                     </div>
                     <div class="col-sm-6 g-3">
+                        <label class="form-label" for="price">Precio</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-sack-dollar"></i></span>
+                            <input class="form-control" type="number" id="price" name="price">
+                            <div id="feedback-price" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 g-3">
                         <label class="form-label" for="teacher">Profesor</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-chalkboard-user"></i></span>
@@ -190,6 +198,15 @@ $teachers = Teacher::findAll($conn, new Teacher());
                             <input class="form-control" type="number" id="duration" name="duration" required 
                             value="<?php echo $schedule->get_duration(); ?>" alt="<?php echo $schedule->get_duration(); ?>">
                             <div id="feedback-duration" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 g-3">
+                        <label class="form-label" for="price">Price</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-sack-dollar"></i></span>
+                            <input class="form-control" type="number" id="price" name="price" required 
+                            value="<?php echo $schedule->get_price(); ?>" alt="<?php echo $schedule->get_price(); ?>">
+                            <div id="feedback-price" class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="col-sm-6 g-3">
@@ -279,6 +296,15 @@ $teachers = Teacher::findAll($conn, new Teacher());
                             <input class="form-control" type="number" id="duration" name="duration" required readonly 
                             value="<?php echo $schedule->get_duration(); ?>" alt="<?php echo $schedule->get_duration(); ?>">
                             <div id="feedback-duration" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 g-3">
+                        <label class="form-label" for="price">Precio</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-sack-dollar"></i></span>
+                            <input class="form-control" type="number" id="price" name="price" required readonly 
+                            value="<?php echo $schedule->get_price(); ?>" alt="<?php echo $schedule->get_price(); ?>">
+                            <div id="feedback-price" class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="col-sm-6 g-3">

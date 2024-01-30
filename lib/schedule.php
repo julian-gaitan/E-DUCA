@@ -10,6 +10,7 @@ class Schedule extends ORM {
     protected string $start_date;
     protected string $end_date;
     protected int $duration;
+    protected int $price;
     public const TABLE_NAME = 'tbl_cronogramas';
     public const FIELDS_MAP = [
         'id' => 'id',
@@ -18,6 +19,7 @@ class Schedule extends ORM {
         'start_date' => 'fecha_inicio',
         'end_date' => 'fecha_fin',
         'duration' => 'duracion',
+        'price' => 'precio',
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
@@ -26,6 +28,7 @@ class Schedule extends ORM {
         'start-date' => 'fecha_inicio',
         'end-date' => 'fecha_fin',
         'duration' => 'duracion',
+        'price' => 'precio',
     ];
 
     function __construct() {
@@ -37,6 +40,7 @@ class Schedule extends ORM {
         $this->start_date = "";
         $this->end_date = "";
         $this->duration = 0;
+        $this->price = 0;
     }
 
     protected function newObj() {
@@ -95,6 +99,15 @@ class Schedule extends ORM {
     public function set_duration(int $duration): void {
         if (is_null($duration)) return;
         $this->duration = $duration;
+    }
+
+    public function get_price(): int {
+        return $this->price;
+    }
+
+    public function set_price(int $price): void {
+        if (is_null($price)) return;
+        $this->price = $price;
     }
 
 }

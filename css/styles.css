@@ -25,3 +25,9 @@ ul.nav.nav-tabs {
     --bs-nav-link-color: var(--bs-gray-400);
     --bs-nav-link-hover-color: var(--bs-gray-100);
 }
+
+.nowrap-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

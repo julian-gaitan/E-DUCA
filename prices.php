@@ -52,22 +52,12 @@ $subscriptions = Subscription::findAll($conn, new Subscription());
                     }
                     $_POST['id'] = $user->get_id();
                     $_POST['subscription'] = $subscription->get_id();
-                    $url = $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
-                    $url = 'http://' . substr($url, 0, strrpos($url, '/') + 1) . 'service/modify_student.php';
-                    $options = [
-                        'http' => [
-                            'header' => 'Content-type: application/x-www-form-urlencoded',
-                            'method' => 'POST',
-                            'content' => http_build_query($_POST),
-                        ],
-                    ];
-                    $context = stream_context_create($options);
-                    $result = json_decode(file_get_contents($url, false, $context), true);
+                    $result = PHP_PostRequest($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'], 'service/modify_student.php', $_POST);
                     if (array_key_exists('result', $result)) {
                         $message = 'Suscripción Exitosa.';
                     } else {
                         $message = 'Hubo un error en la Suscripción, por favor inténtelo más tarde.';
-                        console_log($result);
+                        console_log($result['error']);
                     }
                 ?>
                 <h4><?php echo $message; ?></h4>

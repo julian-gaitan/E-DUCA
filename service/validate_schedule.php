@@ -29,7 +29,7 @@ if ($check_conn === true) {
                 case 'teacher':
                     $check = Teacher::findbyId($conn, new Teacher(), (int) $value)->get_id() != 0;
                     if (!$check) {
-                        $validation[$field]["reason"] = "El Profesor debe existir existente.";
+                        $validation[$field]["reason"] = "Debe ser un Profesor existente.";
                     }
                     break;
                 case 'start-date':
@@ -41,6 +41,12 @@ if ($check_conn === true) {
                     }
                     break;
                 case 'duration':
+                    $check = ((int) $value) > 0;
+                    if (!$check) {
+                        $validation[$field]["reason"] = "Debe ser un número positivo.";
+                    }
+                    break;
+                case 'price':
                     $check = ((int) $value) > 0;
                     if (!$check) {
                         $validation[$field]["reason"] = "Debe ser un número positivo.";
