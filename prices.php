@@ -24,10 +24,14 @@ $subscriptions = Subscription::findAll($conn, new Subscription());
                         <br><?php echo $subscription->get_certificate(); ?></p>
                         <hr>
                         <h4><?php echo number_format($subscription->get_price()); ?> COL$/Mes</h4>
-                        <?php if ($subscription->get_id() != $student->get_subscription()) { ?>
+                        <?php if ($student->get_subscription() == 0) { ?>
                             <a href="?subscribe=<?php echo $subscription->get_id(); ?>" class="btn btn-primary btn-lg">Suscribirse</a>
                         <?php } else { ?>
-                            <button href="#" class="btn btn-success btn-lg" disabled>Suscrito</button>
+                            <?php if ($subscription->get_id() != $student->get_subscription()) { ?>
+                                <a href="?subscribe=<?php echo $subscription->get_id(); ?>" class="btn btn-primary btn-lg">Cambiarse</a>
+                            <?php } else { ?>
+                                <button href="#" class="btn btn-success btn-lg" disabled>Suscrito</button>
+                            <?php } ?>
                         <?php } ?>
                     </div>
                 </div>
@@ -48,6 +52,13 @@ $subscriptions = Subscription::findAll($conn, new Subscription());
                     if (count($payments) == 0) {
                         $_SESSION['message'] = 'Querido Usuario, para continuar debe contar con al menos un método de pago.';
                         redirect('my_payments.php');
+                        exit();
+                    }
+                    $inscriptions_sub = InscriptionSub::findByCondition($conn, new InscriptionSub(), 'fk_idStudent', $user->get_id());
+                    if ($subscription->get_courses() < count($inscriptions_sub)) {
+                        $_SESSION['message'] = 'Querido Usuario, para poder suscribirse al plan seleccionado debe tener una cantidad igual o menor a ' 
+                                                . $subscription->get_courses() . ' en Cursos Por Suscripción.';
+                        redirect('my_courses.php');
                         exit();
                     }
                     $_POST['id'] = $user->get_id();

@@ -1,7 +1,7 @@
 <?php
 
 include_once 'connection.php';
-include_once '../lib/inscriptionPay.php';
+include_once '../lib/inscription_sub.php';
 
 $json_response = [];
 $check_conn = connectToDB();
@@ -10,12 +10,12 @@ if ($check_conn === true) {
         $columns = [];
         $columns_ref = [];
         $values = [];
-        foreach (InscriptionPay::INPUTS_MAP as $key => $value) {
+        foreach (InscriptionSub::INPUTS_MAP as $key => $value) {
             $columns[] = $value;
             $columns_ref[] = ':' . $value;
             $values[':' . $value] = isset($_POST[$key]) ? htmlspecialchars($_POST[$key]) : null;
         }
-        $sql = "INSERT INTO " . InscriptionPay::TABLE_NAME . " (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $columns_ref) . ");";
+        $sql = "INSERT INTO " . InscriptionSub::TABLE_NAME . " (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $columns_ref) . ");";
         $stmt = $conn->prepare($sql);
         $result = $stmt->execute($values);
         $json_response = ['result' =>  $result];

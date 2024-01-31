@@ -124,11 +124,27 @@ $schedules = Schedule::findAll($conn, new Schedule());
                 <?php } ?>
             </div>
             <div class="col-lg-4 bg-light text-dark text-center">
+                <?php function filter_inscriptions($inscription) {
+                    global $schedule;
+                    return $inscription->get_fk_idSchedule() == $schedule->get_id(); 
+                } ?>
+                <?php $inscriptions_pay = InscriptionPay::findByCondition($conn, new InscriptionPay(), 'fk_idStudent', $user->get_id()); ?>
+                <?php $inscriptions_pay_count = count(array_filter($inscriptions_pay, 'filter_inscriptions')); ?>
+                <?php $inscriptions_sub = InscriptionSub::findByCondition($conn, new InscriptionSub(), 'fk_idStudent', $user->get_id()); ?>
+                <?php $inscriptions_sub_count = count(array_filter($inscriptions_sub, 'filter_inscriptions')); ?>
                 <h2 class="my-3"><?php echo number_format($schedule->get_price()); ?> COL$</h2>
                 <hr>
-                <a href="?buy=true&value=<?php echo $schedule->get_id(); ?>" class="btn btn-primary w-75 mb-3">Adquirir Curso</a>
-                <br>
-                <a href="?subscribe=true&value=<?php echo $schedule->get_id(); ?>" class="btn btn-info w-75 mb-3">Utilizar Suscripción</a>
+                <?php if ($inscriptions_pay_count == 0 && $inscriptions_sub_count == 0) { ?>
+                    <a href="?buy=true&value=<?php echo $schedule->get_id(); ?>" class="btn btn-primary w-75 mb-3">Adquirir Curso</a>
+                    <br>
+                    <a href="?subscribe=true&value=<?php echo $schedule->get_id(); ?>" class="btn btn-info w-75 mb-3">Utilizar Suscripción</a>
+                <?php } else { ?>
+                    <a href="#" class="btn btn-success w-75 mb-3">Acceder</a>
+                    <?php if ($inscriptions_sub_count > 0) { ?>
+                        <br>
+                        <a href="?subscribe=false&value=<?php echo $schedule->get_id(); ?>" class="btn btn-danger w-75 mb-3">Cancelar Suscripción</a>
+                    <?php } ?>
+                <?php } ?>
             </div>
         </div>
         <nav class="bg-primary-subtle">
@@ -144,70 +160,98 @@ $schedules = Schedule::findAll($conn, new Schedule());
 <?php if (isset($_GET['buy']) && isset($_GET['value'])) { ?>
     <?php $schedule = Schedule::findbyId($conn, new Schedule(), (int) $_GET['value']); ?>
     <?php if ($schedule->get_id() != 0) { ?>
-        <?php
-            if ($user->get_id() == 0) {
-                $_SESSION['message'] = 'Querido Usuario, para continuar con el proceso debe iniciar sesión.';
-                redirect('log_in.php');
-                exit();
-            }
-            $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student", $user->get_id());
-            if (count($payments) == 0) {
-                $_SESSION['message'] = 'Querido Usuario, para continuar debe contar con al menos un método de pago.';
-                redirect('my_payments.php');
-                exit();
-            }
-            $student = Student::findbyId($conn, new Student(), $user->get_id());
-            $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course());
-            $_POST['fk_idStudent'] = $student->get_id();
-            $_POST['fk_idSchedule'] = $_GET['value'];
-            $result = PHP_PostRequest($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'], 'service/add_inscriptionPay.php', $_POST);
-            if (array_key_exists('result', $result)) {
-                $_SESSION['message'] = 'Se a agregado "' .  $course->get_name() . '" a tus Cursos adquiridos.';
-                redirect('my_courses.php');
-                exit();
-            } else {
-                $message = 'Hubo un error en la Adquisición, por favor inténtelo más tarde.';
-                console_log($result['error']);
-            }
-        ?>
-        <h4><?php echo $message; ?></h4>
+        <?php if ($_GET['buy'] == 'true') { ?>
+            <?php
+                if ($user->get_id() == 0) {
+                    $_SESSION['message'] = 'Querido Usuario, para continuar con el proceso debe iniciar sesión.';
+                    redirect('log_in.php');
+                    exit();
+                }
+                $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student", $user->get_id());
+                if (count($payments) == 0) {
+                    $_SESSION['message'] = 'Querido Usuario, para continuar debe contar con al menos un método de pago.';
+                    redirect('my_payments.php');
+                    exit();
+                }
+                $student = Student::findbyId($conn, new Student(), $user->get_id());
+                $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course());
+                $_POST['fk_idStudent'] = $student->get_id();
+                $_POST['fk_idSchedule'] = $_GET['value'];
+                $result = PHP_PostRequest($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'], 'service/add_inscription_pay.php', $_POST);
+                if (array_key_exists('result', $result)) {
+                    $_SESSION['message'] = 'Se a agregado "' .  $course->get_name() . '" a tus Cursos adquiridos.';
+                    redirect('my_courses.php');
+                    exit();
+                } else {
+                    $message = 'Hubo un error en la Adquisición, por favor inténtelo más tarde.';
+                    console_log($result['error']);
+                }
+            ?>
+            <h4><?php echo $message; ?></h4>
+        <?php } ?>
     <?php } ?>
 <?php } ?>
 <?php if (isset($_GET['subscribe']) && isset($_GET['value'])) { ?>
     <?php $schedule = Schedule::findbyId($conn, new Schedule(), (int) $_GET['value']); ?>
     <?php if ($schedule->get_id() != 0) { ?>
-        <?php
-            if ($user->get_id() == 0) {
-                $_SESSION['message'] = 'Querido Usuario, para continuar con el proceso debe iniciar sesión.';
-                redirect('log_in.php');
-                exit();
-            }
-            $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student", $user->get_id());
-            if (count($payments) == 0) {
-                $_SESSION['message'] = 'Querido Usuario, para continuar debe contar con al menos un método de pago.';
-                redirect('my_payments.php');
-                exit();
-            }
-            $student = Student::findbyId($conn, new Student(), $user->get_id());
-            if ($student->get_subscription() == 0) {
-                $_SESSION['message'] = 'Querido Usuario, para continuar debe estar suscrito a alguno de nuestros planes.';
-                redirect('prices.php');
-                exit();
-            }
-            $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course());
-            $_POST['fk_idStudent'] = $student->get_id();
-            $_POST['fk_idSchedule'] = $_GET['value'];
-            $result = PHP_PostRequest($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'], 'service/add_inscriptionSub.php', $_POST);
-            if (array_key_exists('result', $result)) {
-                $_SESSION['message'] = 'Se a agregado "' .  $course->get_name() . '" a tus Cursos suscritos.';
-                redirect('my_courses.php');
-                exit();
-            } else {
-                $message = 'Hubo un error en la Suscripción, por favor inténtelo más tarde.';
-                console_log($result['error']);
-            }
-        ?>
-        <h4><?php echo $message; ?></h4>
+        <?php if ($_GET['subscribe'] == 'true') { ?>
+            <?php
+                if ($user->get_id() == 0) {
+                    $_SESSION['message'] = 'Querido Usuario, para continuar con el proceso debe iniciar sesión.';
+                    redirect('log_in.php');
+                    exit();
+                }
+                $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student", $user->get_id());
+                if (count($payments) == 0) {
+                    $_SESSION['message'] = 'Querido Usuario, para continuar debe contar con al menos un método de pago.';
+                    redirect('my_payments.php');
+                    exit();
+                }
+                $student = Student::findbyId($conn, new Student(), $user->get_id());
+                if ($student->get_subscription() == 0) {
+                    $_SESSION['message'] = 'Querido Usuario, para continuar debe estar suscrito a alguno de nuestros planes.';
+                    redirect('prices.php');
+                    exit();
+                }
+                $subscription = Subscription::findbyId($conn, new Subscription(), $student->get_subscription());
+                $inscriptions_sub = InscriptionSub::findByCondition($conn, new InscriptionSub(), 'fk_idStudent', $student->get_id());
+                if ($subscription->get_courses() <= count($inscriptions_sub)) {
+                    $_SESSION['message'] = 'Querido Usuario, usted ha usado la cantidad máxima de las suscripciones ofrecidas por su ' . $subscription->get_name() . '.';
+                    redirect('courses.php?details=' . $schedule->get_id());
+                    exit();
+                }
+                $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course());
+                $_POST['fk_idStudent'] = $student->get_id();
+                $_POST['fk_idSchedule'] = $_GET['value'];
+                $result = PHP_PostRequest($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'], 'service/add_inscription_sub.php', $_POST);
+                if (array_key_exists('result', $result)) {
+                    $_SESSION['message'] = 'Se a agregado "' .  $course->get_name() . '" a tus Cursos suscritos.';
+                    redirect('my_courses.php');
+                    exit();
+                } else {
+                    $message = 'Hubo un error en la Suscripción, por favor inténtelo más tarde.';
+                    console_log($result['error']);
+                }
+            ?>
+            <h4><?php echo $message; ?></h4>
+        <?php } else if ($_GET['subscribe'] == 'false') { ?>
+            <?php
+                $student = Student::findbyId($conn, new Student(), $user->get_id());
+                $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course());
+                $_POST['fk_idStudent'] = $student->get_id();
+                $_POST['fk_idSchedule'] = $_GET['value'];
+                $result = PHP_PostRequest($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'], 'service/delete_inscription_sub.php', $_POST);
+                if (array_key_exists('result', $result)) {
+                    $_SESSION['message'] = 'Se a removido "' .  $course->get_name() . '" de tus Cursos suscritos.';
+                    redirect('my_courses.php');
+                    exit();
+                } else {
+                    $message = 'Hubo un error en la Suscripción, por favor inténtelo más tarde.';
+                    console_log($result['error']);
+                }
+            ?>
+            <h4><?php echo $message; ?></h4>
+        <?php } ?>
     <?php } ?>
 <?php } ?>
 
