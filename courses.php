@@ -173,5 +173,42 @@ $schedules = Schedule::findAll($conn, new Schedule());
         <h4><?php echo $message; ?></h4>
     <?php } ?>
 <?php } ?>
+<?php if (isset($_GET['subscribe']) && isset($_GET['value'])) { ?>
+    <?php $schedule = Schedule::findbyId($conn, new Schedule(), (int) $_GET['value']); ?>
+    <?php if ($schedule->get_id() != 0) { ?>
+        <?php
+            if ($user->get_id() == 0) {
+                $_SESSION['message'] = 'Querido Usuario, para continuar con el proceso debe iniciar sesión.';
+                redirect('log_in.php');
+                exit();
+            }
+            $payments = PaymentCard::findByCondition($conn, new PaymentCard(), "fk_student", $user->get_id());
+            if (count($payments) == 0) {
+                $_SESSION['message'] = 'Querido Usuario, para continuar debe contar con al menos un método de pago.';
+                redirect('my_payments.php');
+                exit();
+            }
+            $student = Student::findbyId($conn, new Student(), $user->get_id());
+            if ($student->get_subscription() == 0) {
+                $_SESSION['message'] = 'Querido Usuario, para continuar debe estar suscrito a alguno de nuestros planes.';
+                redirect('prices.php');
+                exit();
+            }
+            $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course());
+            $_POST['fk_idStudent'] = $student->get_id();
+            $_POST['fk_idSchedule'] = $_GET['value'];
+            $result = PHP_PostRequest($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'], 'service/add_inscriptionSub.php', $_POST);
+            if (array_key_exists('result', $result)) {
+                $_SESSION['message'] = 'Se a agregado "' .  $course->get_name() . '" a tus Cursos suscritos.';
+                redirect('my_courses.php');
+                exit();
+            } else {
+                $message = 'Hubo un error en la Suscripción, por favor inténtelo más tarde.';
+                console_log($result['error']);
+            }
+        ?>
+        <h4><?php echo $message; ?></h4>
+    <?php } ?>
+<?php } ?>
 
 <?php include "layout/footer.php"; ?>
