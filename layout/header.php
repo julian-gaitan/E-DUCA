@@ -35,12 +35,22 @@
                     <a class="dropdown-item" href="my_payments.php"><i class="fi fi-rr-credit-card align-middle"></i> Mis Pagos</a>
                 </li>
                 <?php $divider_visible = 
+                      in_array("courses_content", $pages_auth) || 
+                      in_array("courses_stats", $pages_auth) ?>
+                <li class="<?php echo !$divider_visible ? "d-none" : "" ?>"><hr class="dropdown-divider"></li>
+                <li class="<?php echo !in_array("courses_content", $pages_auth) ? "d-none" : "" ?>">
+                    <a class="dropdown-item" href="courses_content.php"><i class="fi fi-rr-edit align-middle"></i> Contenido de los Cursos</a>
+                </li>
+                <li class="<?php echo !in_array("courses_stats", $pages_auth) ? "d-none" : "" ?>">
+                    <a class="dropdown-item" href="courses_stats.php"><i class="fi fi-rr-stats align-middle"></i> Estadísticas de los Cursos</a>
+                </li>
+                <?php $divider_visible = 
                       in_array("manage_courses", $pages_auth) || 
                       in_array("manage_schedules", $pages_auth) || 
                       in_array("manage_users", $pages_auth) ?>
                 <li class="<?php echo !$divider_visible ? "d-none" : "" ?>"><hr class="dropdown-divider"></li>
                 <li class="<?php echo !in_array("manage_courses", $pages_auth) ? "d-none" : "" ?>">
-                    <a class="dropdown-item" href="manage_courses.php"><i class="fi fi-rr-edit align-middle"></i> Gestion de Cursos</a>
+                    <a class="dropdown-item" href="manage_courses.php"><i class="fi fi-rr-book-spells align-middle"></i> Gestion de Cursos</a>
                 </li>
                 <li class="<?php echo !in_array("manage_schedules", $pages_auth) ? "d-none" : "" ?>">
                     <a class="dropdown-item" href="manage_schedules.php"><i class="fi fi-rr-calendar align-middle"></i> Gestion de Cronogramas</a>

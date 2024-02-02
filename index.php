@@ -15,7 +15,7 @@
         </div>
         <div class="row w-75 mx-auto mx-lg-0 <?php echo $user_present ? "" : "d-none"; ?>" role="account">
             <div class="col-lg-8 offset-lg-2 mb-3 mb-lg-0">
-                <button type="button" class="btn btn-warning w-100 fs-5 fw-bold py-1">
+                <button type="button" class="btn btn-warning w-100 fs-5 fw-bold py-1" data-bs-toggle="offcanvas" data-bs-target="#accountOffcanvas">
                     @<?php echo $user->get_user(); ?>
                 </button>
             </div>
