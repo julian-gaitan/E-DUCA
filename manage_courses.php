@@ -13,6 +13,7 @@ if (!in_array($file_name, $pages_auth)) {
 ?>
 <?php
 $courses = Course::findAll($conn, new Course());
+$teachers = Teacher::findAll($conn, new Teacher());
 ?>
 
 <?php include "layout/header.php"; ?>
@@ -30,6 +31,7 @@ $courses = Course::findAll($conn, new Course());
                             <th>#</th>
                             <th>Nombre</th>
                             <th>Descripción</th>
+                            <th>Profesor</th>
                             <th colspan="2">Acciones</th>
                         </tr>
                     </thead>
@@ -40,6 +42,8 @@ $courses = Course::findAll($conn, new Course());
                                 <td><?php echo ($i + 1); ?> </td>
                                 <td><?php echo $course->get_name(); ?></td>
                                 <td><?php echo $course->get_description(); ?></td>
+                                <?php $user = User::findbyId($conn, new User(), $course->get_fk_teacher()); ?>
+                                <td><?php echo $user->get_full_name(); ?></td>
                                 <td><a href="?modify=<?php echo $course->get_id(); ?>" class="btn btn-warning">Modificar</a></td>
                                 <td><a href="?delete=<?php echo $course->get_id(); ?>" class="btn btn-danger">Eliminar</a></td>
                             </tr>
@@ -63,6 +67,21 @@ $courses = Course::findAll($conn, new Course());
         <form action="" method="post" id="formCreateCourse" novalidate>
             <div class="row">
                 <div class="col-xl-8">
+                    <div class="m-3">
+                        <label class="form-label" for="teacher">Profesor</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-chalkboard-user"></i></span>
+                            <select class="form-select" id="teacher" name="teacher" required>
+                                <option selected>Seleccione...</option>
+                                <?php for ($i = 0; $i < count($teachers); $i++) { ?>
+                                    <?php $teacher = $teachers[$i]; ?>
+                                    <?php $user = User::findbyId($conn, new User(), $teacher->get_id()); ?>
+                                    <option value="<?php echo $user->get_id(); ?>"><?php echo $user->get_full_name(); ?></option>
+                                <?php } ?>
+                            </select>
+                            <div id="feedback-teacher" class="invalid-feedback"></div>
+                        </div>
+                    </div>
                     <div class="m-3">
                         <label class="form-label" for="name">Nombre</label>
                         <div class="input-group has-validation">
@@ -149,6 +168,23 @@ $courses = Course::findAll($conn, new Course());
                         </div>
                     </div>
                     <div class="m-3">
+                        <label class="form-label" for="teacher">Profesor</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-chalkboard-user"></i></span>
+                            <select class="form-select" id="teacher" name="teacher" alt="<?php echo $course->get_fk_teacher(); ?>" required>
+                                <option>Seleccione...</option>
+                                <?php for ($i = 0; $i < count($teachers); $i++) { ?>
+                                    <?php $teacher = $teachers[$i]; ?>
+                                    <?php $user = User::findbyId($conn, new User(), $teacher->get_id()); ?>
+                                    <option value="<?php echo $user->get_id(); ?>" <?php echo $course->get_fk_teacher() == $user->get_id() ? "selected" : ""; ?>>
+                                        <?php echo $user->get_full_name(); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <div id="feedback-teacher" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="m-3">
                         <label class="form-label" for="name">Nombre</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
@@ -222,6 +258,23 @@ $courses = Course::findAll($conn, new Course());
                             <span class="input-group-text"></span>
                             <input class="form-control" type="number" id="id" name="id" readonly 
                             value="<?php echo $course->get_id(); ?>" alt="">
+                        </div>
+                    </div>
+                    <div class="m-3">
+                        <label class="form-label" for="teacher">Profesor</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text"><i class="fi fi-rr-chalkboard-user"></i></span>
+                            <select class="form-select" id="teacher" name="teacher" alt="<?php echo $course->get_fk_teacher(); ?>" required readonly>
+                                <option disabled>Seleccione...</option>
+                                <?php for ($i = 0; $i < count($teachers); $i++) { ?>
+                                    <?php $teacher = $teachers[$i]; ?>
+                                    <?php $user = User::findbyId($conn, new User(), $teacher->get_id()); ?>
+                                    <option value="<?php echo $user->get_id(); ?>" <?php echo $course->get_fk_teacher() == $user->get_id() ? "selected" : "disabled"; ?>>
+                                        <?php echo $user->get_full_name(); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                            <div id="feedback-teacher" class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="m-3">

@@ -3,7 +3,6 @@
 include_once 'connection.php';
 include_once '../lib/schedule.php';
 include_once '../lib/course.php';
-include_once '../lib/teacher.php';
 
 //const INVALID_CHARS = "<>,\"`@\/\\\\|{}\[\]()*$%#?=:;";
 $FIELDS = array_keys(Schedule::INPUTS_MAP);
@@ -24,12 +23,6 @@ if ($check_conn === true) {
                     $check = Course::findbyId($conn, new Course(), (int) $value)->get_id() != 0;
                     if (!$check) {
                         $validation[$field]["reason"] = "Debe ser un Curso existente.";
-                    }
-                    break;
-                case 'teacher':
-                    $check = Teacher::findbyId($conn, new Teacher(), (int) $value)->get_id() != 0;
-                    if (!$check) {
-                        $validation[$field]["reason"] = "Debe ser un Profesor existente.";
                     }
                     break;
                 case 'start-date':

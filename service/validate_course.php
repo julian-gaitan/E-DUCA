@@ -2,6 +2,7 @@
 
 include_once 'connection.php';
 include_once '../lib/course.php';
+include_once '../lib/teacher.php';
 
 const INVALID_CHARS = "<>,\"`@\/\\\\|{}\[\]()*$%#?=:;";
 $FIELDS = array_keys(Course::INPUTS_MAP);
@@ -16,16 +17,21 @@ if ($check_conn === true) {
         if (isset($_POST[$field])) {
             $is_valid ??= true;
             $value = $_POST[$field];
+            $check;
             switch ($field) {
+                case 'teacher':
+                    $check = Teacher::findbyId($conn, new Teacher(), (int) $value)->get_id() != 0;
+                    if (!$check) {
+                        $validation[$field]["reason"] = "Debe ser un Profesor existente.";
+                    }
+                    break;
                 case 'name':
                     $value = trim($value);
                     $pattern = "/^.{3,50}$/";
                     $check = preg_match($pattern, $value) === 1;
                     if (!$check) {
                         $validation[$field]["reason"] = "Debe ser entre 3 y 50 caracteres.";
-                        $is_valid = false;
                     }
-                    $validation[$field]["valid"] = $check;
                     break;
                 case 'description':
                     $value = trim($value);
@@ -33,9 +39,7 @@ if ($check_conn === true) {
                     $check = preg_match($pattern, $value) === 1;
                     if (!$check) {
                         $validation[$field]["reason"] = "Debe ser entre 5 y 500 caracteres.";
-                        $is_valid = false;
                     }
-                    $validation[$field]["valid"] = $check;
                     break;
                 case 'content-list':
                     $value = trim($value);
@@ -43,9 +47,7 @@ if ($check_conn === true) {
                     $check = preg_match($pattern, $value) === 1;
                     if (!$check) {
                         $validation[$field]["reason"] = "Debe ser entre 5 y 500 caracteres.";
-                        $is_valid = false;
                     }
-                    $validation[$field]["valid"] = $check;
                     break;
                 case 'category-list':
                     $value = trim($value);
@@ -53,9 +55,7 @@ if ($check_conn === true) {
                     $check = preg_match($pattern, $value) === 1;
                     if (!$check) {
                         $validation[$field]["reason"] = "Debe ser entre 3 y 100 caracteres.";
-                        $is_valid = false;
                     }
-                    $validation[$field]["valid"] = $check;
                     break;
                 case 'tags':
                     $value = trim($value);
@@ -63,9 +63,7 @@ if ($check_conn === true) {
                     $check = preg_match($pattern, $value) === 1;
                     if (!$check) {
                         $validation[$field]["reason"] = "Debe ser entre 3 y 100 caracteres.";
-                        $is_valid = false;
                     }
-                    $validation[$field]["valid"] = $check;
                     break;
                 case 'folder':
                     $value = trim($value);
@@ -73,12 +71,16 @@ if ($check_conn === true) {
                     $check = preg_match($pattern, $value) === 1;
                     if (!$check) {
                         $validation[$field]["reason"] = "Debe ser entre 3 y 100 caracteres.";
-                        $is_valid = false;
                     }
-                    $validation[$field]["valid"] = $check;
                     break;
                 default:
                     break;
+            }
+            if (isset($check)) {
+                if (!$check) {
+                    $is_valid = false;
+                }
+                $validation[$field]["valid"] = $check;
             }
         } else {
             $validation[$field] = null;

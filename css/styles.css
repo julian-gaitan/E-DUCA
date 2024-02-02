@@ -31,3 +31,13 @@ ul.nav.nav-tabs {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.nowrap-text-2line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    line-height: 1.5rem;   /* fallback */
+    max-height: 3rem;      /* fallback */
+}

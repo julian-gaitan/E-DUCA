@@ -5,7 +5,7 @@ import { createPostBodyFromInputs } from './lib.js';
 $(function () {
     {
         const form = $('#formCreateCourse');
-        const inputs = $('#formCreateCourse input,textarea').filter(function () { return $(this).attr('id') != 'image'; });
+        const inputs = $('#formCreateCourse input,select,textarea').filter(function () { return $(this).attr('id') != 'image'; });
         const formSubmit = $('#formCreateCourse button[type="submit"]');
         formSubmit.on('click', validatedForm);
         form.on('submit', submitForm);
@@ -40,7 +40,6 @@ $(function () {
         }
 
         function submitForm(event) {
-            console.log($(this).attr('id'));
             event.preventDefault();
             event.stopPropagation();
             $.post('service/add_course.php', form.serialize())
@@ -62,7 +61,7 @@ $(function () {
 
     {
         const form = $('#formModifyCourse');
-        const inputs = $('#formModifyCourse input,textarea');
+        const inputs = $('#formModifyCourse input,select,textarea');
         const formSubmit = $('#formModifyCourse button[type="submit"]');
 
         formSubmit.on('click', validatedForm);

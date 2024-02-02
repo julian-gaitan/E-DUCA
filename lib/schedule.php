@@ -6,7 +6,6 @@ class Schedule extends ORM {
 
     protected int $id;
     protected int $fk_course;
-    protected int $fk_teacher;
     protected string $start_date;
     protected string $end_date;
     protected int $duration;
@@ -15,7 +14,6 @@ class Schedule extends ORM {
     public const FIELDS_MAP = [
         'id' => 'id',
         'fk_course' => 'fk_curso',
-        'fk_teacher' => 'fk_profesor',
         'start_date' => 'fecha_inicio',
         'end_date' => 'fecha_fin',
         'duration' => 'duracion',
@@ -24,7 +22,6 @@ class Schedule extends ORM {
     public const INPUTS_MAP = [
         'id' => 'id',
         'course' => 'fk_curso',
-        'teacher' => 'fk_profesor',
         'start-date' => 'fecha_inicio',
         'end-date' => 'fecha_fin',
         'duration' => 'duracion',
@@ -36,7 +33,6 @@ class Schedule extends ORM {
         $this->fields_map = self::FIELDS_MAP;
         $this->id = 0;
         $this->fk_course = 0;
-        $this->fk_teacher = 0;
         $this->start_date = "";
         $this->end_date = "";
         $this->duration = 0;
@@ -63,15 +59,6 @@ class Schedule extends ORM {
     public function set_fk_course(int $fk_course): void {
         if (is_null($fk_course)) return;
         $this->fk_course = $fk_course;
-    }
-
-    public function get_fk_teacher(): int {
-        return $this->fk_teacher;
-    }
-
-    public function set_fk_teacher(int $fk_teacher): void {
-        if (is_null($fk_teacher)) return;
-        $this->fk_teacher = $fk_teacher;
     }
 
     public function get_start_date(): string {

@@ -47,7 +47,7 @@ $schedules = Schedule::findAll($conn, new Schedule());
 <?php if (isset($_GET['details'])) { ?>
 <?php $schedule = Schedule::findbyId($conn, new Schedule(), (int) $_GET['details']); ?>
 <?php $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course()); ?>
-<?php $teacher = User::findbyId($conn, new User(), $schedule->get_fk_teacher()); ?>
+<?php $teacher = User::findbyId($conn, new User(), $course->get_fk_teacher()); ?>
     <div class="row bg-dark m-5 p-3 <?php echo $schedule->get_id() == 0 ? "d-none" : ""; ?>" data-bs-theme="dark">
         <nav class="bg-primary-subtle">
             <ol class="breadcrumb my-2">

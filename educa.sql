@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2023 at 05:10 AM
+-- Generation Time: Feb 02, 2024 at 02:12 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -30,20 +30,22 @@ SET time_zone = "+00:00";
 CREATE TABLE `tbl_cronogramas` (
   `id` int(11) NOT NULL,
   `fk_curso` int(11) NOT NULL,
+  `fk_profesor` int(11) NOT NULL,
   `fecha_inicio` date NOT NULL,
   `fecha_fin` date NOT NULL,
-  `duracion` int(11) NOT NULL
+  `duracion` int(11) NOT NULL,
+  `precio` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbl_cronogramas`
 --
 
-INSERT INTO `tbl_cronogramas` (`id`, `fk_curso`, `fecha_inicio`, `fecha_fin`, `duracion`) VALUES
-(1, 1, '2023-12-15', '2024-03-15', 60),
-(2, 1, '0000-00-00', '0000-00-00', 90),
-(3, 2, '2023-12-01', '2024-02-25', 45),
-(4, 3, '0000-00-00', '0000-00-00', 30);
+INSERT INTO `tbl_cronogramas` (`id`, `fk_curso`, `fk_profesor`, `fecha_inicio`, `fecha_fin`, `duracion`, `precio`) VALUES
+(1, 1, 3, '2023-12-15', '2024-03-15', 60, 29500),
+(2, 1, 3, '0000-00-00', '0000-00-00', 90, 34900),
+(3, 2, 3, '2023-12-01', '2024-02-25', 45, 19990),
+(4, 3, 1, '0000-00-00', '0000-00-00', 30, 34500);
 
 -- --------------------------------------------------------
 
@@ -73,6 +75,75 @@ INSERT INTO `tbl_cursos` (`id`, `nombre`, `descripcion`, `lista_contenido`, `lis
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_estudiantes`
+--
+
+CREATE TABLE `tbl_estudiantes` (
+  `id` int(11) NOT NULL,
+  `suscripcion` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_estudiantes`
+--
+
+INSERT INTO `tbl_estudiantes` (`id`, `suscripcion`) VALUES
+(2, 0),
+(1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_inscripciones_pago`
+--
+
+CREATE TABLE `tbl_inscripciones_pago` (
+  `idEstudiante` int(11) NOT NULL,
+  `idCronograma` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_inscripciones_suscrip`
+--
+
+CREATE TABLE `tbl_inscripciones_suscrip` (
+  `idEstudiante` int(11) NOT NULL,
+  `idCronograma` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_inscripciones_suscrip`
+--
+
+INSERT INTO `tbl_inscripciones_suscrip` (`idEstudiante`, `idCronograma`) VALUES
+(1, 2),
+(1, 3),
+(1, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_profesores`
+--
+
+CREATE TABLE `tbl_profesores` (
+  `id` int(11) NOT NULL,
+  `titulo` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_profesores`
+--
+
+INSERT INTO `tbl_profesores` (`id`, `titulo`) VALUES
+(1, ''),
+(3, '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_roles`
 --
 
@@ -90,8 +161,57 @@ CREATE TABLE `tbl_roles` (
 
 INSERT INTO `tbl_roles` (`id`, `valor`, `tipo`, `paginas`, `tabla`) VALUES
 (1, 2, 'ADMIN', 'manage_courses,manage_schedules,manage_users', ''),
-(2, 4, 'ESTUDIANTE', '', ''),
-(3, 8, 'PROFESOR', '', '');
+(2, 4, 'ESTUDIANTE', 'my_courses,my_payments', ''),
+(3, 8, 'PROFESOR', 'courses_content,courses_stats', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_suscripciones`
+--
+
+CREATE TABLE `tbl_suscripciones` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `usuarios` int(11) NOT NULL,
+  `cursos` int(11) NOT NULL,
+  `atencion` varchar(50) NOT NULL,
+  `certificado` varchar(50) NOT NULL,
+  `precio` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_suscripciones`
+--
+
+INSERT INTO `tbl_suscripciones` (`id`, `nombre`, `usuarios`, `cursos`, `atencion`, `certificado`, `precio`) VALUES
+(0, 'Ninguno', 0, 0, '', '', 0),
+(1, 'Plan Básico', 1, 3, 'Atención Limitada ', 'Certificado Digital', 29900),
+(2, 'Plan Estandar', 2, 5, 'Atención Regular', 'Certificado Digital y Físico', 49900),
+(3, 'Plan Premium', 3, 10, 'Atención Ilimitada', 'Certificado Digital y Físico', 79900);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_tarjetas_debito_credito`
+--
+
+CREATE TABLE `tbl_tarjetas_debito_credito` (
+  `id` int(11) NOT NULL,
+  `numero` bigint(16) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `fecha_vencimiento` date NOT NULL,
+  `cvv` int(3) NOT NULL,
+  `fk_estudiante` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_tarjetas_debito_credito`
+--
+
+INSERT INTO `tbl_tarjetas_debito_credito` (`id`, `numero`, `nombre`, `fecha_vencimiento`, `cvv`, `fk_estudiante`) VALUES
+(1, 1234567890123456, 'VISA CLASICA', '2029-06-01', 556, 1),
+(3, 1000000000000001, 'Master Card D-', '2031-06-01', 951, 2);
 
 -- --------------------------------------------------------
 
@@ -115,9 +235,9 @@ CREATE TABLE `tbl_usuarios` (
 --
 
 INSERT INTO `tbl_usuarios` (`id`, `nombres`, `apellidos`, `usuario`, `correo`, `contrasena`, `cumpleanos`, `rol`) VALUES
-(1, 'mister', 'admin', 'ADMIN', 'a@b.com', 'asdASD123', '2023-12-31', 15),
+(1, 'Julian', 'Gaitan', 'Hafgufa', 'a@b.com', 'asdASD123', '1989-10-30', 15),
 (2, 'pedro', 'perez', 'pedrop', 'ac@eb.com', 'qwerQWER12', '2000-06-15', 5),
-(3, 'Jonh', 'Doe', 'JonDoe', 'abc@xyz.org', 'Contrasena987', '1950-01-01', 9);
+(3, 'Jon', 'Doe', 'JonhDoe', 'abc@xyz.org', 'Contrasena987', '1950-01-01', 9);
 
 --
 -- Indexes for dumped tables
@@ -128,7 +248,8 @@ INSERT INTO `tbl_usuarios` (`id`, `nombres`, `apellidos`, `usuario`, `correo`, `
 --
 ALTER TABLE `tbl_cronogramas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_idCronograma_idCurso` (`fk_curso`);
+  ADD KEY `fk_idCronograma_idCurso` (`fk_curso`),
+  ADD KEY `fk_idCronograma_idProfesor` (`fk_profesor`);
 
 --
 -- Indexes for table `tbl_cursos`
@@ -137,10 +258,51 @@ ALTER TABLE `tbl_cursos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_estudiantes`
+--
+ALTER TABLE `tbl_estudiantes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_idEstudiante_idSuscripciones` (`suscripcion`);
+
+--
+-- Indexes for table `tbl_inscripciones_pago`
+--
+ALTER TABLE `tbl_inscripciones_pago`
+  ADD PRIMARY KEY (`idEstudiante`,`idCronograma`),
+  ADD KEY `fk_idCronograma_tblPago` (`idCronograma`);
+
+--
+-- Indexes for table `tbl_inscripciones_suscrip`
+--
+ALTER TABLE `tbl_inscripciones_suscrip`
+  ADD PRIMARY KEY (`idEstudiante`,`idCronograma`),
+  ADD KEY `fk_idCronograma_tblSuscrip` (`idCronograma`);
+
+--
+-- Indexes for table `tbl_profesores`
+--
+ALTER TABLE `tbl_profesores`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_roles`
 --
 ALTER TABLE `tbl_roles`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_suscripciones`
+--
+ALTER TABLE `tbl_suscripciones`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_tarjetas_debito_credito`
+--
+ALTER TABLE `tbl_tarjetas_debito_credito`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `numero` (`numero`),
+  ADD KEY `fk_idTarjetas_idEstudiantes` (`fk_estudiante`);
 
 --
 -- Indexes for table `tbl_usuarios`
@@ -158,7 +320,7 @@ ALTER TABLE `tbl_usuarios`
 -- AUTO_INCREMENT for table `tbl_cronogramas`
 --
 ALTER TABLE `tbl_cronogramas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_cursos`
@@ -170,6 +332,18 @@ ALTER TABLE `tbl_cursos`
 -- AUTO_INCREMENT for table `tbl_roles`
 --
 ALTER TABLE `tbl_roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tbl_suscripciones`
+--
+ALTER TABLE `tbl_suscripciones`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `tbl_tarjetas_debito_credito`
+--
+ALTER TABLE `tbl_tarjetas_debito_credito`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
@@ -186,7 +360,41 @@ ALTER TABLE `tbl_usuarios`
 -- Constraints for table `tbl_cronogramas`
 --
 ALTER TABLE `tbl_cronogramas`
-  ADD CONSTRAINT `fk_idCronograma_idCurso` FOREIGN KEY (`fk_curso`) REFERENCES `tbl_cursos` (`id`);
+  ADD CONSTRAINT `fk_idCronograma_idCurso` FOREIGN KEY (`fk_curso`) REFERENCES `tbl_cursos` (`id`),
+  ADD CONSTRAINT `fk_idCronograma_idProfesor` FOREIGN KEY (`fk_profesor`) REFERENCES `tbl_profesores` (`id`);
+
+--
+-- Constraints for table `tbl_estudiantes`
+--
+ALTER TABLE `tbl_estudiantes`
+  ADD CONSTRAINT `fk_idEstudiante_idSuscripciones` FOREIGN KEY (`suscripcion`) REFERENCES `tbl_suscripciones` (`id`),
+  ADD CONSTRAINT `fk_idEstudiante_idUsuario` FOREIGN KEY (`id`) REFERENCES `tbl_usuarios` (`id`);
+
+--
+-- Constraints for table `tbl_inscripciones_pago`
+--
+ALTER TABLE `tbl_inscripciones_pago`
+  ADD CONSTRAINT `fk_idCronograma_tblPago` FOREIGN KEY (`idCronograma`) REFERENCES `tbl_cronogramas` (`id`),
+  ADD CONSTRAINT `fk_idEstudiante_tblPago` FOREIGN KEY (`idEstudiante`) REFERENCES `tbl_estudiantes` (`id`);
+
+--
+-- Constraints for table `tbl_inscripciones_suscrip`
+--
+ALTER TABLE `tbl_inscripciones_suscrip`
+  ADD CONSTRAINT `fk_idCronograma_tblSuscrip` FOREIGN KEY (`idCronograma`) REFERENCES `tbl_cronogramas` (`id`),
+  ADD CONSTRAINT `fk_idEstudiante_tblSuscrip` FOREIGN KEY (`idEstudiante`) REFERENCES `tbl_estudiantes` (`id`);
+
+--
+-- Constraints for table `tbl_profesores`
+--
+ALTER TABLE `tbl_profesores`
+  ADD CONSTRAINT `fk_idProfesor_idUsuario` FOREIGN KEY (`id`) REFERENCES `tbl_usuarios` (`id`);
+
+--
+-- Constraints for table `tbl_tarjetas_debito_credito`
+--
+ALTER TABLE `tbl_tarjetas_debito_credito`
+  ADD CONSTRAINT `fk_idTarjetas_idEstudiantes` FOREIGN KEY (`fk_estudiante`) REFERENCES `tbl_estudiantes` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

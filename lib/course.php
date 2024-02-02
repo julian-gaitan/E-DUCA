@@ -5,6 +5,7 @@ include_once 'orm.php';
 class Course extends ORM {
 
     protected int $id;
+    protected int $fk_teacher;
     protected string $name;
     protected string $description;
     protected string $content_list;
@@ -14,6 +15,7 @@ class Course extends ORM {
     public const TABLE_NAME = 'tbl_cursos';
     public const FIELDS_MAP = [
         'id' => 'id',
+        'fk_teacher' => 'fk_profesor',
         'name' => 'nombre',
         'description' => 'descripcion',
         'content_list' => 'lista_contenido',
@@ -23,6 +25,7 @@ class Course extends ORM {
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
+        'teacher' => 'fk_profesor',
         'name' => 'nombre',
         'description' => 'descripcion',
         'content-list' => 'lista_contenido',
@@ -35,6 +38,7 @@ class Course extends ORM {
         $this->table_name = self::TABLE_NAME;
         $this->fields_map = self::FIELDS_MAP;
         $this->id = 0;
+        $this->fk_teacher = 0;
         $this->name = "";
         $this->description = "";
         $this->content_list = "";
@@ -54,6 +58,15 @@ class Course extends ORM {
     public function set_id(int $id): void {
         if (is_null($id)) return;
         $this->id = $id;
+    }
+
+    public function get_fk_teacher(): int {
+        return $this->fk_teacher;
+    }
+
+    public function set_fk_teacher(int $fk_teacher): void {
+        if (is_null($fk_teacher)) return;
+        $this->fk_teacher = $fk_teacher;
     }
 
     public function get_name(): string {

@@ -33,9 +33,9 @@ $(function () {
                         });
                     }
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
                 });
         }
 
@@ -110,9 +110,9 @@ $(function () {
                         });
                     }
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
                 });
         }
         
@@ -144,9 +144,9 @@ $(function () {
                     }
                     resetSubmitEvents();
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
                 });
         }
     }
@@ -173,9 +173,9 @@ $(function () {
                         console.log(json);
                     }
                 })
-                .fail(function (param) {
-                    alert(`Hubo un error en la aplicación: ${param.statusText}`);
-                    console.log(param);
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
                 });
         }
     }
