@@ -32,7 +32,7 @@ $courses = Course::findByCondition($conn, new Course(), 'fk_teacher', $teacher->
                     <div class="card-text">
                         <p class="nowrap-text-2line"><?php echo $course->get_description(); ?></p>
                     </div>
-                    <a href="#" class="btn btn-warning mt-1">Editar</a>
+                    <a href="content_edit.php?view=<?php echo $course->get_id(); ?>" target="_blank" class="btn btn-warning mt-1">Editar</a>
                 </div>
             </div>
         </div>

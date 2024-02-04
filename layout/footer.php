@@ -1,5 +1,4 @@
-
-</main>
+        </main>
         <footer class="bg-dark flex-grow-0 flex-shrink-0">
             <div class="container text-center">
                 <div class="row justify-content-center py-3">
@@ -49,11 +48,7 @@
         $script_name = $_SERVER['SCRIPT_NAME'];
         $script_name = substr($script_name, 0, strrpos($script_name, "/") + 1) . "js" . str_replace(".php", ".js", strrchr($script_name, "/"));
         echo (file_exists($_SERVER['DOCUMENT_ROOT'] . $script_name) ? "<script src=\"$script_name?".time()."\" type=\"module\"></script>" : ""); // ?time() to avoid JS cached problems
-          
     ?>
-    <script>
-        // $("h1:first-child").text("Hola");
-    </script>
 </body>
 
 </html>

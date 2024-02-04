@@ -1,6 +1,8 @@
 :root {
-    --bg-color-top: #102060;
-    --bg-color-bottom: #7040c0;
+    --bg-color-dark-top: #102060;
+    --bg-color-dark-bottom: #7040c0;
+    --bg-color-light-top: #b7bccf;
+    --bg-color-light-bottom: #d4c5ec;
     --img-logo-navbar-size: 36px;
 }
 
@@ -13,7 +15,11 @@ main {
 } */
 
 .bg-main-dark {
-    background-image: linear-gradient(to bottom right, var(--bg-color-top), var(--bg-color-bottom));
+    background-image: linear-gradient(to bottom right, var(--bg-color-dark-top), var(--bg-color-dark-bottom));
+}
+
+.bg-main-light {
+    background-image: linear-gradient(to bottom right, var(--bg-color-light-top), var(--bg-color-light-bottom));
 }
 
 .img-logo-navbar {
@@ -40,4 +46,51 @@ ul.nav.nav-tabs {
     -webkit-line-clamp: 2; /* number of lines to show */
     line-height: 1.5rem;   /* fallback */
     max-height: 3rem;      /* fallback */
+}
+
+/* CONTENT.PHP */
+
+.module {
+    cursor: pointer;
+    border-bottom: 2px solid black;
+    transition: all 100ms;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.module:hover {
+    /* border-bottom: 3px solid black; */
+}
+
+.module::after {
+    content: '⮜';
+    float: right;
+}
+
+.module.selected::after {
+    content: '⮟';
+    float: right;
+}
+
+.activity {
+    cursor: pointer;
+    border-bottom: 1px solid black ;
+}
+
+.activity:hover {
+    /* border-bottom: 2px solid black; */
+}
+
+.activity-container {
+    /* display: none; */
+    max-height: 0;
+    transition: max-height 0.15s ease-out;
+    overflow: hidden;
+}
+
+.activity-container.selected {
+    /* display: block; */
+    max-height: 100%;
+    transition: max-height 0.25s ease-in;
 }
