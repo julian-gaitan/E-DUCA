@@ -19,6 +19,10 @@ class Module extends ORM {
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
+        'fk-course' => 'fk_curso',
+        'index' => 'indice',
+        'title' => 'titulo',
+        'content' => '',
     ];
 
     function __construct() {

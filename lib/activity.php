@@ -19,6 +19,10 @@ class Activity extends ORM {
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
+        'fk-module' => 'fk_modulo',
+        'index' => 'indice',
+        'title' => 'titulo',
+        'content' => '',
     ];
 
     function __construct() {

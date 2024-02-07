@@ -10,6 +10,18 @@ main {
     flex-basis: 400px;
 }
 
+.mw-75 {
+    max-width: 75% !important;
+}
+
+.mw-50 {
+    max-width: 50% !important;
+}
+
+.mw-25 {
+    max-width: 25% !important;
+}
+
 /* h1, h2, h3, h4, h5, h6 {
     font-family: serif;
 } */
@@ -59,8 +71,8 @@ ul.nav.nav-tabs {
     user-select: none; /* Standard syntax */
 }
 
-.module:hover {
-    /* border-bottom: 3px solid black; */
+.module:hover, .module.selected {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .module::after {
@@ -78,8 +90,8 @@ ul.nav.nav-tabs {
     border-bottom: 1px solid black ;
 }
 
-.activity:hover {
-    /* border-bottom: 2px solid black; */
+.activity:hover, .activity.selected {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .activity-container {
