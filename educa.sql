@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 02, 2024 at 02:12 AM
+-- Generation Time: Feb 25, 2024 at 08:09 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,13 +24,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_actividades`
+--
+
+CREATE TABLE `tbl_actividades` (
+  `id` int(11) NOT NULL,
+  `fk_modulo` int(11) NOT NULL,
+  `indice` int(11) NOT NULL,
+  `titulo` varchar(100) NOT NULL,
+  `tipo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_actividades`
+--
+
+INSERT INTO `tbl_actividades` (`id`, `fk_modulo`, `indice`, `titulo`, `tipo`) VALUES
+(1, 1, 1, 'Actividad 1', 0),
+(2, 1, 2, 'activity 2', 0),
+(3, 1, 3, 'Polinomios', 0),
+(4, 2, 1, 'Act 2.1', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_cronogramas`
 --
 
 CREATE TABLE `tbl_cronogramas` (
   `id` int(11) NOT NULL,
   `fk_curso` int(11) NOT NULL,
-  `fk_profesor` int(11) NOT NULL,
   `fecha_inicio` date NOT NULL,
   `fecha_fin` date NOT NULL,
   `duracion` int(11) NOT NULL,
@@ -41,11 +64,12 @@ CREATE TABLE `tbl_cronogramas` (
 -- Dumping data for table `tbl_cronogramas`
 --
 
-INSERT INTO `tbl_cronogramas` (`id`, `fk_curso`, `fk_profesor`, `fecha_inicio`, `fecha_fin`, `duracion`, `precio`) VALUES
-(1, 1, 3, '2023-12-15', '2024-03-15', 60, 29500),
-(2, 1, 3, '0000-00-00', '0000-00-00', 90, 34900),
-(3, 2, 3, '2023-12-01', '2024-02-25', 45, 19990),
-(4, 3, 1, '0000-00-00', '0000-00-00', 30, 34500);
+INSERT INTO `tbl_cronogramas` (`id`, `fk_curso`, `fecha_inicio`, `fecha_fin`, `duracion`, `precio`) VALUES
+(1, 1, '2023-12-15', '2024-03-15', 60, 29500),
+(2, 1, '0000-00-00', '0000-00-00', 90, 34900),
+(3, 2, '2023-12-01', '2024-02-25', 45, 19990),
+(4, 3, '0000-00-00', '0000-00-00', 30, 34500),
+(7, 6, '2024-02-01', '2024-02-09', 10, 50000);
 
 -- --------------------------------------------------------
 
@@ -55,6 +79,7 @@ INSERT INTO `tbl_cronogramas` (`id`, `fk_curso`, `fk_profesor`, `fecha_inicio`, 
 
 CREATE TABLE `tbl_cursos` (
   `id` int(11) NOT NULL,
+  `fk_profesor` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL,
   `descripcion` varchar(500) NOT NULL,
   `lista_contenido` varchar(500) NOT NULL,
@@ -67,10 +92,11 @@ CREATE TABLE `tbl_cursos` (
 -- Dumping data for table `tbl_cursos`
 --
 
-INSERT INTO `tbl_cursos` (`id`, `nombre`, `descripcion`, `lista_contenido`, `lista_categoria`, `tags`, `carpeta`) VALUES
-(1, 'HTML5, CSS3 Y JavaScript', 'Aprende HTML5, CSS3 Y JavaScript de manera rápida y efectiva.', 'HTML\r\nFormularios\r\nCSS3\r\nFlexBox\r\nJavaScript\r\nDOM', 'Software Web\r\nJavaScript', 'HTML\r\nCSS\r\nJavaScript', '1702264978-835'),
-(2, 'jQuery desde 0', 'Aprenda jQuery desde los conceptos básicos hasta un manejo avanzado del lenguaje.', 'Selectores\nAtributos\nEventos\nEfectos\nAjax', 'Desarrollo Web\njQuery', 'JavaScript\njQuery', '1702265941-624'),
-(3, 'Tomcat para Administradores', 'Aprende a usar el servidor web Tomcat para todo tipo de aplicaciones', 'Instalación\r\nConfiguración\r\nApache Web Server\r\nDespliegue\r\nClusters', 'Desarrollo Web\r\nTomcat', 'Apache\r\nWebServer\r\nTomcat', '1702266769-545');
+INSERT INTO `tbl_cursos` (`id`, `fk_profesor`, `nombre`, `descripcion`, `lista_contenido`, `lista_categoria`, `tags`, `carpeta`) VALUES
+(1, 3, 'HTML5, CSS3 Y JavaScript, jQuery', 'Aprende HTML5, CSS3 Y JavaScript de manera rápida y efectiva.', 'HTML\r\nFormularios\r\nCSS3\r\nFlexBox\r\nJavaScript\r\nDOM', 'Software Web\r\nJavaScript', 'HTML\r\nCSS\r\nJavaScript', '1702264978-835'),
+(2, 3, 'jQuery desde 0', 'Aprenda jQuery desde los conceptos básicos hasta un manejo avanzado del lenguaje.', 'Selectores\nAtributos\nEventos\nEfectos\nAjax', 'Desarrollo Web\njQuery', 'JavaScript\njQuery', '1702265941-624'),
+(3, 1, 'Tomcat para Administradores', 'Aprende a usar el servidor web Tomcat para todo tipo de aplicaciones', 'Instalación\r\nConfiguración\r\nApache Web Server\r\nDespliegue\r\nClusters', 'Desarrollo Web\r\nTomcat', 'Apache\r\nWebServer\r\nTomcat', '1702266769-545'),
+(6, 3, 'Nombre', 'Descricion', 'lista1\r\nlista2\r\nlista3', 'progracion web', 'html\r\nphp', '1707538838-375');
 
 -- --------------------------------------------------------
 
@@ -125,6 +151,28 @@ INSERT INTO `tbl_inscripciones_suscrip` (`idEstudiante`, `idCronograma`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_modulos`
+--
+
+CREATE TABLE `tbl_modulos` (
+  `id` int(11) NOT NULL,
+  `fk_curso` int(11) NOT NULL,
+  `indice` int(11) NOT NULL,
+  `titulo` varchar(100) NOT NULL,
+  `asignatura` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_modulos`
+--
+
+INSERT INTO `tbl_modulos` (`id`, `fk_curso`, `indice`, `titulo`, `asignatura`) VALUES
+(1, 3, 1, 'Modulo 1', ''),
+(2, 3, 2, 'mOdUlO 2', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_profesores`
 --
 
@@ -162,7 +210,7 @@ CREATE TABLE `tbl_roles` (
 INSERT INTO `tbl_roles` (`id`, `valor`, `tipo`, `paginas`, `tabla`) VALUES
 (1, 2, 'ADMIN', 'manage_courses,manage_schedules,manage_users', ''),
 (2, 4, 'ESTUDIANTE', 'my_courses,my_payments', ''),
-(3, 8, 'PROFESOR', 'courses_content,courses_stats', '');
+(3, 8, 'PROFESOR', 'courses_content,courses_stats,content,content_edit', '');
 
 -- --------------------------------------------------------
 
@@ -237,25 +285,33 @@ CREATE TABLE `tbl_usuarios` (
 INSERT INTO `tbl_usuarios` (`id`, `nombres`, `apellidos`, `usuario`, `correo`, `contrasena`, `cumpleanos`, `rol`) VALUES
 (1, 'Julian', 'Gaitan', 'Hafgufa', 'a@b.com', 'asdASD123', '1989-10-30', 15),
 (2, 'pedro', 'perez', 'pedrop', 'ac@eb.com', 'qwerQWER12', '2000-06-15', 5),
-(3, 'Jon', 'Doe', 'JonhDoe', 'abc@xyz.org', 'Contrasena987', '1950-01-01', 9);
+(3, 'Jon', 'Doe', 'JonhDoe', 'abc@xyz.org', 'Contrasena987', '1950-01-01', 9),
+(4, 'Nombre', 'Apellido', 'usuario', 'correo@cualquiera.com', 'ADFasdf123', '2024-02-08', 1);
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `tbl_actividades`
+--
+ALTER TABLE `tbl_actividades`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `fk_modulo` (`fk_modulo`,`indice`);
+
+--
 -- Indexes for table `tbl_cronogramas`
 --
 ALTER TABLE `tbl_cronogramas`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_idCronograma_idCurso` (`fk_curso`),
-  ADD KEY `fk_idCronograma_idProfesor` (`fk_profesor`);
+  ADD KEY `fk_idCronograma_idCurso` (`fk_curso`);
 
 --
 -- Indexes for table `tbl_cursos`
 --
 ALTER TABLE `tbl_cursos`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_idCurso_idProfesor` (`fk_profesor`);
 
 --
 -- Indexes for table `tbl_estudiantes`
@@ -277,6 +333,13 @@ ALTER TABLE `tbl_inscripciones_pago`
 ALTER TABLE `tbl_inscripciones_suscrip`
   ADD PRIMARY KEY (`idEstudiante`,`idCronograma`),
   ADD KEY `fk_idCronograma_tblSuscrip` (`idCronograma`);
+
+--
+-- Indexes for table `tbl_modulos`
+--
+ALTER TABLE `tbl_modulos`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `fk_curso` (`fk_curso`,`indice`);
 
 --
 -- Indexes for table `tbl_profesores`
@@ -317,16 +380,28 @@ ALTER TABLE `tbl_usuarios`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_actividades`
+--
+ALTER TABLE `tbl_actividades`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `tbl_cronogramas`
 --
 ALTER TABLE `tbl_cronogramas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbl_cursos`
 --
 ALTER TABLE `tbl_cursos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tbl_modulos`
+--
+ALTER TABLE `tbl_modulos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_roles`
@@ -350,18 +425,29 @@ ALTER TABLE `tbl_tarjetas_debito_credito`
 -- AUTO_INCREMENT for table `tbl_usuarios`
 --
 ALTER TABLE `tbl_usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `tbl_actividades`
+--
+ALTER TABLE `tbl_actividades`
+  ADD CONSTRAINT `fk_idActividad_idModulo` FOREIGN KEY (`fk_modulo`) REFERENCES `tbl_modulos` (`id`);
+
+--
 -- Constraints for table `tbl_cronogramas`
 --
 ALTER TABLE `tbl_cronogramas`
-  ADD CONSTRAINT `fk_idCronograma_idCurso` FOREIGN KEY (`fk_curso`) REFERENCES `tbl_cursos` (`id`),
-  ADD CONSTRAINT `fk_idCronograma_idProfesor` FOREIGN KEY (`fk_profesor`) REFERENCES `tbl_profesores` (`id`);
+  ADD CONSTRAINT `fk_idCronograma_idCurso` FOREIGN KEY (`fk_curso`) REFERENCES `tbl_cursos` (`id`);
+
+--
+-- Constraints for table `tbl_cursos`
+--
+ALTER TABLE `tbl_cursos`
+  ADD CONSTRAINT `fk_idCurso_idProfesor` FOREIGN KEY (`fk_profesor`) REFERENCES `tbl_profesores` (`id`);
 
 --
 -- Constraints for table `tbl_estudiantes`
@@ -383,6 +469,12 @@ ALTER TABLE `tbl_inscripciones_pago`
 ALTER TABLE `tbl_inscripciones_suscrip`
   ADD CONSTRAINT `fk_idCronograma_tblSuscrip` FOREIGN KEY (`idCronograma`) REFERENCES `tbl_cronogramas` (`id`),
   ADD CONSTRAINT `fk_idEstudiante_tblSuscrip` FOREIGN KEY (`idEstudiante`) REFERENCES `tbl_estudiantes` (`id`);
+
+--
+-- Constraints for table `tbl_modulos`
+--
+ALTER TABLE `tbl_modulos`
+  ADD CONSTRAINT `fk_idModulo_idCurso` FOREIGN KEY (`fk_curso`) REFERENCES `tbl_cursos` (`id`);
 
 --
 -- Constraints for table `tbl_profesores`
