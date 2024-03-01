@@ -51,7 +51,7 @@ $subscription = Subscription::findbyId($conn, new Subscription(), $student->get_
                                 </tr>
                             </table>
                         </div>
-                        <a href="#" class="btn btn-success mt-1">Acceder</a>
+                        <a href="content.php?view=<?php echo $schedule->get_id(); ?>&type=pay" target="_blank" class="btn btn-success mt-1">Acceder</a>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,7 @@ $subscription = Subscription::findbyId($conn, new Subscription(), $student->get_
                                 </tr>
                             </table>
                         </div>
-                        <a href="#" class="btn btn-success mt-1">Acceder</a>
+                        <a href="content.php?view=<?php echo $schedule->get_id(); ?>&type=sub" target="_blank" class="btn btn-success mt-1">Acceder</a>
                     </div>
                 </div>
             </div>

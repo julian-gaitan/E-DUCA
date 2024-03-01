@@ -163,16 +163,6 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                         <?php } ?>
                     <?php } else { ?>
                         <?php if (isset($_GET['module']) && !isset($_GET['activity'])) { ?>
-                            <?php
-                            // $dir = './content/' . $course->get_folder() . '/' . $_get_module . '.html';
-                            // if (file_exists($dir)) {
-                            //     $myfile = fopen($dir, "r");
-                            //         if (filesize($dir) > 0) {
-                            //             echo fread($myfile, filesize($dir));
-                            //             fclose($myfile);
-                            //         }
-                            // }
-                            ?>
                             <?php $module = Module::findbyId($conn, new Module(), (int) $_GET['module']); ?>
                             <div class="p-3">
                                 <h1 class="text-center">Modificar Módulo</h1>
@@ -237,17 +227,7 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                     <div id="feedback-submit" class="mt-2 fw-bold"></div>
                                 </div>
                             </form>
-                        <?php } else if (isset($_GET['module']) && isset($_GET['activity'])) {?>
-                            <?php
-                                // $dir = './content/' . $course->get_folder() . '/' . $_get_module . '/' . $_get_activity  . '.html';
-                                // if (file_exists($dir)) {
-                                //     $myfile = fopen($dir, "r");
-                                //     if (filesize($dir) > 0) {
-                                //         echo fread($myfile, filesize($dir));
-                                //         fclose($myfile);
-                                //     }
-                                // }
-                            ?>
+                        <?php } else if (isset($_GET['module']) && isset($_GET['activity'])) { ?>
                             <?php $module = Module::findbyId($conn, new Module(), (int) $_GET['module']); ?>
                             <?php $activity = Activity::findbyId($conn, new Activity(), (int) $_GET['activity']); ?>
                             <div class="p-3">
