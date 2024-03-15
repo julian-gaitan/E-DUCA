@@ -330,4 +330,53 @@ $(function () {
                 });
         }
     }
+
+    {
+        const btnDeleteModule = $('button#delete-module');
+        const btnDeleteActivity = $('button#delete-activity');
+
+        btnDeleteModule.on('click', function(event) {
+            if(confirm('¿Está seguro que desea borrar este Módulo?')) {
+                const id = btnDeleteModule.val();
+                $.post('service/delete_module.php', {
+                    "id": id
+                })
+                    .done(function (json) {
+                        if (json['result']) {
+                            alert("Modulo eliminado de forma exitosa!");
+                            window.location.replace("content_edit.php?view=" + courseId);
+                        } else {
+                            console.log(json);
+                            alert("NO se pudo eliminar el Modulo:" + "\n\n" + json['error']);
+                        }
+                    })
+                    .fail(function (response) {
+                        console.log(response);
+                        alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    });
+            }
+        });
+
+        btnDeleteActivity.on('click', function(event) {
+            if(confirm('¿Está seguro que desea borrar esta Actividad?')) {
+                const id = btnDeleteActivity.val();
+                $.post('service/delete_activity.php', {
+                    "id": id
+                })
+                    .done(function (json) {
+                        if (json['result']) {
+                            alert("Actividad eliminada de forma exitosa!");
+                            window.location.replace("content_edit.php?view=" + courseId);
+                        } else {
+                            console.log(json);
+                            alert("NO se pudo eliminar la Actividad:" + "\n\n" + json['error']);
+                        }
+                    })
+                    .fail(function (response) {
+                        console.log(response);
+                        alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    });
+            }
+        });
+    }
 });

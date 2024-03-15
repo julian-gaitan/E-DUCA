@@ -65,7 +65,7 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                         <a class="btn btn-primary btn-lg my-1" href="?view=<?php echo $_GET['view']; ?>&new=module" role="button">&#x2795;</a>
                     </div>
                 </div>
-                <div class="col-9 border">
+                <div class="col-9 border position-relative">
                     <?php if (count($_GET) == 1) { ?>
                         <img src="content/<?php echo $course->get_folder(); ?>/image" alt="image-front" class="d-block mw-75 m-auto">
                         <h1 class="text-center mt-5"><?php echo $course->get_name(); ?></h1>
@@ -164,135 +164,151 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                     <?php } else { ?>
                         <?php if (isset($_GET['module']) && !isset($_GET['activity'])) { ?>
                             <?php $module = Module::findbyId($conn, new Module(), (int) $_GET['module']); ?>
-                            <div class="p-3">
-                                <h1 class="text-center">Modificar Módulo</h1>
-                            </div>
-                            <form action="" method="post" id="formModifyModule" class="<?php echo $module->get_id() == 0 ? "d-none" : ""; ?>" novalidate>
-                                <div class="m-3 d-none">
-                                    <label class="form-label" for="id">ID</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"></span>
-                                        <input class="form-control" type="number" id="id" name="id" readonly 
-                                        value="<?php echo $module->get_id(); ?>" alt="">
-                                    </div>
+                            <?php if ($module->get_id() > 0) { ?>
+                                <button
+                                    id="delete-module"
+                                    class="btn btn-danger btn-lg fw-bold position-absolute end-0 m-3"
+                                    value="<?php echo $module->get_id(); ?>"
+                                >
+                                    &#x2715;
+                                </button>
+                                <div class="p-3">
+                                    <h1 class="text-center">Modificar Módulo</h1>
                                 </div>
-                                <div class="m-3 d-none">
-                                    <label class="form-label" for="fk-course">Curso</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"></span>
-                                        <input class="form-control" type="number" id="fk-course" name="fk-course" readonly hidden 
-                                        value="<?php echo $course->get_id(); ?>" alt="">
+                                <form action="" method="post" id="formModifyModule" novalidate>
+                                    <div class="m-3 d-none">
+                                        <label class="form-label" for="id">ID</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"></span>
+                                            <input class="form-control" type="number" id="id" name="id" readonly 
+                                            value="<?php echo $module->get_id(); ?>" alt="">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="m-3">
-                                    <label class="form-label" for="title">Título</label>
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
-                                        <input class="form-control" type="text" id="title" name="title" required 
-                                        value="<?php echo $module->get_title(); ?>" alt="<?php echo $module->get_title(); ?>">
-                                        <div id="feedback-title" class="invalid-feedback"></div>
+                                    <div class="m-3 d-none">
+                                        <label class="form-label" for="fk-course">Curso</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"></span>
+                                            <input class="form-control" type="number" id="fk-course" name="fk-course" readonly hidden 
+                                            value="<?php echo $course->get_id(); ?>" alt="">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="m-3">
-                                    <label class="form-label" for="index">Índice</label>
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text"><i class="fi fi-rr-square-1"></i></span>
-                                        <input class="form-control" type="number" id="index" name="index" required 
-                                        value="<?php echo $module->get_index(); ?>" alt="<?php echo $module->get_index(); ?>">
-                                        <div id="feedback-index" class="invalid-feedback"></div>
+                                    <div class="m-3">
+                                        <label class="form-label" for="title">Título</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
+                                            <input class="form-control" type="text" id="title" name="title" required 
+                                            value="<?php echo $module->get_title(); ?>" alt="<?php echo $module->get_title(); ?>">
+                                            <div id="feedback-title" class="invalid-feedback"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <?php
-                                $content = "";
-                                $dir = './content/' . $course->get_folder() . '/' . $module->get_id() . '.html';
-                                if (file_exists($dir)) {
-                                    $myfile = fopen($dir, "r");
-                                    if (filesize($dir) > 0) {
-                                        $content = fread($myfile, filesize($dir));
-                                        fclose($myfile);
+                                    <div class="m-3">
+                                        <label class="form-label" for="index">Índice</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="fi fi-rr-square-1"></i></span>
+                                            <input class="form-control" type="number" id="index" name="index" required 
+                                            value="<?php echo $module->get_index(); ?>" alt="<?php echo $module->get_index(); ?>">
+                                            <div id="feedback-index" class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                    <?php
+                                    $content = "";
+                                    $dir = './content/' . $course->get_folder() . '/' . $module->get_id() . '.html';
+                                    if (file_exists($dir)) {
+                                        $myfile = fopen($dir, "r");
+                                        if (filesize($dir) > 0) {
+                                            $content = fread($myfile, filesize($dir));
+                                            fclose($myfile);
+                                        }
                                     }
-                                }
-                                ?>
-                                <div class="m-3">
-                                    <label class="form-label" for="content">Contenido</label>
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text"><i class="fi fi-rr-browser"></i></span>
-                                        <textarea class="form-control" id="content" name="content" rows="10" required 
-                                                  alt="<?php echo $content; ?>"><?php echo $content; ?></textarea>
-                                        <div id="feedback-content" class="invalid-feedback"></div>
+                                    ?>
+                                    <div class="m-3">
+                                        <label class="form-label" for="content">Contenido</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="fi fi-rr-browser"></i></span>
+                                            <textarea class="form-control" id="content" name="content" rows="10" required 
+                                                    alt="<?php echo $content; ?>"><?php echo $content; ?></textarea>
+                                            <div id="feedback-content" class="invalid-feedback"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="m-3 text-center">
-                                    <button type="submit" class="btn btn-warning btn-lg fw-bold">Guardar Cambios</button>
-                                    <div id="feedback-submit" class="mt-2 fw-bold"></div>
-                                </div>
-                            </form>
+                                    <div class="m-3 text-center">
+                                        <button type="submit" class="btn btn-warning btn-lg fw-bold">Guardar Cambios</button>
+                                        <div id="feedback-submit" class="mt-2 fw-bold"></div>
+                                    </div>
+                                </form>
+                            <?php } ?>
                         <?php } else if (isset($_GET['module']) && isset($_GET['activity'])) { ?>
                             <?php $module = Module::findbyId($conn, new Module(), (int) $_GET['module']); ?>
                             <?php $activity = Activity::findbyId($conn, new Activity(), (int) $_GET['activity']); ?>
-                            <div class="p-3">
-                                <h1 class="text-center">Modificar Actividad</h1>
-                            </div>
-                            <form action="" method="post" id="formModifyActivity" class="<?php echo $activity->get_id() == 0 ? "d-none" : ""; ?>" novalidate>
-                                <div class="m-3 d-none">
-                                    <label class="form-label" for="id">ID</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"></span>
-                                        <input class="form-control" type="number" id="id" name="id" readonly 
-                                        value="<?php echo $activity->get_id(); ?>" alt="">
+                            <?php $dir = './content/' . $course->get_folder() . '/' . $module->get_id() . '/' . $activity->get_id() . '.html'; ?>
+                            <?php if (file_exists($dir)) { ?>
+                                <button
+                                    id="delete-activity"
+                                    class="btn btn-danger btn-lg fw-bold position-absolute end-0 m-3"
+                                    value="<?php echo $activity->get_id(); ?>"
+                                >
+                                    &#x2715;
+                                </button>
+                                <div class="p-3">
+                                    <h1 class="text-center">Modificar Actividad</h1>
+                                </div>
+                                <form action="" method="post" id="formModifyActivity" novalidate>
+                                    <div class="m-3 d-none">
+                                        <label class="form-label" for="id">ID</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"></span>
+                                            <input class="form-control" type="number" id="id" name="id" readonly 
+                                            value="<?php echo $activity->get_id(); ?>" alt="">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="m-3 d-none">
-                                    <label class="form-label" for="fk-module">Módulo</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"></span>
-                                        <input class="form-control" type="number" id="fk-module" name="fk-module" readonly hidden 
-                                        value="<?php echo $module->get_id(); ?>" alt="">
+                                    <div class="m-3 d-none">
+                                        <label class="form-label" for="fk-module">Módulo</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"></span>
+                                            <input class="form-control" type="number" id="fk-module" name="fk-module" readonly hidden 
+                                            value="<?php echo $module->get_id(); ?>" alt="">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="m-3">
-                                    <label class="form-label" for="title">Título</label>
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
-                                        <input class="form-control" type="text" id="title" name="title" required 
-                                        value="<?php echo $activity->get_title(); ?>" alt="<?php echo $activity->get_title(); ?>">
-                                        <div id="feedback-title" class="invalid-feedback"></div>
+                                    <div class="m-3">
+                                        <label class="form-label" for="title">Título</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
+                                            <input class="form-control" type="text" id="title" name="title" required 
+                                            value="<?php echo $activity->get_title(); ?>" alt="<?php echo $activity->get_title(); ?>">
+                                            <div id="feedback-title" class="invalid-feedback"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="m-3">
-                                    <label class="form-label" for="index">Índice</label>
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text"><i class="fi fi-rr-square-1"></i></span>
-                                        <input class="form-control" type="number" id="index" name="index" required 
-                                        value="<?php echo $activity->get_index(); ?>" alt="<?php echo $activity->get_index(); ?>">
-                                        <div id="feedback-index" class="invalid-feedback"></div>
+                                    <div class="m-3">
+                                        <label class="form-label" for="index">Índice</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="fi fi-rr-square-1"></i></span>
+                                            <input class="form-control" type="number" id="index" name="index" required 
+                                            value="<?php echo $activity->get_index(); ?>" alt="<?php echo $activity->get_index(); ?>">
+                                            <div id="feedback-index" class="invalid-feedback"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <?php
-                                $content = "";
-                                $dir = './content/' . $course->get_folder() . '/' . $module->get_id() . '/' . $activity->get_id() . '.html';
-                                if (file_exists($dir)) {
-                                    $myfile = fopen($dir, "r");
-                                    if (filesize($dir) > 0) {
-                                        $content = fread($myfile, filesize($dir));
-                                        fclose($myfile);
-                                    }
-                                }
-                                ?>
-                                <div class="m-3">
-                                    <label class="form-label" for="content">Contenido</label>
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text"><i class="fi fi-rr-browser"></i></span>
-                                        <textarea class="form-control" id="content" name="content" rows="10" required 
-                                                  alt="<?php echo $content; ?>"><?php echo $content; ?></textarea>
-                                        <div id="feedback-content" class="invalid-feedback"></div>
+                                    <?php
+                                        $content = "";
+                                        $myfile = fopen($dir, "r");
+                                        if (filesize($dir) > 0) {
+                                            $content = fread($myfile, filesize($dir));
+                                            fclose($myfile);
+                                        }
+                                    ?>
+                                    <div class="m-3">
+                                        <label class="form-label" for="content">Contenido</label>
+                                        <div class="input-group has-validation">
+                                            <span class="input-group-text"><i class="fi fi-rr-browser"></i></span>
+                                            <textarea class="form-control" id="content" name="content" rows="10" required 
+                                                    alt="<?php echo $content; ?>"><?php echo $content; ?></textarea>
+                                            <div id="feedback-content" class="invalid-feedback"></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="m-3 text-center">
-                                    <button type="submit" class="btn btn-warning btn-lg fw-bold">Guardar Cambios</button>
-                                    <div id="feedback-submit" class="mt-2 fw-bold"></div>
-                                </div>
-                            </form>
+                                    <div class="m-3 text-center">
+                                        <button type="submit" class="btn btn-warning btn-lg fw-bold">Guardar Cambios</button>
+                                        <div id="feedback-submit" class="mt-2 fw-bold"></div>
+                                    </div>
+                                </form>
+                            <?php } ?>
                         <?php } ?>
                     <?php } ?>
                 </div>

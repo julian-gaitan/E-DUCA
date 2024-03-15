@@ -12,8 +12,8 @@ if ($check_conn === true) {
             $values = [':id' => htmlspecialchars($id)];
             $sql = "DELETE FROM " . Student::TABLE_NAME . " WHERE " . Student::FIELDS_MAP['id'] . "=:id;";
             $stmt = $conn->prepare($sql);
-            $resutl = $stmt->execute($values);
-            $json_response = ['result' =>  $resutl];
+            $result = $stmt->execute($values);
+            $json_response = ['result' =>  $result];
         } catch (Exception $e) {
             $json_response = ['error' => $e->getMessage()];
         }

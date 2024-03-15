@@ -19,8 +19,8 @@ if ($check_conn === true) {
             InscriptionSub::FIELDS_MAP[$fk_idStudent] . "=:" . $fk_idStudent . " AND " . 
             InscriptionSub::FIELDS_MAP[$fk_idSchedule] . "=:" . $fk_idSchedule . ";";
             $stmt = $conn->prepare($sql);
-            $resutl = $stmt->execute($values);
-            $json_response = ['result' =>  $resutl];
+            $result = $stmt->execute($values);
+            $json_response = ['result' =>  $result];
         } catch (Exception $e) {
             $json_response = ['error' => $e->getMessage()];
         }
