@@ -56,13 +56,20 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                 </h3>
                             <?php } ?>
                             <div class="text-center">
-                                <a class="btn btn-info" href="?view=<?php echo $_GET['view']; ?>&module=<?php echo $module->get_id(); ?>&new=activity"
-                                role="button">&#x2795;</a>
+                                <a
+                                    class="btn btn-info"
+                                    href="?view=<?php echo $_GET['view']; ?>&module=<?php echo $module->get_id(); ?>&new=activity"
+                                    role="button"
+                                >&#x2795;</a>
                             </div>
                         </div>
                     <?php } ?>
                     <div class="text-center">
-                        <a class="btn btn-primary btn-lg my-1" href="?view=<?php echo $_GET['view']; ?>&new=module" role="button">&#x2795;</a>
+                        <a
+                            class="btn btn-primary btn-lg my-1"
+                            href="?view=<?php echo $_GET['view']; ?>&new=module"
+                            role="button"
+                        >&#x2795;</a>
                     </div>
                 </div>
                 <div class="col-9 border position-relative">

@@ -67,7 +67,7 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
             <input type="number" id="schedule-id" readonly hidden value="<?php echo $schedule->get_id(); ?>">
             <input type="text" id="type-id" readonly hidden value="<?php echo $type; ?>">
             <div class="row h-100">
-                <div class="col-3 border" id="modules">
+                <div class="col-3 border pb-5 position-relative" id="modules">
                     <?php $_get_module = isset($_GET['module']) ? (int) $_GET['module'] : 0; ?>
                     <?php $_get_activity = isset($_GET['activity']) ? (int) $_GET['activity'] : 0; ?>
                     <?php foreach ($modules as $module) { ?>
@@ -83,6 +83,10 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                             <?php } ?>
                         </div>
                     <?php } ?>
+                    <a 
+                        class="btn btn-primary btn-lg position-absolute bottom-0 start-50 translate-middle-x my-3"
+                        href="?view=<?php echo $_GET['view']; ?>&type=<?php echo $_GET['type']; ?>&forums=view"
+                    >Ver Foros</a>
                 </div>
                 <div class="col-9 border">
                     <?php if (count($_GET) == 2) { ?>
@@ -118,6 +122,52 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                 }
                             }
                         ?>
+                    <?php } else if (isset($_GET['forums'])) { ?>
+                        <?php $_get_forums = $_GET['forums'] ?>
+                        <?php if (strcasecmp($_get_forums, "view") == 0) { ?>
+                            <?php $forums = Forum::findByCondition($conn, new Forum(), 'fk_course', $course->get_id()) ?>
+                            <?php foreach ($forums as $forum) { ?>
+                                <?php $author = User::findbyId($conn, new User(), $forum->get_fk_author()); ?>
+                                <div class="border mt-3 mx-3 ps-5 py-1 row">
+                                    <div class="col-12 col-md-8 row">
+                                        <div class="col-auto d-flex align-items-center">
+                                            <i class="fi fs-1 <?php echo $forum->get_state() ? "fi-rr-add text-success" : "fi-rr-circle-xmark text-danger"?>"></i>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a
+                                                class="fs-2"
+                                                href="?view=<?php echo $_GET['view']; ?>&type=<?php echo $_GET['type']; ?>&forums=<?php echo $forum->get_id(); ?>"
+                                            ><?php echo $forum->get_title(); ?></a>
+                                            <p>Author: <em><?php echo $author->get_full_name(); ?></em></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4 g-1 border-start row">
+                                        <div class="col-6 d-flex flex-column align-items-end justify-content-center">
+                                            <p class="m-0">Actualizado:</p>
+                                            <p class="m-0">Creado:</p>
+                                        </div>
+                                        <div class="col-6 d-flex flex-column align-items-start justify-content-center">
+                                            <p
+                                                class="m-0 date-style"
+                                                title="<?php echo $forum->get_updated_at(); ?>"
+                                            ><?php echo time_diff($forum->get_updated_at()); ?></p>
+                                            <p
+                                                class="m-0 date-style"
+                                                title="<?php echo $forum->get_created_at(); ?>"
+                                            ><?php echo time_diff($forum->get_created_at()); ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                            <div class="text-center">
+                                <a 
+                                    class="btn btn-info btn-lg my-3"
+                                    href="?view=<?php echo $_GET['view']; ?>&type=<?php echo $_GET['type']; ?>&forums=new"
+                                >Nuevo Foro</a>
+                            </div>
+                        <?php } else if (strcasecmp($_get_forums, "new") == 0) { ?>
+
+                        <?php } ?>
                     <?php } ?>
                 </div>
             </div>

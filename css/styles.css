@@ -6,6 +6,10 @@
     --img-logo-navbar-size: 36px;
 }
 
+/* * {
+    outline: 1px solid red;
+} */
+
 main {
     flex-basis: 400px;
 }
@@ -105,4 +109,10 @@ ul.nav.nav-tabs {
     /* display: block; */
     max-height: 100%;
     transition: max-height 0.25s ease-in;
+}
+
+.date-style {
+    text-decoration-style: dotted;
+    text-decoration-line: underline;
+    cursor: pointer;
 }

@@ -12,6 +12,7 @@
     include_once 'lib/inscription_sub.php';
     include_once 'lib/module.php';
     include_once 'lib/activity.php';
+    include_once 'lib/forum.php';
     include_once "service/connection.php";
     $check_conn = connectToDB();
     if ($check_conn !== true) {
