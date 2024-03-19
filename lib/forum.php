@@ -8,7 +8,7 @@ class Forum extends ORM {
     protected int $fk_course;
     protected int $fk_author;
     protected string $title;
-    protected string $message;
+    protected string $content;
     protected bool $state;
     protected string $created_at;
     protected string $updated_at;
@@ -18,13 +18,17 @@ class Forum extends ORM {
         'fk_course' => 'fk_curso',
         'fk_author' => 'fk_autor',
         'title' => 'titulo',
-        'message' => 'mensaje',
+        'content' => 'contenido',
         'state' => 'estado',
         'created_at' => 'created_at',
         'updated_at' => 'updated_at',
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
+        'fk-course' => 'fk_curso',
+        'fk-author' => 'fk_autor',
+        'title' => 'titulo',
+        'content' => 'contenido',
     ];
 
     function __construct() {
@@ -34,7 +38,7 @@ class Forum extends ORM {
         $this->fk_course = 0;
         $this->fk_author = 0;
         $this->title = "";
-        $this->message = "";
+        $this->content = "";
         $this->state = false;
         $this->created_at = "";
         $this->updated_at = "";
@@ -80,13 +84,13 @@ class Forum extends ORM {
         $this->title = $title;
     }
 
-    public function get_message(): string {
-        return $this->message;
+    public function get_content(): string {
+        return $this->content;
     }
 
-    public function set_message(string $message): void {
-        if (is_null($message)) return;
-        $this->message = $message;
+    public function set_content(string $content): void {
+        if (is_null($content)) return;
+        $this->content = $content;
     }
 
     public function get_state(): bool {

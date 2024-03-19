@@ -117,7 +117,7 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                 <div class="m-3">
                                     <label class="form-label" for="content">Contenido</label>
                                     <div class="input-group has-validation">
-                                        <span class="input-group-text"><i class="fi fi-rr-browser"></i></span>
+                                        <span class="input-group-text"><i class="fi fi-rr-blog-pencil"></i></span>
                                         <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
                                         <div id="feedback-content" class="invalid-feedback"></div>
                                     </div>
@@ -158,7 +158,7 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                 <div class="m-3">
                                     <label class="form-label" for="content">Contenido</label>
                                     <div class="input-group has-validation">
-                                        <span class="input-group-text"><i class="fi fi-rr-browser"></i></span>
+                                        <span class="input-group-text"><i class="fi fi-rr-blog-pencil"></i></span>
                                         <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
                                         <div id="feedback-content" class="invalid-feedback"></div>
                                     </div>
@@ -231,7 +231,7 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                     <div class="m-3">
                                         <label class="form-label" for="content">Contenido</label>
                                         <div class="input-group has-validation">
-                                            <span class="input-group-text"><i class="fi fi-rr-browser"></i></span>
+                                            <span class="input-group-text"><i class="fi fi-rr-blog-pencil"></i></span>
                                             <textarea class="form-control" id="content" name="content" rows="10" required 
                                                     alt="<?php echo $content; ?>"><?php echo $content; ?></textarea>
                                             <div id="feedback-content" class="invalid-feedback"></div>
@@ -304,7 +304,7 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                     <div class="m-3">
                                         <label class="form-label" for="content">Contenido</label>
                                         <div class="input-group has-validation">
-                                            <span class="input-group-text"><i class="fi fi-rr-browser"></i></span>
+                                            <span class="input-group-text"><i class="fi fi-rr-blog-pencil"></i></span>
                                             <textarea class="form-control" id="content" name="content" rows="10" required 
                                                     alt="<?php echo $content; ?>"><?php echo $content; ?></textarea>
                                             <div id="feedback-content" class="invalid-feedback"></div>

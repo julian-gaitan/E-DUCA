@@ -166,7 +166,46 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                 >Nuevo Foro</a>
                             </div>
                         <?php } else if (strcasecmp($_get_forums, "new") == 0) { ?>
-
+                            <div class="p-3">
+                                <h1 class="text-center">Nuevo Foro</h1>
+                            </div>
+                            <form action="" method="post" id="formNewForum" novalidate>
+                                <div class="m-3 d-none">
+                                    <label class="form-label" for="fk-course">Curso</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"></span>
+                                        <input class="form-control" type="number" id="fk-course" name="fk-course" readonly hidden 
+                                        value="<?php echo $course->get_id(); ?>">
+                                    </div>
+                                </div>
+                                <div class="m-3 d-none">
+                                    <label class="form-label" for="fk-author">Author</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"></span>
+                                        <input class="form-control" type="number" id="fk-author" name="fk-author" readonly hidden 
+                                        value="<?php echo $user->get_id(); ?>">
+                                    </div>
+                                </div>
+                                <div class="m-3">
+                                    <label class="form-label" for="title">Título</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
+                                        <input class="form-control" type="text" id="title" name="title" required>
+                                        <div id="feedback-title" class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="m-3">
+                                    <label class="form-label" for="content">Contenido</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text"><i class="fi fi-rr-blog-pencil"></i></span>
+                                        <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                                        <div id="feedback-content" class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                                <div class="m-3 text-center">
+                                    <button type="submit" class="btn btn-warning btn-lg fw-bold">Crear</button>
+                                </div>
+                            </form>
                         <?php } ?>
                     <?php } ?>
                 </div>
