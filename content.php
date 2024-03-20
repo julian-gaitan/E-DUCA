@@ -44,6 +44,7 @@ if (!$valid) {
 }
 $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course());
 $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->get_id());
+update_windows_datetime();
 ?>
 
 <!DOCTYPE html>
@@ -131,14 +132,14 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                 <div class="border mt-3 mx-3 ps-5 py-1 row">
                                     <div class="col-12 col-md-8 row">
                                         <div class="col-auto d-flex align-items-center">
-                                            <i class="fi fs-1 <?php echo $forum->get_state() ? "fi-rr-add text-success" : "fi-rr-circle-xmark text-danger"?>"></i>
+                                            <i class="fi fs-1 <?php echo $forum->get_state() ? "fi-rr-add text-success" : "fi-rr-circle-xmark text-warning"?>"></i>
                                         </div>
                                         <div class="col-auto">
                                             <a
                                                 class="fs-2"
                                                 href="?view=<?php echo $_GET['view']; ?>&type=<?php echo $_GET['type']; ?>&forums=<?php echo $forum->get_id(); ?>"
                                             ><?php echo $forum->get_title(); ?></a>
-                                            <p>Author: <em><?php echo $author->get_full_name(); ?></em></p>
+                                            <p>Autor: <em><?php echo $author->get_full_name(); ?></em></p>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-4 g-1 border-start row">
@@ -186,6 +187,14 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                         value="<?php echo $user->get_id(); ?>">
                                     </div>
                                 </div>
+                                <div class="m-3 d-none">
+                                    <label class="form-label" for="state">Estado</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"></span>
+                                        <input class="form-control" type="number" id="state" name="state" readonly hidden 
+                                        value=1>
+                                    </div>
+                                </div>
                                 <div class="m-3">
                                     <label class="form-label" for="title">Título</label>
                                     <div class="input-group has-validation">
@@ -206,6 +215,85 @@ $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->ge
                                     <button type="submit" class="btn btn-warning btn-lg fw-bold">Crear</button>
                                 </div>
                             </form>
+                        <?php } else { ?>
+                            <?php $forum = Forum::findbyId($conn, new Forum(), (int) $_GET['forums']) ?>
+                            <?php $author = User::findbyId($conn, new User(), $forum->get_fk_author()); ?>
+                            <?php if ($forum->get_id() > 0) { ?>
+                                <div class="border m-3 px-5 py-3">
+                                    <form action="" method="post" id="formModifyForum" novalidate>
+                                        <div class="row">
+                                            <div class="col-8 d-flex align-items-center">
+
+                                                <input type="number" id="id" name="id" readonly hidden 
+                                                value="<?php echo $forum->get_id(); ?>">
+
+                                                <input type="number" id="state" name="state" readonly hidden 
+                                                value=<?php echo $forum->get_state() ? 1 : 0; ?>>
+
+                                                <div class="input-group has-validation d-none">
+                                                    <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
+                                                    <input class="form-control fs-3" type="text" id="title" name="title" required
+                                                           value="<?php echo $forum->get_title(); ?>"
+                                                    >
+                                                    <div id="feedback-title" class="invalid-feedback"></div>
+                                                </div>
+                                                <h1><?php echo $forum->get_title(); ?></h1>
+                                            </div>
+                                            <div class="col-4 row">
+                                                <div class="col-6 d-flex flex-column align-items-end justify-content-center">
+                                                    <p class="m-0">Autor:</p>
+                                                    <p class="m-0">Actualizado:</p>
+                                                    <p class="m-0">Creado:</p>
+                                                </div>
+                                                <div class="col-6 d-flex flex-column align-items-start justify-content-center">
+                                                    <p class="m-0"><em><?php echo $author->get_full_name(); ?></em></p>
+                                                    <p
+                                                        class="m-0 date-style"
+                                                        title="<?php echo $forum->get_updated_at(); ?>"
+                                                    ><?php echo time_diff($forum->get_updated_at()); ?></p>
+                                                    <p
+                                                        class="m-0 date-style"
+                                                        title="<?php echo $forum->get_created_at(); ?>"
+                                                    ><?php echo time_diff($forum->get_created_at()); ?></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group has-validation my-3 d-none">
+                                            <span class="input-group-text"><i class="fi fi-rr-blog-pencil"></i></span>
+                                            <textarea class="form-control" id="content" name="content" rows="10" required><?php echo $forum->get_content(); ?></textarea>
+                                            <div id="feedback-content" class="invalid-feedback"></div>
+                                        </div>
+                                        <p class="my-3"><?php echo nl2br($forum->get_content()); ?></p>
+                                        <?php if ($user->get_id() == $author->get_id()) { ?>
+                                            <div class="d-flex justify-content-end">
+                                                <button id="post-modify" class="btn btn-primary ms-3" type="button" title="Modificar">
+                                                    <i class="fi fi-rr-pen-field align-middle"></i>
+                                                </button>
+                                                <?php if ($forum->get_state()) { ?>
+                                                    <button id="post-close" class="btn btn-warning ms-3" type="button" title="Cerrar">
+                                                        <i class="fi fi-rr-circle-xmark align-middle"></i>
+                                                    </button>
+                                                <?php } else { ?>
+                                                    <button id="post-open" class="btn btn-success ms-3" type="button" title="Abrir">
+                                                        <i class="fi fi-rr-add align-middle"></i>
+                                                    </button>
+                                                <?php } ?>
+                                                <button id="post-delete" class="btn btn-danger ms-3" type="button" title="Borrar">
+                                                    <i class="fi fi-rr-trash align-middle"></i>
+                                                </button>
+                                            </div>
+                                            <div class="d-flex justify-content-end d-none">
+                                                <button id="post-save" class="btn btn-success ms-3" type="submit" title="Guardar">
+                                                    <i class="fi fi-rr-disk align-middle"></i>
+                                                </button>
+                                                <button id="post-cancel" class="btn btn-warning ms-3" type="button" title="Cancelar">
+                                                    <i class="fi fi-rr-cross-small align-middle"></i>
+                                                </button>
+                                            </div>
+                                        <?php } ?>
+                                    </form>
+                                </div>
+                            <?php } ?>
                         <?php } ?>
                     <?php } ?>
                 </div>

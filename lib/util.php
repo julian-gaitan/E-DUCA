@@ -1,8 +1,18 @@
 <?php
+$D = "01/01/2020";
+$T = "23:59";
 
-function time_diff(string $date) : string {
+// TODO: Check if breaks in other OS different to Windows
+function update_windows_datetime() {
+    global $D;
+    global $T;
     $D = exec('date /T');
     $T = exec('time /T');
+}
+
+function time_diff(string $date) : string {
+    global $D;
+    global $T;
     $DT = str_replace("/","-",$D." ".$T);
     $datetime_then = new DateTime($date);
     $datetime_now = new DateTime($DT);
@@ -28,7 +38,7 @@ function time_diff(string $date) : string {
         $quantity = $diff->s;
         $measure = 'segundo' . ($diff->s > 1 ? 's' : '');
     }
-    return $quantity . ' ' . $measure;
+    return $quantity > 0 ? ($quantity . ' ' . $measure) : ('1 segundo');
 }
 
 function to_script(string $script) {

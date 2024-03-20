@@ -29,6 +29,7 @@ class Forum extends ORM {
         'fk-author' => 'fk_autor',
         'title' => 'titulo',
         'content' => 'contenido',
+        'state' => 'estado',
     ];
 
     function __construct() {
