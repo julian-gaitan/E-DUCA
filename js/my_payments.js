@@ -24,7 +24,11 @@ $(function () {
                         alert('Creación exitosa');
                         window.location.replace("my_payments.php");
                     } else {
-                        alert("Hubo un problema, por favor intente más tarde");
+                        if(json_response['error'].toLowerCase().includes("duplicate entry")) {
+                            alert("No se pudo completar el proceso porque el Número ingresado ya se encuentra en nuestra base de datos.");
+                        } else {
+                            alert("Hubo un problema, por favor intente más tarde");
+                        }
                         console.log(json_response);
                     }
                 })

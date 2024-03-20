@@ -36,7 +36,7 @@ if ($check_conn === true) {
             }
             $sql = "UPDATE " . Activity::TABLE_NAME . " SET " . implode(", ", $columns_values) . " WHERE " . Activity::FIELDS_MAP['id'] . "=:" . Activity::FIELDS_MAP['id'] . ";";
             $stmt = $conn->prepare($sql);
-            $resutl = $stmt->execute($values);
+            $result = $stmt->execute($values);
             // FILE OPERATIONS
             if (isset($_POST['content'])) {                
                 $module = Module::findbyId($conn, new Module(), $_POST['fk-module']);
@@ -50,7 +50,7 @@ if ($check_conn === true) {
                 fclose($myfile);
             }
             //
-            $json_response = ['result' =>  $resutl];
+            $json_response = ['result' =>  $result];
         } catch (Exception $e) {
             $json_response = ['error' => $e->getMessage()];
         }

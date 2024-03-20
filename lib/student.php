@@ -13,7 +13,7 @@ class Student extends ORM {
     ];
     public const INPUTS_MAP = [
         'id' => 'id',
-        'subscription' => 'suscripcion',
+        'subscription' => '',
     ];
 
     function __construct() {

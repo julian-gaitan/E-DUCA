@@ -34,8 +34,8 @@ if ($check_conn === true) {
             }
             $sql = "UPDATE " . Schedule::TABLE_NAME . " SET " . implode(", ", $columns_values) . " WHERE " . Schedule::FIELDS_MAP['id'] . "=:" . Schedule::FIELDS_MAP['id'] . ";";
             $stmt = $conn->prepare($sql);
-            $resutl = $stmt->execute($values);
-            $json_response = ['result' =>  $resutl];
+            $result = $stmt->execute($values);
+            $json_response = ['result' =>  $result];
         } catch (Exception $e) {
             $json_response = ['error' => $e->getMessage()];
         }

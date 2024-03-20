@@ -11,6 +11,9 @@ if ($check_conn === true) {
         $columns_ref = [];
         $values = [];
         foreach (Student::INPUTS_MAP as $key => $value) {
+            if (strlen($value) == 0) {
+                continue;
+            }
             $columns[] = $value;
             $columns_ref[] = ':' . $value;
             $values[':' . $value] = isset($_POST[$key]) ? htmlspecialchars($_POST[$key]) : null;

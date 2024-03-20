@@ -35,7 +35,7 @@ if ($check_conn === true) {
             }
             $sql = "UPDATE " . Module::TABLE_NAME . " SET " . implode(", ", $columns_values) . " WHERE " . Module::FIELDS_MAP['id'] . "=:" . Module::FIELDS_MAP['id'] . ";";
             $stmt = $conn->prepare($sql);
-            $resutl = $stmt->execute($values);
+            $result = $stmt->execute($values);
             // FILE OPERATIONS
             if (isset($_POST['content'])) {
                 $folder = Course::findbyId($conn, new Course(), $_POST['fk-course'])->get_folder();
@@ -44,7 +44,7 @@ if ($check_conn === true) {
                 fclose($myfile);
             }
             //
-            $json_response = ['result' =>  $resutl];
+            $json_response = ['result' =>  $result];
         } catch (Exception $e) {
             $json_response = ['error' => $e->getMessage()];
         }

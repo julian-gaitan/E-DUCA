@@ -16,6 +16,22 @@
                 $pages = $pages . ",";
             }
             $pages = $pages . $role->get_pages();
+            switch ($role->get_type()) {
+                case 'ESTUDIANTE':
+                    $student = Student::findbyId($conn, new Student(), $user->get_id());
+                    if ($student->get_id() == 0) {
+                        PHP_PostRequest($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'], 'service/add_student.php', ['id' => $user->get_id()]);
+                    }
+                    break;
+                case 'PROFESOR':
+                    $teacher = Teacher::findbyId($conn, new Teacher(), $user->get_id());
+                    if ($teacher->get_id() == 0) {
+                        PHP_PostRequest($_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'], 'service/add_teacher.php', ['id' => $user->get_id()]);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
     $pages_auth = explode(",", $pages);
