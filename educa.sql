@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2024 at 08:09 PM
+-- Generation Time: Mar 20, 2024 at 04:39 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -96,7 +96,7 @@ INSERT INTO `tbl_cursos` (`id`, `fk_profesor`, `nombre`, `descripcion`, `lista_c
 (1, 3, 'HTML5, CSS3 Y JavaScript, jQuery', 'Aprende HTML5, CSS3 Y JavaScript de manera rápida y efectiva.', 'HTML\r\nFormularios\r\nCSS3\r\nFlexBox\r\nJavaScript\r\nDOM', 'Software Web\r\nJavaScript', 'HTML\r\nCSS\r\nJavaScript', '1702264978-835'),
 (2, 3, 'jQuery desde 0', 'Aprenda jQuery desde los conceptos básicos hasta un manejo avanzado del lenguaje.', 'Selectores\nAtributos\nEventos\nEfectos\nAjax', 'Desarrollo Web\njQuery', 'JavaScript\njQuery', '1702265941-624'),
 (3, 1, 'Tomcat para Administradores', 'Aprende a usar el servidor web Tomcat para todo tipo de aplicaciones', 'Instalación\r\nConfiguración\r\nApache Web Server\r\nDespliegue\r\nClusters', 'Desarrollo Web\r\nTomcat', 'Apache\r\nWebServer\r\nTomcat', '1702266769-545'),
-(6, 3, 'Nombre', 'Descricion', 'lista1\r\nlista2\r\nlista3', 'progracion web', 'html\r\nphp', '1707538838-375');
+(6, 3, 'Nombre', 'Descripción', 'lista1\r\nlista2\r\nlista3', 'progracion web', 'html\r\nphp', '1707538838-375');
 
 -- --------------------------------------------------------
 
@@ -115,7 +115,34 @@ CREATE TABLE `tbl_estudiantes` (
 
 INSERT INTO `tbl_estudiantes` (`id`, `suscripcion`) VALUES
 (2, 0),
+(7, 0),
 (1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_foros`
+--
+
+CREATE TABLE `tbl_foros` (
+  `id` int(11) NOT NULL,
+  `fk_curso` int(11) NOT NULL,
+  `fk_autor` int(11) NOT NULL,
+  `titulo` varchar(100) NOT NULL,
+  `contenido` varchar(1000) NOT NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_foros`
+--
+
+INSERT INTO `tbl_foros` (`id`, `fk_curso`, `fk_autor`, `titulo`, `contenido`, `estado`, `created_at`, `updated_at`) VALUES
+(1, 3, 1, 'Duda', 'Tengo x y Y dudas\nTengo dudas', 1, '2024-03-16 01:19:55', '2024-03-20 01:55:20'),
+(9, 3, 1, 'Prueba', 'Probando', 1, '2024-03-19 00:39:01', '2024-03-19 00:39:01'),
+(11, 3, 7, 'mas', 'dudas', 1, '2024-03-19 04:09:00', '2024-03-19 04:09:00');
 
 -- --------------------------------------------------------
 
@@ -127,6 +154,13 @@ CREATE TABLE `tbl_inscripciones_pago` (
   `idEstudiante` int(11) NOT NULL,
   `idCronograma` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_inscripciones_pago`
+--
+
+INSERT INTO `tbl_inscripciones_pago` (`idEstudiante`, `idCronograma`) VALUES
+(7, 4);
 
 -- --------------------------------------------------------
 
@@ -209,7 +243,7 @@ CREATE TABLE `tbl_roles` (
 
 INSERT INTO `tbl_roles` (`id`, `valor`, `tipo`, `paginas`, `tabla`) VALUES
 (1, 2, 'ADMIN', 'manage_courses,manage_schedules,manage_users', ''),
-(2, 4, 'ESTUDIANTE', 'my_courses,my_payments', ''),
+(2, 4, 'ESTUDIANTE', 'my_courses,my_payments,content', ''),
 (3, 8, 'PROFESOR', 'courses_content,courses_stats,content,content_edit', '');
 
 -- --------------------------------------------------------
@@ -259,7 +293,8 @@ CREATE TABLE `tbl_tarjetas_debito_credito` (
 
 INSERT INTO `tbl_tarjetas_debito_credito` (`id`, `numero`, `nombre`, `fecha_vencimiento`, `cvv`, `fk_estudiante`) VALUES
 (1, 1234567890123456, 'VISA CLASICA', '2029-06-01', 556, 1),
-(3, 1000000000000001, 'Master Card D-', '2031-06-01', 951, 2);
+(3, 1000000000000001, 'Master Card D-', '2031-06-01', 951, 2),
+(15, 1000000000000002, 'abc', '2024-01-01', 100, 7);
 
 -- --------------------------------------------------------
 
@@ -275,7 +310,7 @@ CREATE TABLE `tbl_usuarios` (
   `correo` varchar(30) NOT NULL,
   `contrasena` varchar(30) NOT NULL,
   `cumpleanos` date DEFAULT NULL,
-  `rol` int(11) NOT NULL DEFAULT 1
+  `rol` int(11) NOT NULL DEFAULT 5
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -286,7 +321,7 @@ INSERT INTO `tbl_usuarios` (`id`, `nombres`, `apellidos`, `usuario`, `correo`, `
 (1, 'Julian', 'Gaitan', 'Hafgufa', 'a@b.com', 'asdASD123', '1989-10-30', 15),
 (2, 'pedro', 'perez', 'pedrop', 'ac@eb.com', 'qwerQWER12', '2000-06-15', 5),
 (3, 'Jon', 'Doe', 'JonhDoe', 'abc@xyz.org', 'Contrasena987', '1950-01-01', 9),
-(4, 'Nombre', 'Apellido', 'usuario', 'correo@cualquiera.com', 'ADFasdf123', '2024-02-08', 1);
+(7, 'Nombre', 'Apellido', 'usuario', 'correo@cualquiera.com', 'conTRA123', '2023-03-01', 5);
 
 --
 -- Indexes for dumped tables
@@ -319,6 +354,12 @@ ALTER TABLE `tbl_cursos`
 ALTER TABLE `tbl_estudiantes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_idEstudiante_idSuscripciones` (`suscripcion`);
+
+--
+-- Indexes for table `tbl_foros`
+--
+ALTER TABLE `tbl_foros`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_inscripciones_pago`
@@ -383,7 +424,7 @@ ALTER TABLE `tbl_usuarios`
 -- AUTO_INCREMENT for table `tbl_actividades`
 --
 ALTER TABLE `tbl_actividades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbl_cronogramas`
@@ -398,10 +439,16 @@ ALTER TABLE `tbl_cursos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `tbl_foros`
+--
+ALTER TABLE `tbl_foros`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT for table `tbl_modulos`
 --
 ALTER TABLE `tbl_modulos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_roles`
@@ -419,13 +466,13 @@ ALTER TABLE `tbl_suscripciones`
 -- AUTO_INCREMENT for table `tbl_tarjetas_debito_credito`
 --
 ALTER TABLE `tbl_tarjetas_debito_credito`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tbl_usuarios`
 --
 ALTER TABLE `tbl_usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
