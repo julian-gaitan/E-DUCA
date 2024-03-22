@@ -1,11 +1,11 @@
 <?php
 
 include_once 'connection.php';
-include_once '../lib/forum.php';
+include_once '../lib/response.php';
 
-$FIELDS = array_keys(Forum::INPUTS_MAP);
+$FIELDS = array_keys(Response::INPUTS_MAP);
 unset($FIELDS[array_search('id', $FIELDS)]);
-unset($FIELDS[array_search('fk-course', $FIELDS)]);
+unset($FIELDS[array_search('fk-forum', $FIELDS)]);
 unset($FIELDS[array_search('fk-author', $FIELDS)]);
 
 $is_valid;
@@ -19,15 +19,7 @@ if ($check_conn === true) {
             $value = $_POST[$field];
             $check;
             switch ($field) {
-                case 'title':
-                    $value = trim($value);
-                    $pattern = "/^.{3,100}$/";
-                    $check = preg_match($pattern, $value) === 1;
-                    if (!$check) {
-                        $validation[$field]["reason"] = "Debe ser entre 3 y 100 caracteres.";
-                    }
-                    break;
-                case 'content':
+                case 'response':
                     $value = trim($value);
                     $check = strlen($value) >= 3 && strlen($value) <= 1000;
                     if (!$check) {

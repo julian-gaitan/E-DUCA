@@ -124,12 +124,19 @@ update_windows_datetime();
                             }
                         ?>
                     <?php } else if (isset($_GET['forums'])) { ?>
+                        <?php
+                            function compareByTimestamp($A, $B) {
+                                return strtotime($A->get_created_at()) > strtotime($B->get_created_at()) ? $A : $B;
+                            }
+                        ?>
                         <?php $_get_forums = $_GET['forums'] ?>
                         <?php if (strcasecmp($_get_forums, "view") == 0) { ?>
                             <?php $forums = Forum::findByCondition($conn, new Forum(), 'fk_course', $course->get_id()) ?>
                             <?php foreach ($forums as $forum) { ?>
                                 <?php $author = User::findbyId($conn, new User(), $forum->get_fk_author()); ?>
-                                <div class="border mt-3 mx-3 ps-5 py-1 row">
+                                <?php $responses = Response::findByCondition($conn, new Response(), 'fk_forum', $forum->get_id()); ?>
+                                <?php $last_activity = count($responses) > 0 ? array_reduce($responses, "compareByTimestamp", new Response()) : $forum; ?>
+                                <div class="border mt-3 mx-3 ps-5 py-1 row gy-0">
                                     <div class="col-12 col-md-8 row">
                                         <div class="col-auto d-flex align-items-center">
                                             <i class="fi fs-1 <?php echo $forum->get_state() ? "fi-rr-add text-success" : "fi-rr-circle-xmark text-warning"?>"></i>
@@ -142,16 +149,18 @@ update_windows_datetime();
                                             <p>Autor: <em><?php echo $author->get_full_name(); ?></em></p>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-4 g-1 border-start row">
+                                    <div class="col-12 col-md-4 gx-1 gy-0 py-2 border-start row">
                                         <div class="col-6 d-flex flex-column align-items-end justify-content-center">
+                                            <p class="m-0 fs-5">Respuestas:</p>
                                             <p class="m-0">Actualizado:</p>
                                             <p class="m-0">Creado:</p>
                                         </div>
                                         <div class="col-6 d-flex flex-column align-items-start justify-content-center">
+                                            <p class="m-0 fs-5"><?php echo count($responses); ?></p>
                                             <p
                                                 class="m-0 date-style"
-                                                title="<?php echo $forum->get_updated_at(); ?>"
-                                            ><?php echo time_diff($forum->get_updated_at()); ?></p>
+                                                title="<?php echo $last_activity->get_created_at(); ?>"
+                                            ><?php echo time_diff($last_activity->get_created_at()); ?></p>
                                             <p
                                                 class="m-0 date-style"
                                                 title="<?php echo $forum->get_created_at(); ?>"
@@ -219,6 +228,7 @@ update_windows_datetime();
                             <?php $forum = Forum::findbyId($conn, new Forum(), (int) $_GET['forums']) ?>
                             <?php $author = User::findbyId($conn, new User(), $forum->get_fk_author()); ?>
                             <?php if ($forum->get_id() > 0) { ?>
+                                <?php $responses = Response::findByCondition($conn, new Response(), 'fk_forum', $forum->get_id()); ?>
                                 <div class="border m-3 px-5 py-3">
                                     <form action="" method="post" id="formModifyForum" novalidate>
                                         <div class="row">
@@ -241,20 +251,17 @@ update_windows_datetime();
                                             </div>
                                             <div class="col-4 row">
                                                 <div class="col-6 d-flex flex-column align-items-end justify-content-center">
-                                                    <p class="m-0">Autor:</p>
-                                                    <p class="m-0">Actualizado:</p>
-                                                    <p class="m-0">Creado:</p>
+                                                    <p class="m-0">Por:</p>
+                                                    <p class="m-0">Hace:</p>
+                                                    <p class="m-0">Respuestas:</p>
                                                 </div>
                                                 <div class="col-6 d-flex flex-column align-items-start justify-content-center">
-                                                    <p class="m-0"><em><?php echo $author->get_full_name(); ?></em></p>
-                                                    <p
-                                                        class="m-0 date-style"
-                                                        title="<?php echo $forum->get_updated_at(); ?>"
-                                                    ><?php echo time_diff($forum->get_updated_at()); ?></p>
+                                                    <p class="m-0 fst-italic"><?php echo $author->get_full_name(); ?></p>
                                                     <p
                                                         class="m-0 date-style"
                                                         title="<?php echo $forum->get_created_at(); ?>"
                                                     ><?php echo time_diff($forum->get_created_at()); ?></p>
+                                                    <p class="m-0 fw-bold"><?php echo count($responses); ?></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -263,7 +270,14 @@ update_windows_datetime();
                                             <textarea class="form-control" id="content" name="content" rows="10" required><?php echo $forum->get_content(); ?></textarea>
                                             <div id="feedback-content" class="invalid-feedback"></div>
                                         </div>
-                                        <p class="my-3"><?php echo nl2br($forum->get_content()); ?></p>
+                                        <p class="my-3 position-relative"><?php echo nl2br($forum->get_content()); ?>
+                                            <?php if ($forum->get_created_at() != $forum->get_updated_at()) { ?>
+                                                <span 
+                                                    class="position-absolute bottom-0 end-0 opacity-50 fst-italic cursor-pointer"
+                                                    title="<?php echo $forum->get_updated_at() ?>"
+                                                >(editado)</span>
+                                            <?php } ?>
+                                        </p>
                                         <?php if ($user->get_id() == $author->get_id()) { ?>
                                             <div class="d-flex justify-content-end">
                                                 <button id="post-modify" class="btn btn-primary ms-3" type="button" title="Modificar">
@@ -292,6 +306,62 @@ update_windows_datetime();
                                             </div>
                                         <?php } ?>
                                     </form>
+                                </div>
+                                <div class="mx-5">
+                                    <?php foreach($responses as $response) { ?>
+                                        <div class="border px-4 py-3 position-relative">
+                                            <?php $author_resp = User::findbyId($conn, new User(), $response->get_fk_author()); ?>
+                                            <div class="mx-3 mb-3 d-flex opacity-75">
+                                                <div class="flex-grow-1">
+                                                    Por: <span class="fst-italic"><?php echo $author_resp->get_full_name(); ?></span>
+                                                </div>
+                                                <div class="flex-grow-1 text-end">
+                                                    Hace: <span class="date-style" title="<?php echo $response->get_created_at(); ?>">
+                                                    <?php echo time_diff($response->get_created_at()); ?></span>
+                                                </div>
+                                            </div>
+                                            <p class="m-0">
+                                                <?php echo $response->get_response(); ?>
+                                                <?php if ($response->get_created_at() != $response->get_updated_at()) { ?>
+                                                    <span 
+                                                        class="position-absolute bottom-0 end-0 opacity-50 fst-italic m-3 cursor-pointer"
+                                                        title="<?php echo $response->get_updated_at() ?>"
+                                                    >(editado)</span>
+                                                <?php } ?>
+                                            </p>
+                                        </div>
+                                    <?php } ?>
+                                    <?php if ($user->get_id() != $author->get_id() && $forum->get_state()) { ?>
+                                        <form action="" method="post" id="formNewResponse" novalidate>
+                                            <div class="m-3 d-none">
+                                                <label class="form-label" for="fk-forum">Foro</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"></span>
+                                                    <input class="form-control" type="number" id="fk-forum" name="fk-forum" readonly hidden 
+                                                    value="<?php echo $forum->get_id(); ?>">
+                                                </div>
+                                            </div>
+                                            <div class="m-3 d-none">
+                                                <label class="form-label" for="fk-author">Author</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"></span>
+                                                    <input class="form-control" type="number" id="fk-author" name="fk-author" readonly hidden 
+                                                    value="<?php echo $user->get_id(); ?>">
+                                                </div>
+                                            </div>
+                                            <div class="m-3">
+                                                <div class="input-group has-validation">
+                                                    <label class="form-label" for="response"></label>
+                                                    <span class="input-group-text"><i class="fi fi-rr-blog-pencil"></i></span>
+                                                    <textarea class="form-control" id="response" name="response" rows="8" required></textarea>
+                                                    <div id="feedback-response" class="invalid-feedback">a</div>
+                                                </div>
+                                            </div>
+                                            <div class="m-3 text-center">
+                                                <button type="submit" class="btn btn-info btn-lg">Nueva Respuesta</button>
+                                            </div>
+                                        </form>
+                                    <?php } ?>
                                 </div>
                             <?php } ?>
                         <?php } ?>

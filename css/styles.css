@@ -116,3 +116,7 @@ ul.nav.nav-tabs {
     text-decoration-line: underline;
     cursor: pointer;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

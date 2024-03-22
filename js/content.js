@@ -41,7 +41,7 @@ $(function () {
 
     {
         const form = $('#formNewForum');
-        const inputs = $('#formNewForum input,select,textarea')
+        const inputs = $('#formNewForum :is(input,select,textarea)');
         const formSubmit = $('#formNewForum button[type="submit"]');
         formSubmit.on('click', validatedForm);
         form.on('submit', submitForm);
@@ -100,7 +100,7 @@ $(function () {
 
     {
         const form = $('#formModifyForum');
-        const inputs = $('#formModifyForum input,select,textarea');
+        const inputs = $('#formModifyForum :is(input,select,textarea)');
         const formSubmit = $('#formModifyForum button[type="submit"]');
 
         formSubmit.on('click', validatedForm);
@@ -236,5 +236,69 @@ $(function () {
                     });
             }
         });
+    }
+
+    {
+        const form = $('#formNewResponse');
+        const inputs = $('#formNewResponse :is(input,select,textarea)');
+        const formSubmit = $('#formNewResponse button[type="submit"]');
+        formSubmit.on('click', validatedForm);
+        form.on('submit', submitForm);
+
+        let forumId;
+        function validatedForm(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            $.post('service/validate_response.php', form.serialize())
+                .done(function (json_response) {
+                    if (json_response['isValid']) {
+                        forumId = $('#formNewResponse #fk-forum').val();
+                        form.trigger('submit');
+                    } else {
+                        let response_fields = json_response['fields'];
+                        inputs.each(function (index, input) {
+                            input = $(input);
+                            if (input.attr('hidden')) {
+                                return;
+                            }
+                            let feedback;
+                            if (feedback = response_fields[input.attr('name')]['reason']) {
+                                $('#feedback-' + input.attr('name')).text(feedback);
+                                input.removeClass('is-valid');
+                                input.addClass('is-invalid');
+                            } else {
+                                input.addClass('is-valid');
+                                input.removeClass('is-invalid');
+                            }
+                            console.log(input);
+                            console.log(feedback);
+                        });
+                    }
+                })
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
+                });
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            $.post('service/add_response.php', form.serialize())
+                .done(function (json_response) {
+                    if (json_response['result']) {
+                        console.log("content.php?view=" + scheduleId + "&type=" + typeId + "&forums=" + forumId);
+                        alert('Creación exitosa');
+                        window.location.replace("content.php?view=" + scheduleId + "&type=" + typeId + "&forums=" + forumId);
+                    } else {
+                        alert("Hubo un problema, por favor intente más tarde");
+                        console.log(json_response);
+                    }
+                })
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
+                });
+        }
     }
 });
