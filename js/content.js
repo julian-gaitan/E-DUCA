@@ -219,7 +219,7 @@ $(function () {
             if(confirm('¿Está seguro que desea borrar este Foro?')) {
                 const id = $('#formModifyForum #id').val();
                 $.post('service/delete_forum.php', {
-                    "id": id
+                    id,
                 })
                     .done(function (json) {
                         if (json['result']) {
@@ -300,5 +300,103 @@ $(function () {
                     console.log(response);
                 });
         }
+    }
+
+    {
+        $('button[id$="-response-modify"]').on('click', function (event) {
+            const id = $(this).attr('id').split('-')[0];
+            $(this).parent().addClass('d-none');
+            $(this).parent().next().removeClass('d-none');
+            $(`textarea#${id}-response`).parent().removeClass('d-none');
+            $(`textarea#${id}-response`).parent().next().addClass('d-none');
+        });
+
+        $('button[id$="-response-cancel"]').on('click', function (event) {
+            location.reload();
+        });
+    }
+
+    {
+        const buttonsSubmit = $('button[id$="-response-save"]');
+
+        buttonsSubmit.on('click', validatedForm);
+    
+        function validatedForm(event) {
+            const id = $(this).attr('id').split('-')[0];
+            const input = $(`textarea#${id}-response`);
+            
+            $.post('service/validate_response.php', {
+                id,
+                response: input.val(),
+            })
+                .done(function (json_response) {
+                    input.removeClass('is-valid');
+                    input.removeClass('is-invalid');
+                    if (json_response['isValid']) {
+                        submitForm(id);
+                    } else {                        
+                        let response_fields = json_response['fields'];
+                        let feedback;
+                        console.log(input.attr('name'));
+                        if (feedback = response_fields[input.attr('name')]['reason']) {
+                            $('#' +id+ '-feedback-' + input.attr('name')).text(feedback);
+                            input.addClass('is-invalid');
+                        } else {
+                            input.addClass('is-valid');
+                        }
+                    }
+                })
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
+                });
+        }
+        
+        function submitForm(id) {
+            const input = $(`textarea#${id}-response`);
+
+            $.post('service/modify_response.php', {
+                id,
+                response: input.val(),
+            })
+                .done(function (json_response) {
+                    if (json_response['result']) {
+                        location.reload();
+                    } else {
+                        alert("Hubo un problema, por favor intente más tarde");
+                        console.log(json_response);
+                    }
+                })
+                .fail(function (response) {
+                    alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    console.log(response);
+                });
+        }
+    }
+
+    {
+        const btnsDelete = $('button[id$="-response-delete"]');
+
+        btnsDelete.on('click', function(event) {
+            const id = $(this).attr('id').split('-')[0];
+            if(confirm('¿Está seguro que desea borrar esta Respuesta?')) {
+                $.post('service/delete_response.php', {
+                    id,
+                })
+                    .done(function (json) {
+                        if (json['result']) {
+                            alert("Respuesta eliminada de forma exitosa!");
+                            location.reload();
+                        } else {
+                            console.log(json);
+                            alert("NO se pudo eliminar la Respuesta:" + "\n\n" + json['error']);
+                        }
+                    })
+                    .fail(function (response) {
+                        console.log(response);
+                        alert(`Hubo un error en la aplicación: ${response.statusText}`);
+                    });
+            }
+        });
     }
 });

@@ -320,15 +320,48 @@ update_windows_datetime();
                                                     <?php echo time_diff($response->get_created_at()); ?></span>
                                                 </div>
                                             </div>
-                                            <p class="m-0">
+                                            <div class="input-group has-validation my-3 d-none">
+                                                <span class="input-group-text"><i class="fi fi-rr-blog-pencil"></i></span>
+                                                <textarea 
+                                                    class="form-control" 
+                                                    id="<?php echo $response->get_id(); ?>-response" 
+                                                    name="response" 
+                                                    rows="6" required><?php echo $response->get_response(); ?></textarea>
+                                                <div id="<?php echo $response->get_id(); ?>-feedback-response" class="invalid-feedback"></div>
+                                            </div>
+                                            <p class="mb-3 position-relative">
                                                 <?php echo $response->get_response(); ?>
                                                 <?php if ($response->get_created_at() != $response->get_updated_at()) { ?>
                                                     <span 
-                                                        class="position-absolute bottom-0 end-0 opacity-50 fst-italic m-3 cursor-pointer"
+                                                        class="position-absolute bottom-0 end-0 opacity-50 fst-italic cursor-pointer"
                                                         title="<?php echo $response->get_updated_at() ?>"
                                                     >(editado)</span>
                                                 <?php } ?>
                                             </p>
+                                            
+                                            <?php if ($user->get_id() == $response->get_fk_author() && $forum->get_state()) { ?>
+                                                <div class="d-flex justify-content-end">
+                                                    <button id="<?php echo $response->get_id(); ?>-response-modify" 
+                                                            class="btn btn-primary ms-3" type="button" title="Modificar">
+                                                        <i class="fi fi-rr-pen-field align-middle"></i>
+                                                    </button>
+                                                    <button id="<?php echo $response->get_id(); ?>-response-delete" 
+                                                            class="btn btn-danger ms-3" type="button" title="Borrar">
+                                                        <i class="fi fi-rr-trash align-middle"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex justify-content-end d-none">
+                                                    <button id="<?php echo $response->get_id(); ?>-response-save" 
+                                                            class="btn btn-success ms-3" type="button" title="Guardar">
+                                                        <i class="fi fi-rr-disk align-middle"></i>
+                                                    </button>
+                                                    <button id="<?php echo $response->get_id(); ?>-response-cancel" 
+                                                            class="btn btn-warning ms-3" type="button" title="Cancelar">
+                                                        <i class="fi fi-rr-cross-small align-middle"></i>
+                                                    </button>
+                                                </div>
+                                            <?php } ?>
+
                                         </div>
                                     <?php } ?>
                                     <?php if ($user->get_id() != $author->get_id() && $forum->get_state()) { ?>
