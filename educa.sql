@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 20, 2024 at 04:39 AM
+-- Generation Time: Mar 23, 2024 at 02:17 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -140,9 +140,9 @@ CREATE TABLE `tbl_foros` (
 --
 
 INSERT INTO `tbl_foros` (`id`, `fk_curso`, `fk_autor`, `titulo`, `contenido`, `estado`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, 'Duda', 'Tengo x y Y dudas\nTengo dudas', 1, '2024-03-16 01:19:55', '2024-03-20 01:55:20'),
-(9, 3, 1, 'Prueba', 'Probando', 1, '2024-03-19 00:39:01', '2024-03-19 00:39:01'),
-(11, 3, 7, 'mas', 'dudas', 1, '2024-03-19 04:09:00', '2024-03-19 04:09:00');
+(16, 3, 7, 'Nuevo', 'foro', 0, '2024-03-22 03:47:15', '2024-03-22 04:43:31'),
+(19, 3, 1, 'Prueba', 'probando', 1, '2024-03-22 04:14:42', '2024-03-22 04:14:42'),
+(20, 3, 7, 'Tengo dudas', 'mas dudas', 1, '2024-03-22 04:43:57', '2024-03-22 04:43:57');
 
 -- --------------------------------------------------------
 
@@ -222,6 +222,32 @@ CREATE TABLE `tbl_profesores` (
 INSERT INTO `tbl_profesores` (`id`, `titulo`) VALUES
 (1, ''),
 (3, '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_respuestas`
+--
+
+CREATE TABLE `tbl_respuestas` (
+  `id` int(11) NOT NULL,
+  `fk_foro` int(11) NOT NULL,
+  `fk_autor` int(11) NOT NULL,
+  `respuesta` varchar(1000) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tbl_respuestas`
+--
+
+INSERT INTO `tbl_respuestas` (`id`, `fk_foro`, `fk_autor`, `respuesta`, `created_at`, `updated_at`) VALUES
+(7, 16, 1, 'nueva respuesta', '2024-03-22 03:47:31', '2024-03-22 03:47:31'),
+(8, 16, 1, 'otra', '2024-03-22 03:48:36', '2024-03-22 03:48:36'),
+(9, 16, 1, 'bruh!', '2024-03-22 04:05:47', '2024-03-22 04:18:28'),
+(12, 20, 1, ' s i ', '2024-03-22 23:38:51', '2024-03-23 00:57:17'),
+(13, 20, 1, 'respondiendo', '2024-03-23 01:09:05', '2024-03-23 01:09:05');
 
 -- --------------------------------------------------------
 
@@ -359,7 +385,9 @@ ALTER TABLE `tbl_estudiantes`
 -- Indexes for table `tbl_foros`
 --
 ALTER TABLE `tbl_foros`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_idForos_idCurso` (`fk_curso`),
+  ADD KEY `fk_idForos_idUsuario` (`fk_autor`);
 
 --
 -- Indexes for table `tbl_inscripciones_pago`
@@ -387,6 +415,14 @@ ALTER TABLE `tbl_modulos`
 --
 ALTER TABLE `tbl_profesores`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbl_respuestas`
+--
+ALTER TABLE `tbl_respuestas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_idRespuesta_idUsuario` (`fk_autor`),
+  ADD KEY `fk_idRespuesta_idForo` (`fk_foro`);
 
 --
 -- Indexes for table `tbl_roles`
@@ -442,13 +478,19 @@ ALTER TABLE `tbl_cursos`
 -- AUTO_INCREMENT for table `tbl_foros`
 --
 ALTER TABLE `tbl_foros`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tbl_modulos`
 --
 ALTER TABLE `tbl_modulos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tbl_respuestas`
+--
+ALTER TABLE `tbl_respuestas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `tbl_roles`
@@ -504,6 +546,13 @@ ALTER TABLE `tbl_estudiantes`
   ADD CONSTRAINT `fk_idEstudiante_idUsuario` FOREIGN KEY (`id`) REFERENCES `tbl_usuarios` (`id`);
 
 --
+-- Constraints for table `tbl_foros`
+--
+ALTER TABLE `tbl_foros`
+  ADD CONSTRAINT `fk_idForos_idCurso` FOREIGN KEY (`fk_curso`) REFERENCES `tbl_cursos` (`id`),
+  ADD CONSTRAINT `fk_idForos_idUsuario` FOREIGN KEY (`fk_autor`) REFERENCES `tbl_usuarios` (`id`);
+
+--
 -- Constraints for table `tbl_inscripciones_pago`
 --
 ALTER TABLE `tbl_inscripciones_pago`
@@ -528,6 +577,13 @@ ALTER TABLE `tbl_modulos`
 --
 ALTER TABLE `tbl_profesores`
   ADD CONSTRAINT `fk_idProfesor_idUsuario` FOREIGN KEY (`id`) REFERENCES `tbl_usuarios` (`id`);
+
+--
+-- Constraints for table `tbl_respuestas`
+--
+ALTER TABLE `tbl_respuestas`
+  ADD CONSTRAINT `fk_idRespuesta_idForo` FOREIGN KEY (`fk_foro`) REFERENCES `tbl_foros` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_idRespuesta_idUsuario` FOREIGN KEY (`fk_autor`) REFERENCES `tbl_usuarios` (`id`);
 
 --
 -- Constraints for table `tbl_tarjetas_debito_credito`
