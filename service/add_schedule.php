@@ -18,6 +18,14 @@ if ($check_conn === true) {
     $context = stream_context_create($options);
     $result = json_decode(file_get_contents($url, false, $context), true);
     if (isset($result['isValid']) && $result['isValid']) {
+        {
+            if (isset($_POST['start-date']) && strlen($_POST['start-date']) === 0) {
+                $_POST['start-date'] = '0000-00-00';
+            }
+            if (isset($_POST['end-date']) && strlen($_POST['end-date']) === 0) {
+                $_POST['end-date'] = '0000-00-00';
+            }
+        }
         try {
             $columns = [];
             $columns_ref = [];

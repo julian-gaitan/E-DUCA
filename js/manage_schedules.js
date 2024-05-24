@@ -48,7 +48,7 @@ $(function () {
                         alert('Creación exitosa');
                         window.location.replace("manage_schedules.php");
                     } else {
-                        result = "Hubo un problema, por favor intente más tarde";
+                        alert("Hubo un problema, por favor intente más tarde");
                         console.log(json_response);
                     }
                 })

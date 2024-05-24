@@ -21,7 +21,9 @@ class ORM {
                 $result = $result[0];
                 $new_obj = call_user_func([$ref_obj, "newObj"]);
                 foreach ($ref_obj->fields_map as $key => $value) {
-                    call_user_func([$new_obj, "set_" . $key], $result[$value]);
+                    if (!is_null($result[$value])) {
+                        call_user_func([$new_obj, "set_" . $key], $result[$value]);
+                    }
                 }
             }
         } catch (Exception $ex) {
@@ -41,7 +43,9 @@ class ORM {
             for ($i = 0; $i < count($result); $i++) {
                 $new_obj = call_user_func([$ref_obj, "newObj"]);
                 foreach ($ref_obj->fields_map as $key => $value) {
-                    call_user_func([$new_obj, "set_" . $key], $result[$i][$value]);
+                    if (!is_null($result[$i][$value])) {
+                        call_user_func([$new_obj, "set_" . $key], $result[$i][$value]);
+                    }
                 }
                 $new_array[] = $new_obj;
             }
