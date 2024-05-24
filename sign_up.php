@@ -40,7 +40,7 @@
                             <div>
                                 <hr>
                             </div>
-                            <div class="m-3">
+                            <div class="mx-3 my-2">
                                 <label class="form-label" for="first-name">Nombre(s)</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
@@ -48,7 +48,7 @@
                                     <div id="feedback-first-name" class="invalid-feedback"></div>
                                 </div>
                             </div>
-                            <div class="m-3">
+                            <div class="mx-3 my-2">
                                 <label class="form-label" for="last-name">Apellido(s)</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-input-text"></i></span>
@@ -56,7 +56,7 @@
                                     <div id="feedback-last-name" class="invalid-feedback"></div>
                                 </div>
                             </div>
-                            <div class="m-3">
+                            <div class="mx-3 my-2">
                                 <label class="form-label" for="user">Usuario</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-at"></i></span>
@@ -64,7 +64,7 @@
                                     <div id="feedback-user" class="invalid-feedback"></div>
                                 </div>
                             </div>
-                            <div class="m-3">
+                            <div class="mx-3 my-2">
                                 <label class="form-label" for="birthdate">Fecha de Nacimiento</label>
                                 <div class="input-group has-validation">
                                     <span class="input-group-text"><i class="fi fi-rr-calendar"></i></span>
@@ -86,9 +86,9 @@
                                     <input class="form-control" type="text" id="city" name="city">
                                 </div>
                             </div> -->
-                            <div class="m-3 form-check">
+                            <div class="m-3 form-check text-center">
+                                <input class="form-check-input float-none" type="checkbox" id="terms-conditions" name="terms-conditions" value="true">
                                 <label class="form-check-label" for="terms-conditions">Acepto términos y condiciones</label>
-                                <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms-conditions" value="true">
                                 <div id="feedback-terms-conditions" class="invalid-feedback"></div>
                             </div>
                             <div class="m-4 text-center">

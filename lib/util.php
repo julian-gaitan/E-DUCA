@@ -10,6 +10,17 @@ function update_windows_datetime() {
     $T = exec('time /T');
 }
 
+function update_datetime() {
+    global $D;
+    global $T;
+    // $dt = new DateTime("now", new DateTimeZone("GMT-00:00"));
+    $dt = new DateTime("now", new DateTimeZone("GMT-05:00"));
+    $D = $dt->format('d/m/Y');
+    $T = $dt->format('H:i:s');
+    // console_log($D);
+    // console_log($T);
+}
+
 function time_diff(string $date) : string {
     global $D;
     global $T;

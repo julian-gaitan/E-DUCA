@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2024 at 02:17 AM
+-- Generation Time: May 24, 2024 at 05:03 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -43,7 +43,8 @@ INSERT INTO `tbl_actividades` (`id`, `fk_modulo`, `indice`, `titulo`, `tipo`) VA
 (1, 1, 1, 'Actividad 1', 0),
 (2, 1, 2, 'activity 2', 0),
 (3, 1, 3, 'Polinomios', 0),
-(4, 2, 1, 'Act 2.1', 0);
+(4, 2, 1, 'Act 2.1', 0),
+(8, 7, 1, 'Actividad 1', 0);
 
 -- --------------------------------------------------------
 
@@ -69,7 +70,8 @@ INSERT INTO `tbl_cronogramas` (`id`, `fk_curso`, `fecha_inicio`, `fecha_fin`, `d
 (2, 1, '0000-00-00', '0000-00-00', 90, 34900),
 (3, 2, '2023-12-01', '2024-02-25', 45, 19990),
 (4, 3, '0000-00-00', '0000-00-00', 30, 34500),
-(7, 6, '2024-02-01', '2024-02-09', 10, 50000);
+(7, 6, '2024-02-01', '2024-02-09', 10, 50000),
+(8, 7, '2024-04-30', '2024-06-01', 64, 50500);
 
 -- --------------------------------------------------------
 
@@ -96,7 +98,8 @@ INSERT INTO `tbl_cursos` (`id`, `fk_profesor`, `nombre`, `descripcion`, `lista_c
 (1, 3, 'HTML5, CSS3 Y JavaScript, jQuery', 'Aprende HTML5, CSS3 Y JavaScript de manera rápida y efectiva.', 'HTML\r\nFormularios\r\nCSS3\r\nFlexBox\r\nJavaScript\r\nDOM', 'Software Web\r\nJavaScript', 'HTML\r\nCSS\r\nJavaScript', '1702264978-835'),
 (2, 3, 'jQuery desde 0', 'Aprenda jQuery desde los conceptos básicos hasta un manejo avanzado del lenguaje.', 'Selectores\nAtributos\nEventos\nEfectos\nAjax', 'Desarrollo Web\njQuery', 'JavaScript\njQuery', '1702265941-624'),
 (3, 1, 'Tomcat para Administradores', 'Aprende a usar el servidor web Tomcat para todo tipo de aplicaciones', 'Instalación\r\nConfiguración\r\nApache Web Server\r\nDespliegue\r\nClusters', 'Desarrollo Web\r\nTomcat', 'Apache\r\nWebServer\r\nTomcat', '1702266769-545'),
-(6, 3, 'Nombre', 'Descripción', 'lista1\r\nlista2\r\nlista3', 'progracion web', 'html\r\nphp', '1707538838-375');
+(6, 3, 'Nombre', 'Descripción', 'lista1\r\nlista2\r\nlista3', 'progracion web', 'html\r\nphp', '1707538838-375'),
+(7, 1, '123', '123123', 'a\r\nb\r\nc', 'x\r\ny\r\nz', 'tag1\r\ntag2', '1714436152-284');
 
 -- --------------------------------------------------------
 
@@ -160,6 +163,7 @@ CREATE TABLE `tbl_inscripciones_pago` (
 --
 
 INSERT INTO `tbl_inscripciones_pago` (`idEstudiante`, `idCronograma`) VALUES
+(1, 8),
 (7, 4);
 
 -- --------------------------------------------------------
@@ -202,7 +206,8 @@ CREATE TABLE `tbl_modulos` (
 
 INSERT INTO `tbl_modulos` (`id`, `fk_curso`, `indice`, `titulo`, `asignatura`) VALUES
 (1, 3, 1, 'Modulo 1', ''),
-(2, 3, 2, 'mOdUlO 2', '');
+(2, 3, 2, 'mOdUlO 2', ''),
+(7, 7, 1, 'Modulo 1', '');
 
 -- --------------------------------------------------------
 
@@ -347,7 +352,8 @@ INSERT INTO `tbl_usuarios` (`id`, `nombres`, `apellidos`, `usuario`, `correo`, `
 (1, 'Julian', 'Gaitan', 'Hafgufa', 'a@b.com', 'asdASD123', '1989-10-30', 15),
 (2, 'pedro', 'perez', 'pedrop', 'ac@eb.com', 'qwerQWER12', '2000-06-15', 5),
 (3, 'Jon', 'Doe', 'JonhDoe', 'abc@xyz.org', 'Contrasena987', '1950-01-01', 9),
-(7, 'Nombre', 'Apellido', 'usuario', 'correo@cualquiera.com', 'conTRA123', '2023-03-01', 5);
+(7, 'Nombre', 'Apellido', 'usuario', 'correo@cualquiera.com', 'conTRA123', '2023-03-01', 5),
+(9, 'Mi nombre', 'Mi apellido', 'MiUsuario', 'correo2@email.com', 'ASDasd23', '2023-02-01', 5);
 
 --
 -- Indexes for dumped tables
@@ -460,19 +466,19 @@ ALTER TABLE `tbl_usuarios`
 -- AUTO_INCREMENT for table `tbl_actividades`
 --
 ALTER TABLE `tbl_actividades`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_cronogramas`
 --
 ALTER TABLE `tbl_cronogramas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_cursos`
 --
 ALTER TABLE `tbl_cursos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbl_foros`
@@ -484,7 +490,7 @@ ALTER TABLE `tbl_foros`
 -- AUTO_INCREMENT for table `tbl_modulos`
 --
 ALTER TABLE `tbl_modulos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbl_respuestas`
@@ -514,7 +520,7 @@ ALTER TABLE `tbl_tarjetas_debito_credito`
 -- AUTO_INCREMENT for table `tbl_usuarios`
 --
 ALTER TABLE `tbl_usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables

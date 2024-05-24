@@ -44,7 +44,8 @@ if (!$valid) {
 }
 $course = Course::findbyId($conn, new Course(), $schedule->get_fk_course());
 $modules = Module::findByCondition($conn, new Module(), 'fk_course', $course->get_id());
-update_windows_datetime();
+// update_windows_datetime();
+update_datetime();
 ?>
 
 <!DOCTYPE html>
