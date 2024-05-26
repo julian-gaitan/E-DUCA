@@ -190,7 +190,7 @@ update_datetime();
                                     </div>
                                 </div>
                                 <div class="m-3 d-none">
-                                    <label class="form-label" for="fk-author">Author</label>
+                                    <label class="form-label" for="fk-author">Autor</label>
                                     <div class="input-group">
                                         <span class="input-group-text"></span>
                                         <input class="form-control" type="number" id="fk-author" name="fk-author" readonly hidden 
@@ -376,7 +376,7 @@ update_datetime();
                                                 </div>
                                             </div>
                                             <div class="m-3 d-none">
-                                                <label class="form-label" for="fk-author">Author</label>
+                                                <label class="form-label" for="fk-author">Autor</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text"></span>
                                                     <input class="form-control" type="number" id="fk-author" name="fk-author" readonly hidden 
