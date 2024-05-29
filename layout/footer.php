@@ -29,8 +29,8 @@
                         </div>
                     </div>
                     <div class="col-10 col-lg-5 d-flex align-items-center">
-                        <form class="d-flex flex-grow-1" role="search">
-                            <input class="form-control me-2" type="search" placeholder="¿Qué deseas aprender?">
+                        <form class="d-flex flex-grow-1" role="search" method="get" action="search.php">
+                            <input class="form-control me-2" type="search" name="word" placeholder="¿Qué deseas aprender?">
                             <button class="btn btn-warning px-md-3 px-xl-4 px-xxl-5" type="submit">Buscar</button>
                         </form>
                     </div>
